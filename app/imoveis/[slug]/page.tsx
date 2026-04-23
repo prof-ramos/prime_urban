@@ -32,17 +32,32 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
     }).format(value)
   }
 
+  const description = `${property.type === "apartamento" ? "Apartamento" : property.type} ${
+    property.transactionType === "venda" ? "à venda" : "para alugar"
+  } em ${property.neighborhood}, Brasília. ${property.bedrooms} quartos, ${property.privateArea}m². ${formatCurrency(property.price)}`
+
+  const ogImages = property.images.map((url) => ({
+    url,
+    width: 1200,
+    height: 800,
+    alt: property.title,
+  }))
+
   return {
     title: property.title,
-    description: `${property.type === "apartamento" ? "Apartamento" : property.type} ${
-      property.transactionType === "venda" ? "à venda" : "para alugar"
-    } em ${property.neighborhood}, Brasília. ${property.bedrooms} quartos, ${
-      property.privateArea
-    }m². ${formatCurrency(property.price)}`,
+    description,
     openGraph: {
       title: property.title,
-      description: `${property.bedrooms} quartos, ${property.privateArea}m² - ${formatCurrency(property.price)}`,
-      images: property.images,
+      description,
+      type: 'website',
+      locale: 'pt_BR',
+      images: ogImages,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: property.title,
+      description,
+      ...(property.images.length > 0 && { images: [property.images[0]] }),
     },
   }
 }

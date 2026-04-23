@@ -58,10 +58,7 @@ export default function PropertiesPage() {
 
     // Neighborhood filter
     if (filters.neighborhood) {
-      results = results.filter(
-        (p) =>
-          p.neighborhood.toLowerCase().replace(/ /g, "-") === filters.neighborhood
-      )
+      results = results.filter((p) => p.neighborhood === filters.neighborhood)
     }
 
     // Price range filter

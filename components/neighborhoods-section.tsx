@@ -1,44 +1,8 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { mockNeighborhoods } from "@/lib/mock-data"
 
-const neighborhoods = [
-  {
-    name: "Asa Sul",
-    slug: "asa-sul",
-    count: 87,
-    description: "Tradicional e arborizada",
-  },
-  {
-    name: "Asa Norte",
-    slug: "asa-norte",
-    count: 92,
-    description: "Universitária e cultural",
-  },
-  {
-    name: "Águas Claras",
-    slug: "aguas-claras",
-    count: 156,
-    description: "Moderna e em expansão",
-  },
-  {
-    name: "Sudoeste",
-    slug: "sudoeste",
-    count: 64,
-    description: "Planejado e valorizado",
-  },
-  {
-    name: "Noroeste",
-    slug: "noroeste",
-    count: 45,
-    description: "Sustentável e exclusivo",
-  },
-  {
-    name: "Lago Sul",
-    slug: "lago-sul",
-    count: 38,
-    description: "Luxuoso e tranquilo",
-  },
-]
+const neighborhoods = mockNeighborhoods.filter((n) => n.featured)
 
 export function NeighborhoodsSection() {
   return (

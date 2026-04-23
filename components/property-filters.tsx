@@ -20,6 +20,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Slider } from "@/components/ui/slider"
+import { mockProperties } from "@/lib/mock-data"
 
 export interface FilterState {
   search: string
@@ -38,16 +39,11 @@ interface PropertyFiltersProps {
   onReset: () => void
 }
 
-const neighborhoods = [
-  { value: "asa-sul", label: "Asa Sul" },
-  { value: "asa-norte", label: "Asa Norte" },
-  { value: "aguas-claras", label: "Águas Claras" },
-  { value: "sudoeste", label: "Sudoeste" },
-  { value: "noroeste", label: "Noroeste" },
-  { value: "lago-sul", label: "Lago Sul" },
-  { value: "lago-norte", label: "Lago Norte" },
-  { value: "guara", label: "Guará" },
-]
+const neighborhoods = Array.from(
+  new Set(mockProperties.map((p) => p.neighborhood))
+)
+  .sort()
+  .map((name) => ({ value: name, label: name }))
 
 const propertyTypes = [
   { value: "apartamento", label: "Apartamento" },

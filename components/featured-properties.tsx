@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { getFeaturedProperties } from "@/lib/mock-data"
 
 export function FeaturedProperties() {
-  const featuredProperties = getFeaturedProperties()
+  const featuredProperties = getFeaturedProperties().slice(0, 3)
 
   return (
     <section className="py-16 md:py-24 bg-[var(--sky-200)]/20">

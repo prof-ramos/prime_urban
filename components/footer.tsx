@@ -75,20 +75,20 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold text-secondary">Bairros</h4>
             <nav className="flex flex-col gap-3">
-              <Link href="/bairros/asa-sul" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Asa Sul
+              <Link href="/bairros/plano-piloto" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                Plano Piloto
               </Link>
-              <Link href="/bairros/asa-norte" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Asa Norte
+              <Link href="/bairros/lago-sul" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                Lago Sul
               </Link>
               <Link href="/bairros/aguas-claras" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                 Águas Claras
               </Link>
-              <Link href="/bairros/sudoeste" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Sudoeste
+              <Link href="/bairros/sudoeste-octogonal" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                Sudoeste/Octogonal
               </Link>
-              <Link href="/bairros/noroeste" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Noroeste
+              <Link href="/bairros/taguatinga" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                Taguatinga
               </Link>
             </nav>
           </div>

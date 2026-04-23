@@ -25,3 +25,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# superpowers
+.superpowers/
+
+# gerados localmente
+repomix-output*.xml
+test-results/
+playwright-report/
