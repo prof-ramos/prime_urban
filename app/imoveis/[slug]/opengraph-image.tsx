@@ -63,8 +63,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const isRent = property.transactionType === 'aluguel'
   const typeLabel = TYPE_LABELS[property.type] ?? property.type
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://primeurban.com.br'
-  const domain = new URL(siteUrl).hostname
+  const domain = new URL(getSiteUrl()).hostname
 
   return new ImageResponse(
     (

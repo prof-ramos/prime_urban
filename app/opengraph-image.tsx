@@ -149,7 +149,7 @@ export default async function Image() {
           }}
         >
           <span style={{ fontSize: 13, color: 'rgba(249,246,240,0.35)' }}>
-            primeurban.com.br
+            {domain}
           </span>
         </div>
       </div>
