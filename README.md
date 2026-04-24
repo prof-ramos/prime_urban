@@ -102,6 +102,8 @@ Para tons intermediários de navy o padrão é `bg-[var(--navy-900)]` / `text-[v
 - `Playfair Display` → `--font-playfair` (serifa dos títulos)
 - `Libre Baskerville` → serifa padrão do `body`
 
+A identidade visual completa — tokens machine-readable + prose de aplicação — está em [`DESIGN.md`](./DESIGN.md), no formato [google-labs-code/design.md](https://github.com/google-labs-code/design.md).
+
 ## Variáveis de ambiente
 
 | Variável | Default | Descrição |
