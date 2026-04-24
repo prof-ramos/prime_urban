@@ -46,8 +46,8 @@ test.describe("Página inicial", () => {
     const section = page
       .locator("section")
       .filter({ hasText: "Bairros de Brasília" })
-    await expect(section.getByText("Asa Sul")).toBeVisible()
-    await expect(section.getByText("Noroeste")).toBeVisible()
+    await expect(section.getByText("Plano Piloto")).toBeVisible()
+    await expect(section.getByText("Lago Sul")).toBeVisible()
   })
 
   test("exibe footer", async ({ page }) => {

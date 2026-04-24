@@ -51,6 +51,8 @@ test.describe("Detalhe do imóvel", () => {
 
   test("página 404 para slug inválido", async ({ page }) => {
     await page.goto("/imoveis/slug-inexistente")
-    await expect(page.getByText(/404|não encontrado/i)).toBeVisible()
+    await expect(
+      page.getByRole("heading", { name: /Página não encontrada/i }),
+    ).toBeVisible()
   })
 })
