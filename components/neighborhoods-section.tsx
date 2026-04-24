@@ -29,7 +29,7 @@ export function NeighborhoodsSection() {
             >
               <div className="relative z-10">
                 <h3 className="font-semibold text-lg mb-1">{neighborhood.name}</h3>
-                <p className="text-xs text-primary-foreground/60 mb-3">{neighborhood.description}</p>
+                <p className="text-xs text-primary-foreground/80 mb-3">{neighborhood.description}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-secondary">
                     {neighborhood.count} imóveis

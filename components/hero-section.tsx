@@ -70,7 +70,7 @@ export function HeroSection() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto text-pretty">
+          <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto text-pretty">
             Curadoria exclusiva de apartamentos, casas e coberturas nos melhores bairros da capital federal.
           </p>
 
@@ -143,15 +143,15 @@ export function HeroSection() {
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">500+</p>
-              <p className="text-sm text-primary-foreground/60">Imóveis disponíveis</p>
+              <p className="text-sm text-primary-foreground/80">Imóveis disponíveis</p>
             </div>
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">15</p>
-              <p className="text-sm text-primary-foreground/60">Bairros atendidos</p>
+              <p className="text-sm text-primary-foreground/80">Bairros atendidos</p>
             </div>
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">98%</p>
-              <p className="text-sm text-primary-foreground/60">Clientes satisfeitos</p>
+              <p className="text-sm text-primary-foreground/80">Clientes satisfeitos</p>
             </div>
           </div>
         </div>

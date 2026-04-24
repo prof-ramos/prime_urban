@@ -20,7 +20,7 @@ export default function ContatoPage() {
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mt-2 mb-4 text-balance">
               Entre em contato
             </h1>
-            <p className="text-primary-foreground/70 text-lg text-pretty">
+            <p className="text-primary-foreground/80 text-lg text-pretty">
               Nossa equipe está pronta para ajudá-lo a encontrar o imóvel ideal ou responder qualquer dúvida.
             </p>
           </div>

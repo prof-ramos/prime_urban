@@ -50,7 +50,7 @@ export default function SobrePage() {
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mt-2 mb-6 text-balance">
               Sua referência em imóveis de alto padrão em Brasília
             </h1>
-            <p className="text-primary-foreground/70 text-lg text-pretty">
+            <p className="text-primary-foreground/80 text-lg text-pretty">
               A PrimeUrban nasceu da missão de simplificar as transações imobiliárias de alto padrão no
               Distrito Federal, conectando pessoas a imóveis que realmente transformam vidas.
             </p>

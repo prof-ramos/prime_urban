@@ -84,7 +84,7 @@ export default async function BairroDetalhePage({ params }: Props) {
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mb-2">
               {neighborhood.name}
             </h1>
-            <p className="text-primary-foreground/70 text-lg">{neighborhood.description}</p>
+            <p className="text-primary-foreground/80 text-lg">{neighborhood.description}</p>
           </div>
         </section>
 

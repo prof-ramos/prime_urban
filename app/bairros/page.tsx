@@ -22,7 +22,7 @@ export default function BairrosPage() {
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mt-2 mb-4 text-balance">
               Bairros de Brasília
             </h1>
-            <p className="text-primary-foreground/70 max-w-2xl mx-auto text-pretty">
+            <p className="text-primary-foreground/80 max-w-2xl mx-auto text-pretty">
               Conheça os melhores bairros da capital federal e encontre o lugar perfeito para morar.
             </p>
           </div>
@@ -39,7 +39,7 @@ export default function BairrosPage() {
                 >
                   <div className="relative z-10">
                     <h2 className="font-semibold text-2xl mb-2">{neighborhood.name}</h2>
-                    <p className="text-primary-foreground/60 mb-6">{neighborhood.description}</p>
+                    <p className="text-primary-foreground/80 mb-6">{neighborhood.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-secondary font-medium">
                         {neighborhood.count} imóveis

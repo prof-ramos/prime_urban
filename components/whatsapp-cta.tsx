@@ -20,7 +20,7 @@ export function WhatsAppCTA() {
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-accent-foreground mb-4 text-balance">
             Fale com um especialista agora
           </h2>
-          <p className="text-lg text-accent-foreground/70 mb-8 max-w-2xl mx-auto text-pretty">
+          <p className="text-lg text-accent-foreground/80 mb-8 max-w-2xl mx-auto text-pretty">
             Nossa equipe está pronta para ajudá-lo a encontrar o imóvel perfeito. Atendimento personalizado via WhatsApp.
           </p>
 
