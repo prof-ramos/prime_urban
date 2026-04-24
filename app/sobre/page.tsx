@@ -142,7 +142,7 @@ export default function SobrePage() {
                     </span>
                   </div>
                   <p className="font-semibold text-foreground text-sm">{member.name}</p>
-                  <p className="text-muted-foreground text-xs mt-0.5">{member.role}</p>
+                  <p className="text-muted-foreground text-xs mt-1">{member.role}</p>
                   <p className="text-secondary text-xs mt-1">{member.years} anos</p>
                 </div>
               ))}

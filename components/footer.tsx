@@ -103,7 +103,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
-                <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                <MapPin className="h-5 w-5 flex-shrink-0 mt-1" />
                 <span>SHIS QI 9, Bloco A, Sala 101<br />Lago Sul, Brasília - DF</span>
               </a>
               <a 
