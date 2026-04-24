@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 
 import { Analytics } from '@vercel/analytics/next'
 import { WhatsAppFloat } from '@/components/whatsapp-float'
+import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
 import { Inter, Playfair_Display, Geist_Mono as V0_Font_Geist_Mono, Libre_Baskerville as V0_Font_Libre_Baskerville } from 'next/font/google'
@@ -98,6 +99,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${playfair.variable} font-serif antialiased`}>
         {children}
         <WhatsAppFloat />
+        <Toaster richColors closeButton position="top-center" />
         <Analytics />
       </body>
     </html>
