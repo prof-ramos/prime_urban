@@ -229,8 +229,12 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       <div className="flex flex-col md:flex-row gap-4">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Label htmlFor="property-search" className="sr-only">
+            Buscar imóveis
+          </Label>
+          <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
           <Input
+            id="property-search"
             type="text"
             placeholder="Buscar por endereço, bairro ou código..."
             value={localFilters.search}
@@ -245,7 +249,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
             value={localFilters.transactionType}
             onValueChange={(value) => updateFilter("transactionType", value)}
           >
-            <SelectTrigger className="w-[140px] h-12">
+            <SelectTrigger aria-label="Tipo de negócio" className="w-[140px] h-12">
               <SelectValue placeholder="Comprar/Alugar" />
             </SelectTrigger>
             <SelectContent>
@@ -258,7 +262,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
             value={localFilters.propertyType}
             onValueChange={(value) => updateFilter("propertyType", value)}
           >
-            <SelectTrigger className="w-[160px] h-12">
+            <SelectTrigger aria-label="Tipo de imóvel" className="w-[160px] h-12">
               <SelectValue placeholder="Tipo de imóvel" />
             </SelectTrigger>
             <SelectContent>
@@ -274,7 +278,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
             value={localFilters.neighborhood}
             onValueChange={(value) => updateFilter("neighborhood", value)}
           >
-            <SelectTrigger className="w-[160px] h-12">
+            <SelectTrigger aria-label="Bairro" className="w-[160px] h-12">
               <SelectValue placeholder="Bairro" />
             </SelectTrigger>
             <SelectContent>
@@ -288,8 +292,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
 
           {hasActiveFilters && (
             <Button
+              type="button"
               variant="ghost"
               onClick={onReset}
+              aria-label="Limpar filtros"
               className="text-muted-foreground hover:text-destructive"
             >
               <X className="h-4 w-4" />
