@@ -102,7 +102,7 @@ export default function PropertiesPage() {
       <Header />
       <main className="flex-1 bg-background">
         {/* Page Header */}
-        <div className="bg-[var(--navy-900)] py-12 md:py-16">
+        <div className="bg-primary py-12 md:py-16">
           <div className="container mx-auto px-4">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2 text-balance">
               Imóveis em Brasília
@@ -149,7 +149,7 @@ export default function PropertiesPage() {
                   size="sm"
                   onClick={() => setViewMode("grid")}
                   className={`rounded-none ${
-                    viewMode === "grid" ? "bg-[var(--navy-700)] text-white" : ""
+                    viewMode === "grid" ? "bg-primary text-primary-foreground" : ""
                   }`}
                 >
                   <LayoutGrid className="h-4 w-4" />
@@ -159,7 +159,7 @@ export default function PropertiesPage() {
                   size="sm"
                   onClick={() => setViewMode("list")}
                   className={`rounded-none ${
-                    viewMode === "list" ? "bg-[var(--navy-700)] text-white" : ""
+                    viewMode === "list" ? "bg-primary text-primary-foreground" : ""
                   }`}
                 >
                   <List className="h-4 w-4" />
@@ -193,7 +193,7 @@ export default function PropertiesPage() {
               <Button
                 variant="outline"
                 onClick={() => setFilters(initialFilters)}
-                className="border-[var(--navy-700)] text-[var(--navy-700)]"
+                className="border-primary text-primary"
               >
                 Limpar filtros
               </Button>

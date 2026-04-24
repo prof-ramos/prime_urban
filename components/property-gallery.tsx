@@ -46,14 +46,14 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                 className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Foto anterior"
               >
-                <ChevronLeft className="h-6 w-6 text-[var(--navy-900)]" />
+                <ChevronLeft className="h-6 w-6 text-primary" />
               </button>
               <button
                 onClick={goToNext}
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Próxima foto"
               >
-                <ChevronRight className="h-6 w-6 text-[var(--navy-900)]" />
+                <ChevronRight className="h-6 w-6 text-primary" />
               </button>
             </>
           )}
@@ -64,7 +64,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             className="absolute bottom-3 right-3 p-2 rounded-lg bg-white/90 hover:bg-white shadow-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Ver em tela cheia"
           >
-            <Expand className="h-5 w-5 text-[var(--navy-900)]" />
+            <Expand className="h-5 w-5 text-primary" />
           </button>
 
           {/* Image Counter */}
@@ -82,7 +82,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                 onClick={() => setCurrentIndex(index)}
                 className={`relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden transition-all min-h-[44px] ${
                   currentIndex === index
-                    ? "ring-2 ring-[var(--blue-400)] opacity-100"
+                    ? "ring-2 ring-[var(--info)] opacity-100"
                     : "opacity-60 hover:opacity-100"
                 }`}
                 aria-label={`Ver foto ${index + 1}`}

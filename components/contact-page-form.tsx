@@ -143,7 +143,7 @@ export function ContactPageForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[var(--navy-700)] hover:bg-[var(--navy-900)] text-white h-12"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12"
           >
             {isSubmitting ? "Enviando..." : "Enviar mensagem"}
           </Button>

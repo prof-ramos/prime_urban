@@ -44,7 +44,7 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
 
   if (submitted) {
     return (
-      <Card className="border-[var(--blue-400)]/30">
+      <Card className="border-[var(--info)]/30">
         <CardContent className="pt-6 text-center">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
             <Send className="h-8 w-8 text-green-600" />
@@ -66,7 +66,7 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
   }
 
   return (
-    <Card className="border-[var(--blue-400)]/30 sticky top-24">
+    <Card className="border-[var(--info)]/30 sticky top-24">
       <CardHeader>
         <CardTitle className="text-lg">Agende uma visita</CardTitle>
       </CardHeader>
@@ -153,7 +153,7 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[var(--navy-700)] hover:bg-[var(--navy-900)] text-white h-12"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12"
           >
             {isSubmitting ? "Enviando..." : "Enviar mensagem"}
           </Button>
