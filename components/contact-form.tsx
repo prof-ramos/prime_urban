@@ -68,7 +68,9 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
   return (
     <Card className="border-[var(--info)]/30 sticky top-24">
       <CardHeader>
-        <CardTitle className="text-lg">Agende uma visita</CardTitle>
+        <CardTitle asChild>
+          <h2 className="text-lg">Agende uma visita</h2>
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* WhatsApp Button */}

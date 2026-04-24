@@ -60,7 +60,9 @@ export function ContactPageForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Envie sua mensagem</CardTitle>
+        <CardTitle asChild>
+          <h2>Envie sua mensagem</h2>
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button

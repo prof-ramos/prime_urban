@@ -83,8 +83,10 @@ export function PropertyInfo({ property }: PropertyInfoProps) {
       {/* Price Card */}
       <Card className="border-secondary/30 bg-muted/30">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            {property.transactionType === "venda" ? "Valor de venda" : "Valor mensal"}
+          <CardTitle asChild>
+            <h2 className="text-sm font-medium text-muted-foreground">
+              {property.transactionType === "venda" ? "Valor de venda" : "Valor mensal"}
+            </h2>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -126,7 +128,9 @@ export function PropertyInfo({ property }: PropertyInfoProps) {
       {/* Features Grid */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Características</CardTitle>
+          <CardTitle asChild>
+            <h2 className="text-lg">Características</h2>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -148,7 +152,9 @@ export function PropertyInfo({ property }: PropertyInfoProps) {
       {/* Additional Info */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Informações técnicas</CardTitle>
+          <CardTitle asChild>
+            <h2 className="text-lg">Informações técnicas</h2>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
