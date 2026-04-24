@@ -1,9 +1,16 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import {
   getNeighborhoodBySlug,
   getPropertiesByNeighborhood,
@@ -53,21 +60,31 @@ export default async function BairroDetalhePage({ params }: Props) {
       <main>
         <section className="bg-primary py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <nav aria-label="breadcrumb" className="flex items-center gap-1 text-sm text-primary-foreground/60 mb-4">
-              <Link href="/" className="hover:text-primary-foreground transition-colors">
-                Início
-              </Link>
-              <ChevronRight className="h-3 w-3" />
-              <Link href="/bairros" className="hover:text-primary-foreground transition-colors">
-                Bairros
-              </Link>
-              <ChevronRight className="h-3 w-3" />
-              <span className="text-primary-foreground">{neighborhood.name}</span>
-            </nav>
+            <Breadcrumb className="mb-4">
+              <BreadcrumbList className="text-primary-foreground/80">
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild className="hover:text-primary-foreground">
+                    <Link href="/">Início</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild className="hover:text-primary-foreground">
+                    <Link href="/bairros">Bairros</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="text-primary-foreground">
+                    {neighborhood.name}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mb-2">
               {neighborhood.name}
             </h1>
-            <p className="text-primary-foreground/70 text-lg">{neighborhood.description}</p>
+            <p className="text-primary-foreground/80 text-lg">{neighborhood.description}</p>
           </div>
         </section>
 

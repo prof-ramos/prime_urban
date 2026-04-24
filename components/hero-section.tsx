@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Search, MapPin, Home, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -25,6 +27,7 @@ const neighborhoods = [
 ]
 
 export function HeroSection() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [transactionType, setTransactionType] = useState<string>("")
   const [neighborhood, setNeighborhood] = useState<string>("")
@@ -34,7 +37,8 @@ export function HeroSection() {
     if (searchQuery) params.set("q", searchQuery)
     if (transactionType) params.set("tipo", transactionType)
     if (neighborhood) params.set("bairro", neighborhood)
-    window.location.href = `/imoveis?${params.toString()}`
+    const qs = params.toString()
+    router.push(qs ? `/imoveis?${qs}` : "/imoveis")
   }
 
   return (
@@ -66,7 +70,7 @@ export function HeroSection() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto text-pretty">
+          <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto text-pretty">
             Curadoria exclusiva de apartamentos, casas e coberturas nos melhores bairros da capital federal.
           </p>
 
@@ -75,9 +79,13 @@ export function HeroSection() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Search Input */}
               <div className="md:col-span-2">
+                <Label htmlFor="hero-search" className="sr-only">
+                  Buscar por endereço ou código
+                </Label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
                   <Input
+                    id="hero-search"
                     type="text"
                     placeholder="Buscar por endereço ou código"
                     value={searchQuery}
@@ -89,8 +97,11 @@ export function HeroSection() {
 
               {/* Transaction Type */}
               <Select value={transactionType} onValueChange={setTransactionType}>
-                <SelectTrigger className="h-12 border-border/50 focus:border-secondary">
-                  <Home className="h-4 w-4 mr-2 text-muted-foreground" />
+                <SelectTrigger
+                  aria-label="Tipo de negócio"
+                  className="h-12 border-border/50 focus:border-secondary"
+                >
+                  <Home aria-hidden="true" className="h-4 w-4 mr-2 text-muted-foreground" />
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
@@ -101,8 +112,11 @@ export function HeroSection() {
 
               {/* Neighborhood */}
               <Select value={neighborhood} onValueChange={setNeighborhood}>
-                <SelectTrigger className="h-12 border-border/50 focus:border-secondary">
-                  <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                <SelectTrigger
+                  aria-label="Bairro"
+                  className="h-12 border-border/50 focus:border-secondary"
+                >
+                  <MapPin aria-hidden="true" className="h-4 w-4 mr-2 text-muted-foreground" />
                   <SelectValue placeholder="Bairro" />
                 </SelectTrigger>
                 <SelectContent>
@@ -115,7 +129,8 @@ export function HeroSection() {
               </Select>
             </div>
 
-            <Button 
+            <Button
+              type="button"
               onClick={handleSearch}
               className="w-full mt-4 h-12 bg-secondary hover:bg-secondary/90 text-secondary-foreground text-base font-medium"
             >
@@ -128,15 +143,15 @@ export function HeroSection() {
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">500+</p>
-              <p className="text-sm text-primary-foreground/60">Imóveis disponíveis</p>
+              <p className="text-sm text-primary-foreground/80">Imóveis disponíveis</p>
             </div>
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">15</p>
-              <p className="text-sm text-primary-foreground/60">Bairros atendidos</p>
+              <p className="text-sm text-primary-foreground/80">Bairros atendidos</p>
             </div>
             <div className="text-center">
               <p className="text-3xl md:text-4xl font-bold text-secondary">98%</p>
-              <p className="text-sm text-primary-foreground/60">Clientes satisfeitos</p>
+              <p className="text-sm text-primary-foreground/80">Clientes satisfeitos</p>
             </div>
           </div>
         </div>
