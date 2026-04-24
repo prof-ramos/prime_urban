@@ -44,8 +44,9 @@ export function WhatsAppFloat() {
         <div className="relative animate-in slide-in-from-right-5 fade-in duration-300">
           <div className="bg-white rounded-lg shadow-lg p-3 pr-8 max-w-[200px] border border-border/50">
             <button
+              type="button"
               onClick={() => setShowTooltip(false)}
-              className="absolute top-2 right-2 text-muted-foreground hover:text-foreground"
+              className="absolute top-2 right-2 text-muted-foreground hover:text-foreground focus-ring rounded-sm"
               aria-label="Fechar"
             >
               <X className="h-4 w-4" />
@@ -60,8 +61,9 @@ export function WhatsAppFloat() {
 
       {/* WhatsApp Button */}
       <button
+        type="button"
         onClick={handleClick}
-        className="group relative w-14 h-14 md:w-16 md:h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+        className="group relative w-14 h-14 md:w-16 md:h-16 bg-[#25D366] hover:bg-[#128C7E] rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 focus-ring"
         aria-label="Falar pelo WhatsApp"
       >
         <MessageCircle className="h-7 w-7 md:h-8 md:w-8 text-white" />

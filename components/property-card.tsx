@@ -80,8 +80,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
         </div>
 
         {/* Favorite Button */}
-        <button 
-          className="absolute top-3 right-3 p-2 rounded-full bg-card/90 hover:bg-card transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+        <button
+          type="button"
+          className="absolute top-3 right-3 p-2 rounded-full bg-card/90 hover:bg-card transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-ring"
           aria-label="Adicionar aos favoritos"
         >
           <Heart className="h-5 w-5 text-primary" />
