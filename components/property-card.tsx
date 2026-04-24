@@ -1,8 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Bed, Bath, Car, Maximize2, MapPin, Heart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { useFavorites } from "@/hooks/use-favorites"
 
 export interface Property {
   id: string
@@ -49,6 +52,14 @@ const typeLabels: Record<string, string> = {
 
 export function PropertyCard({ property }: PropertyCardProps) {
   const monthlyCost = (property.condoFee || 0) + (property.iptu || 0)
+  const { isFavorite, toggle, hydrated } = useFavorites()
+  const favorited = hydrated && isFavorite(property.id)
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggle(property.id)
+  }
 
   return (
     <Card className="group overflow-hidden border-border/50 hover:border-secondary transition-all duration-300 hover:shadow-lg">
@@ -82,10 +93,12 @@ export function PropertyCard({ property }: PropertyCardProps) {
         {/* Favorite Button */}
         <button
           type="button"
+          onClick={handleFavoriteClick}
+          aria-pressed={favorited}
+          aria-label={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           className="absolute top-3 right-3 p-2 rounded-full bg-card/90 hover:bg-card transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus-ring"
-          aria-label="Adicionar aos favoritos"
         >
-          <Heart className="h-5 w-5 text-primary" />
+          <Heart className={`h-5 w-5 ${favorited ? "fill-secondary text-secondary" : "text-primary"}`} />
         </button>
 
         {/* Type Label */}

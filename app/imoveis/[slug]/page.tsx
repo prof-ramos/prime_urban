@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { Share2, Heart } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyGallery } from "@/components/property-gallery"
 import { PropertyInfo } from "@/components/property-info"
 import { ContactForm } from "@/components/contact-form"
-import { Button } from "@/components/ui/button"
+import { PropertyDetailActions } from "@/components/property-detail-actions"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -113,24 +112,10 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-border/50 min-h-[44px] bg-transparent"
-              >
-                <Share2 className="h-4 w-4 mr-2" />
-                Compartilhar
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-border/50 min-h-[44px] bg-transparent"
-              >
-                <Heart className="h-4 w-4 mr-2" />
-                Favoritar
-              </Button>
-            </div>
+            <PropertyDetailActions
+              propertyId={property.id}
+              propertyTitle={property.title}
+            />
           </div>
 
           {/* Main Content */}
