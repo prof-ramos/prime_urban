@@ -68,9 +68,12 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            type="button"
+            className="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus-ring rounded-md"
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-nav"
           >
             {isMenuOpen ? (
               <X className="h-6 w-6 text-foreground" />
@@ -82,7 +85,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border">
+          <nav id="mobile-nav" className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
