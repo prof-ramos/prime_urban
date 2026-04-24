@@ -1,12 +1,20 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ChevronLeft, Share2, Heart } from "lucide-react"
+import { Share2, Heart } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyGallery } from "@/components/property-gallery"
 import { PropertyInfo } from "@/components/property-info"
 import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { getPropertyBySlug, mockProperties } from "@/lib/mock-data"
 import type { Metadata } from "next"
 
@@ -83,25 +91,27 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
         <div className="container mx-auto px-4 py-6 md:py-8">
           {/* Breadcrumb & Actions */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <nav className="flex items-center gap-2 text-sm">
-              <Link 
-                href="/" 
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Início
-              </Link>
-              <ChevronLeft className="h-4 w-4 rotate-180 text-muted-foreground" />
-              <Link 
-                href="/imoveis" 
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Imóveis
-              </Link>
-              <ChevronLeft className="h-4 w-4 rotate-180 text-muted-foreground" />
-              <span className="text-foreground font-medium truncate max-w-[200px]">
-                {property.neighborhood}
-              </span>
-            </nav>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Início</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/imoveis">Imóveis</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="truncate max-w-[200px]">
+                    {property.neighborhood}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
 
             <div className="flex items-center gap-2">
               <Button 
