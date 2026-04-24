@@ -19,7 +19,7 @@ Sem banco de dados, sem autenticação — toda a base de imóveis é estática 
 ## Funcionalidades
 
 - **Home** com hero, destaques, grid de bairros e CTA WhatsApp
-- **Listagem `/imoveis`** com filtros client-side (tipo, bairro, preço, dormitórios, área)
+- **Listagem `/imoveis`** com filtros client-side (busca, tipo de negócio, tipo de imóvel, bairro, faixa de preço, quartos, vagas de garagem)
 - **Detalhe `/imoveis/[slug]`** com galeria, ficha técnica e formulário de contato — pré-gerado via `generateStaticParams`
 - **Páginas de bairros `/bairros` e `/bairros/[slug]`** cobrindo as 31 regiões administrativas do DF
 - **Páginas institucionais** `/sobre` e `/contato`
@@ -37,11 +37,11 @@ npm run test:e2e     # testes Playwright
 npm run test:e2e:ui  # Playwright em modo UI
 ```
 
-> Caso outro projeto Next.js esteja rodando em `/repos/projetos/v0-prime-urban`, ele pode ocupar a porta 3000 e este projeto subirá automaticamente na **3001** (porta esperada pela configuração do Playwright).
+> Se outro projeto Next.js já estiver usando a porta 3000, este projeto subirá automaticamente na **3001** — porta esperada pela configuração do Playwright.
 
 ## Estrutura
 
-```
+```text
 app/
   page.tsx                 # Home (Server Component)
   imoveis/
@@ -114,7 +114,8 @@ A identidade visual completa — tokens machine-readable + prose de aplicação 
 
 O projeto é implantado na Vercel e permanece sincronizado com o workspace v0.app:
 
-- **Produção:** [vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban](https://vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban)
+- **Produção:** [primeurban.com.br](https://primeurban.com.br)
+- **Dashboard (Vercel):** [vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban](https://vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban)
 - **Workspace v0:** [v0.app/chat/l7xhUjtNMEc](https://v0.app/chat/l7xhUjtNMEc)
 
 Alterações feitas no v0.app são empurradas automaticamente para este repositório, e a Vercel publica a última versão a cada push.
