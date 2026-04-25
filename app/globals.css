@@ -55,6 +55,18 @@
   /* WhatsApp */
   --whatsapp: #25D366;
   --whatsapp-foreground: #ffffff;
+
+  /* Navy scale — usadas em classes arbitrárias por toda a UI */
+  --navy-50:  #EEF2F5;
+  --navy-100: #D6E0E7;
+  --navy-200: #B0C4D0;
+  --navy-300: #87A4B5;
+  --navy-400: #5E8499;
+  --navy-500: #3D6478;
+  --navy-600: #2E4F61;
+  --navy-700: #243D4D;
+  --navy-800: #1A2D3A;
+  --navy-900: #0F1D28;
 }
 
 .dark {
