@@ -61,6 +61,28 @@ Variáveis CSS definidas em `app/globals.css`:
 
 Além das variáveis semânticas do Tailwind, o código usa classes como `bg-[var(--navy-900)]` e `text-[var(--navy-700)]` para tons de navy intermediários — certifique-se de manter esse padrão ao adicionar novos elementos.
 
+### Testes e CI
+
+**Playwright**: `playwright.config.ts` define dois projetos:
+- `chromium` — desktop (Desktop Chrome), roda todos os testes
+- `mobile` — iPhone 13, pula testes com tag `@desktop`
+
+**CI GitHub Actions**: `.github/workflows/tests.yml` — job `unit` (Vitest) + job `e2e` (Playwright).
+
+**Tag `@desktop`**: Usada em testes que dependem de features não confiáveis no mobile WebKit (Playwright):
+- `fill()` em React controlled inputs não dispara `onChange` no mobile WebKit
+- Elementos `sticky` podem cortar clicks por viewport limitado
+
+Testes marcados com `@desktop` (skipados no mobile):
+| Teste | Causa do skip |
+|-------|---------------|
+| `e2e/imoveis.spec.ts:30` busca textual | `fill()` não ativa `onChange` no input search mobile |
+| `e2e/imoveis.spec.ts:35` sem resultados | Mesmo — texto não entra no campo |
+| `e2e/imoveis.spec.ts:47` limpar filtros | Estado stale do `localFilters` + input inacessível |
+| `e2e/imovel-detalhe.spec.ts:40` form submit | Viewport mobile corta `ContactForm` sticky, click falha |
+
+Todos os testes acima **passam no `chromium` desktop**.
+
 ### Fontes
 
 Carregadas em `app/layout.tsx` via `next/font/google`:

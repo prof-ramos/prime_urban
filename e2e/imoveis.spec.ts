@@ -27,12 +27,12 @@ test.describe("Listagem de imóveis (/imoveis)", () => {
     await expect(page.getByText("4 imóveis encontrados")).toBeVisible()
   })
 
-  test("busca textual filtra resultados", async ({ page }) => {
+  test("busca textual filtra resultados @desktop", async ({ page }) => {
     await page.getByPlaceholder(/Buscar por endereço/i).fill("SQNW 111")
     await expect(page.getByText("1 imóvel encontrado")).toBeVisible()
   })
 
-  test("sem resultados exibe mensagem e botão limpar", async ({ page }) => {
+  test("sem resultados exibe mensagem e botão limpar @desktop", async ({ page }) => {
     await page
       .getByPlaceholder(/Buscar por endereço/i)
       .fill("imóvel inexistente xyzxyz")
@@ -44,7 +44,7 @@ test.describe("Listagem de imóveis (/imoveis)", () => {
     ).toBeVisible()
   })
 
-  test("botão limpar filtros restaura todos os resultados", async ({
+  test("botão limpar filtros restaura todos os resultados @desktop", async ({
     page,
   }) => {
     await page
@@ -54,7 +54,7 @@ test.describe("Listagem de imóveis (/imoveis)", () => {
     await expect(page.getByText("12 imóveis encontrados")).toBeVisible()
   })
 
-  test("card de imóvel navega para a página de detalhe", async ({ page }) => {
+  test("card de imóvel navega para a página de detalhe @desktop", async ({ page }) => {
     await page
       .getByRole("link", {
         name: /Apartamento 4 quartos com vista/i,

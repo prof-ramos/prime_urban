@@ -37,7 +37,7 @@ test.describe("Detalhe do imóvel", () => {
     ).toBeVisible()
   })
 
-  test("submissão do formulário exibe confirmação", async ({ page }) => {
+  test("submissão do formulário exibe confirmação @desktop", async ({ page }) => {
     await page.locator("main").getByLabel("Nome completo").fill("João Silva")
     await page.locator("main").getByLabel("E-mail").fill("joao@exemplo.com")
     await page.locator("main").getByLabel("Telefone").fill("(61) 98888-8888")
