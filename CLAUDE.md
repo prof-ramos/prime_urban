@@ -5,12 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev      # inicia servidor de desenvolvimento (porta 3000, ou 3001 se ocupada)
-npm run build    # build de produção
-npm run lint     # ESLint
+npm run dev          # inicia servidor de desenvolvimento (porta 3000, ou 3001 se ocupada)
+npm run build        # build de produção
+npm run lint         # ESLint
+npm run test:run     # Vitest one-shot (unit + component)
+npm test             # Vitest watch mode
+npm run test:e2e     # Playwright E2E (requer servidor rodando: npm run dev)
+npm run test:e2e:ui  # Playwright com UI interativa
 ```
 
 > Há outro servidor Next.js em `/repos/projetos/v0-prime-urban` que pode ocupar a porta 3000. Nesse caso, este projeto sobe automaticamente na **3001**.
+
+> `@google/design.md` requer Node ≥ 22. Use `nvm use 22` ou `nvm use 24` antes de rodar `npx @google/design.md lint DESIGN.md`.
 
 ## Stack
 
@@ -18,7 +24,9 @@ npm run lint     # ESLint
 - **Tailwind CSS v4** (via `@tailwindcss/postcss`) + `tw-animate-css`
 - **shadcn/ui** — componentes em `components/ui/`, configurados em `components.json`
 - **TypeScript** com `ignoreBuildErrors: true` no `next.config.mjs`
-- Sem banco de dados, sem autenticação, sem testes
+- **Vitest** + Testing Library para testes unitários e de componentes (`lib/__tests__/`, `components/__tests__/`, `app/__tests__/`)
+- **Playwright** para E2E (`e2e/`) — dois projetos: `chromium` (desktop) e `mobile` (iPhone 13)
+- Sem banco de dados, sem autenticação
 
 ## Arquitetura
 
@@ -37,6 +45,18 @@ Toda a base de imóveis está em **`lib/mock-data.ts`** — um array estático `
 - O tipo `Property` é definido e exportado por **`components/property-card.tsx`** (não em `lib/`).
 - Funções de acesso: `getFeaturedProperties()` e `getPropertyBySlug(slug)`.
 - Para adicionar imóveis: inserir objetos no array `mockProperties` seguindo a interface `Property`.
+
+### Utilitários (`lib/`)
+
+| Arquivo | Exporta | Uso |
+|---------|---------|-----|
+| `mock-data.ts` | `mockProperties`, `getFeaturedProperties()`, `getPropertyBySlug()`, `getPropertiesByNeighborhood()`, `mockNeighborhoods`, `getNeighborhoodBySlug()` | Fonte de dados estática |
+| `filter-properties.ts` | `filterProperties(filters, sortBy)`, `SortOption` | Filtro e ordenação client-side da listagem |
+| `format.ts` | `formatCurrency(value)` | Formata número como `R$ 1.850.000` (instância `Intl` em nível de módulo) |
+| `property-labels.ts` | `TYPE_LABELS` | Mapa `tipo → label` em português |
+| `site-url.ts` | `getSiteUrl()` | Retorna `NEXT_PUBLIC_SITE_URL` ou fallback |
+| `og-font.ts` | `loadOgFont()` | Carrega Libre Baskerville para Satori (server-only, com cache) |
+| `utils.ts` | `cn()` | Merge de classes Tailwind via `clsx` + `tailwind-merge` |
 
 ### Componentes de negócio
 
@@ -58,8 +78,11 @@ Variáveis CSS definidas em `app/globals.css`:
 | `--accent` | `#3D4D55` | Cinza-azulado |
 | `--background` | `#F9F6F0` | Creme |
 | `--whatsapp` | `#25D366` | Botões WhatsApp |
+| `--whatsapp-hover` | `#20bc5a` | Hover do botão WhatsApp |
 
 Além das variáveis semânticas do Tailwind, o código usa classes como `bg-[var(--navy-900)]` e `text-[var(--navy-700)]` para tons de navy intermediários — certifique-se de manter esse padrão ao adicionar novos elementos.
+
+**Gotcha Tailwind v4 — opacity:** Use sintaxe `bg-secondary/[8%]` (com colchetes) para valores fora da escala padrão. `/8` sem colchetes não gera classe válida no Tailwind v4.
 
 ### Testes e CI
 
@@ -87,5 +110,11 @@ Todos os testes acima **passam no `chromium` desktop**.
 ### Fontes
 
 Carregadas em `app/layout.tsx` via `next/font/google`:
-- `Inter` → `--font-inter`
-- `Playfair Display` → `--font-playfair` (fonte serif padrão do `body`)
+- `Inter` → `--font-inter` (corpo, UI)
+- `Playfair Display` → `--font-playfair` (variável disponível, mas não é a serif principal do design)
+- `Libre Baskerville` → `--font-serif` (definida em `globals.css` via `@theme inline`; usada em `font-serif` — headings, preços, OG image)
+
+### Design system e documentação
+
+- `DESIGN.md` — especificação Google Labs Design.md com tokens YAML + prosa. Valide com `npx @google/design.md lint DESIGN.md` (requer Node ≥ 22 — use `nvm use 22` ou `nvm use 24`).
+- `.coderabbit.yaml` — configuração do CodeRabbit com `path_instructions` por camada do projeto.

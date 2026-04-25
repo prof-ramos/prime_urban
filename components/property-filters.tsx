@@ -290,6 +290,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
             <Button
               variant="ghost"
               onClick={onReset}
+              aria-label="Limpar filtros"
               className="text-muted-foreground hover:text-destructive"
             >
               <X className="h-4 w-4" />
