@@ -7,14 +7,19 @@ for (const path of pages) {
   test(`a11y scan: ${path}`, async ({ page }) => {
     await page.goto(path)
     const results = await new AxeBuilder({ page })
-      // Known shadcn/ui issues (not fixable without modifying library):
-      // - color-contrast: gold (#B68863) on navy (#1D2D3A) = 4.49 (needs 4.5)
-      // - button-name: SelectTrigger buttons lack aria-label / visible text
-      .disableRules(['color-contrast', 'button-name'])
+      // SelectTrigger do shadcn/ui não tem aria-label nem texto visível
+      .exclude('[role="combobox"]')
+      // Dourado #B68863 sobre navy #1D2D3A tem contraste 4.49 (threshold: 4.5)
+      // Não modificável sem alterar o design system
+      .disableRules(['color-contrast'])
       .analyze()
     const criticalOrSerious = results.violations.filter((v) =>
       ['serious', 'critical'].includes(v.impact ?? '')
     )
-    expect(criticalOrSerious).toEqual([])
+    expect(criticalOrSerious, `a11y violations: ${JSON.stringify(
+      criticalOrSerious.map((v) => ({ id: v.id, impact: v.impact })),
+      null,
+      2,
+    )}`).toEqual([])
   })
 }

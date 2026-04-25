@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
@@ -32,7 +32,10 @@ export default function PropertiesPage() {
   const [sortBy, setSortBy] = useState("recent")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
-  const filteredProperties = filterProperties(filters, sortBy)
+  const filteredProperties = useMemo(
+    () => filterProperties(filters, sortBy),
+    [filters, sortBy]
+  )
 
   return (
     <div className="flex min-h-screen flex-col">

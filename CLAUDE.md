@@ -74,12 +74,13 @@ Além das variáveis semânticas do Tailwind, o código usa classes como `bg-[va
 - Elementos `sticky` podem cortar clicks por viewport limitado
 
 Testes marcados com `@desktop` (skipados no mobile):
-| Teste | Causa do skip |
-|-------|---------------|
-| `e2e/imoveis.spec.ts:30` busca textual | `fill()` não ativa `onChange` no input search mobile |
-| `e2e/imoveis.spec.ts:35` sem resultados | Mesmo — texto não entra no campo |
-| `e2e/imoveis.spec.ts:47` limpar filtros | Estado stale do `localFilters` + input inacessível |
-| `e2e/imovel-detalhe.spec.ts:40` form submit | Viewport mobile corta `ContactForm` sticky, click falha |
+| Arquivo | Título do teste | Causa do skip |
+|---------|----------------|---------------|
+| `e2e/imoveis.spec.ts` | `busca textual filtra resultados @desktop` | `fill()` não ativa `onChange` no input search mobile |
+| `e2e/imoveis.spec.ts` | `sem resultados exibe mensagem e botão limpar @desktop` | Mesmo — texto não entra no campo |
+| `e2e/imoveis.spec.ts` | `botão limpar filtros restaura todos os resultados @desktop` | Estado stale do `localFilters` + input inacessível |
+| `e2e/imoveis.spec.ts` | `card de imóvel navega para a página de detalhe @desktop` | Elemento `sticky` corta clicks em viewport mobile |
+| `e2e/imovel-detalhe.spec.ts` | `submissão do formulário exibe confirmação @desktop` | Viewport mobile corta `ContactForm` sticky, click falha |
 
 Todos os testes acima **passam no `chromium` desktop**.
 

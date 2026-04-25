@@ -2,22 +2,14 @@ import { ImageResponse } from 'next/og'
 import { getPropertyBySlug } from '@/lib/mock-data'
 import { loadOgFont } from '@/lib/og-font'
 import { getSiteUrl } from '@/lib/site-url'
+import { TYPE_LABELS } from '@/lib/property-labels'
+import { formatCurrency } from '@/lib/format'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-const TYPE_LABELS: Record<string, string> = {
-  apartamento: 'Apartamento',
-  cobertura: 'Cobertura',
-  casa: 'Casa',
-}
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 0,
-  }).format(value)
+function pluralize(count: number, singular: string, plural: string) {
+  return `${count} ${count !== 1 ? plural : singular}`
 }
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
@@ -214,11 +206,11 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               fontSize: 16,
             }}
           >
-            <span>{property.bedrooms} quarto{property.bedrooms !== 1 ? 's' : ''}</span>
+            <span>{pluralize(property.bedrooms, 'quarto', 'quartos')}</span>
             <span style={{ color: 'rgba(249,246,240,0.2)' }}>·</span>
-            <span>{property.bathrooms} banheiro{property.bathrooms !== 1 ? 's' : ''}</span>
+            <span>{pluralize(property.bathrooms, 'banheiro', 'banheiros')}</span>
             <span style={{ color: 'rgba(249,246,240,0.2)' }}>·</span>
-            <span>{property.parkingSpaces} vaga{property.parkingSpaces !== 1 ? 's' : ''}</span>
+            <span>{pluralize(property.parkingSpaces, 'vaga', 'vagas')}</span>
             <span style={{ color: 'rgba(249,246,240,0.2)' }}>·</span>
             <span>{property.privateArea}m²</span>
           </div>
