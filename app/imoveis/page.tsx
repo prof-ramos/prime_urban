@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
 import { PropertyFilters, type FilterState } from "@/components/property-filters"
-import { mockProperties } from "@/lib/mock-data"
+import { filterProperties } from "@/lib/filter-properties"
 import { LayoutGrid, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,70 +32,10 @@ export default function PropertiesPage() {
   const [sortBy, setSortBy] = useState("recent")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
-  const filteredProperties = useMemo(() => {
-    let results = [...mockProperties]
-
-    // Search filter
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase()
-      results = results.filter(
-        (p) =>
-          p.title.toLowerCase().includes(searchLower) ||
-          p.address.toLowerCase().includes(searchLower) ||
-          p.neighborhood.toLowerCase().includes(searchLower)
-      )
-    }
-
-    // Transaction type filter
-    if (filters.transactionType) {
-      results = results.filter((p) => p.transactionType === filters.transactionType)
-    }
-
-    // Property type filter
-    if (filters.propertyType) {
-      results = results.filter((p) => p.type === filters.propertyType)
-    }
-
-    // Neighborhood filter
-    if (filters.neighborhood) {
-      results = results.filter((p) => p.neighborhood === filters.neighborhood)
-    }
-
-    // Price range filter
-    results = results.filter(
-      (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice
-    )
-
-    // Bedrooms filter
-    if (filters.bedrooms) {
-      results = results.filter((p) => p.bedrooms >= parseInt(filters.bedrooms))
-    }
-
-    // Parking spaces filter
-    if (filters.parkingSpaces) {
-      results = results.filter(
-        (p) => p.parkingSpaces >= parseInt(filters.parkingSpaces)
-      )
-    }
-
-    // Sorting
-    switch (sortBy) {
-      case "price-asc":
-        results.sort((a, b) => a.price - b.price)
-        break
-      case "price-desc":
-        results.sort((a, b) => b.price - a.price)
-        break
-      case "area-desc":
-        results.sort((a, b) => b.privateArea - a.privateArea)
-        break
-      default:
-        // Keep original order (recent)
-        break
-    }
-
-    return results
-  }, [filters, sortBy])
+  const filteredProperties = useMemo(
+    () => filterProperties(filters, sortBy),
+    [filters, sortBy]
+  )
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -147,6 +87,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label="Visualização em grade"
                   onClick={() => setViewMode("grid")}
                   className={`rounded-none ${
                     viewMode === "grid" ? "bg-[var(--navy-700)] text-white" : ""
@@ -157,6 +98,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label="Visualização em lista"
                   onClick={() => setViewMode("list")}
                   className={`rounded-none ${
                     viewMode === "list" ? "bg-[var(--navy-700)] text-white" : ""

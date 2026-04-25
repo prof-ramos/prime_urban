@@ -51,15 +51,17 @@ export function PropertyCard({ property }: PropertyCardProps) {
   const monthlyCost = (property.condoFee || 0) + (property.iptu || 0)
 
   return (
-    <Card className="group overflow-hidden border-border/50 hover:border-secondary transition-all duration-300 hover:shadow-lg">
+    <Card className="group overflow-hidden border-border/50 hover:border-secondary/60 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={property.images[0] || "/placeholder-property.jpg"}
           alt={property.title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        {/* Gradiente inferior para legibilidade dos badges */}
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
@@ -93,6 +95,19 @@ export function PropertyCard({ property }: PropertyCardProps) {
             {typeLabels[property.type]}
           </span>
         </div>
+
+        {/* Hover overlay — preço + CTA */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <p className="font-serif text-2xl font-bold text-secondary">
+            {formatCurrency(property.price)}
+            {property.transactionType === "aluguel" && (
+              <span className="text-sm font-normal text-white/70 ml-1">/mês</span>
+            )}
+          </p>
+          <span className="px-5 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full tracking-wide">
+            Ver imóvel
+          </span>
+        </div>
       </div>
 
       <CardContent className="p-4">
@@ -111,36 +126,32 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Price Section */}
         <div className="mt-3 pb-3 border-b border-border/50">
-          <p className="text-xl font-bold text-secondary">
+          <p className="text-2xl font-bold text-secondary leading-none">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
-              <span className="text-sm font-normal text-muted-foreground">/mês</span>
+              <span className="text-sm font-normal text-muted-foreground ml-1">/mês</span>
             )}
           </p>
           {monthlyCost > 0 && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground mt-1">
               + {formatCurrency(monthlyCost)}/mês (cond. + IPTU)
             </p>
           )}
         </div>
 
         {/* Features */}
-        <div className="grid grid-cols-4 gap-2 mt-3 text-sm text-foreground/80">
-          <div className="flex flex-col items-center gap-1">
-            <Maximize2 className="h-4 w-4 text-secondary" />
-            <span>{property.privateArea}m²</span>
+        <div className="flex items-center gap-4 mt-3 text-sm text-foreground/70">
+          <div className="flex items-center gap-1.5">
+            <Maximize2 className="h-3.5 w-3.5 text-secondary shrink-0" />
+            <span>{property.privateArea} m²</span>
           </div>
-          <div className="flex flex-col items-center gap-1">
-            <Bed className="h-4 w-4 text-secondary" />
-            <span>{property.bedrooms} qts</span>
+          <div className="flex items-center gap-1.5">
+            <Bed className="h-3.5 w-3.5 text-secondary shrink-0" />
+            <span>{property.bedrooms} {property.bedrooms === 1 ? 'quarto' : 'quartos'}</span>
           </div>
-          <div className="flex flex-col items-center gap-1">
-            <Bath className="h-4 w-4 text-secondary" />
-            <span>{property.bathrooms} ban</span>
-          </div>
-          <div className="flex flex-col items-center gap-1">
-            <Car className="h-4 w-4 text-secondary" />
-            <span>{property.parkingSpaces} vag</span>
+          <div className="flex items-center gap-1.5">
+            <Car className="h-3.5 w-3.5 text-secondary shrink-0" />
+            <span>{property.parkingSpaces} {property.parkingSpaces === 1 ? 'vaga' : 'vagas'}</span>
           </div>
         </div>
       </CardContent>

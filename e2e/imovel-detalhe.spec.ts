@@ -37,7 +37,7 @@ test.describe("Detalhe do imóvel", () => {
     ).toBeVisible()
   })
 
-  test("submissão do formulário exibe confirmação", async ({ page }) => {
+  test("submissão do formulário exibe confirmação @desktop", async ({ page }) => {
     await page.locator("main").getByLabel("Nome completo").fill("João Silva")
     await page.locator("main").getByLabel("E-mail").fill("joao@exemplo.com")
     await page.locator("main").getByLabel("Telefone").fill("(61) 98888-8888")
@@ -51,6 +51,8 @@ test.describe("Detalhe do imóvel", () => {
 
   test("página 404 para slug inválido", async ({ page }) => {
     await page.goto("/imoveis/slug-inexistente")
-    await expect(page.getByText(/404|não encontrado/i)).toBeVisible()
+    await expect(
+      page.getByRole("heading", { name: /Página não encontrada/i }),
+    ).toBeVisible()
   })
 })

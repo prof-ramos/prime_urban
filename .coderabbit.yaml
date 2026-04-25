@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "pt-BR"
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  review_details: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+  path_filters:
+    - "!**/*.lock"
+    - "!**/node_modules/**"
+    - "!**/.next/**"
+    - "!**/dist/**"
+  path_instructions:
+    - path: "app/**"
+      instructions: |
+        Next.js 16 App Router com React 19. Server Components por padrão — verificar se "use client" é realmente necessário.
+        Checar uso correto de generateStaticParams, generateMetadata e OpenGraph.
+    - path: "components/**"
+      instructions: |
+        Componentes shadcn/ui + Tailwind CSS v4. Verificar:
+        - Classes de opacidade Tailwind: usar /[N%] para valores fora da escala padrão (ex: /[8%] não /8)
+        - Variáveis CSS devem estar definidas em globals.css antes do uso
+        - touch targets: min-h-[44px] min-w-[44px] em elementos interativos
+        - Acessibilidade: aria-label em botões sem texto visível
+    - path: "lib/**"
+      instructions: |
+        Funções utilitárias puras. Preferir constantes de módulo a objetos recriados por chamada (ex: Intl.NumberFormat).
+        Validar inputs com Number.isFinite antes de operações matemáticas.
+    - path: "**/__tests__/**"
+      instructions: |
+        Vitest + Testing Library. Regras:
+        - Nunca usar document.querySelector — usar screen.getByRole, getByLabelText etc.
+        - Assertions assíncronas dentro de waitFor
+        - Tipar mocks com as interfaces exportadas do componente
+        - Sem magic numbers hardcoded — usar constantes do mock-data
+    - path: "e2e/**"
+      instructions: |
+        Playwright com dois projetos: chromium (desktop) e mobile (iPhone 13).
+        Testes que dependem de fill() em controlled inputs ou elementos sticky devem ter tag @desktop.
+        Sempre aguardar networkidle após page.goto() antes de scans de acessibilidade.
+    - path: "app/globals.css"
+      instructions: |
+        Design system central. Qualquer nova variável CSS deve ser adicionada aqui antes do uso.
+        Paleta: --primary #1D2D3A, --secondary #B68863, --whatsapp #25D366.
+        Navy scale: --navy-50 a --navy-900 já definida.
+
+chat:
+  auto_reply: true

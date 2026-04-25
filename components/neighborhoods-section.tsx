@@ -1,45 +1,65 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { mockNeighborhoods } from "@/lib/mock-data"
 
 const neighborhoods = mockNeighborhoods.filter((n) => n.featured)
 
+// Gradiente sutil único por índice — cada bairro tem identidade visual distinta
+const cardGradients = [
+  'radial-gradient(ellipse at 0% 0%, rgba(182,136,99,0.22) 0%, transparent 70%)',
+  'radial-gradient(ellipse at 100% 0%, rgba(68,111,145,0.22) 0%, transparent 70%)',
+  'radial-gradient(ellipse at 0% 100%, rgba(167,142,156,0.20) 0%, transparent 70%)',
+  'radial-gradient(ellipse at 100% 100%, rgba(182,136,99,0.18) 0%, transparent 70%)',
+  'radial-gradient(ellipse at 50% 0%, rgba(68,111,145,0.20) 0%, transparent 70%)',
+  'radial-gradient(ellipse at 50% 100%, rgba(182,136,99,0.16) 0%, transparent 70%)',
+]
+
 export function NeighborhoodsSection() {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-[var(--navy-900)]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="text-sm font-medium text-secondary uppercase tracking-wider">
+          <span className="text-xs font-medium text-secondary uppercase tracking-[0.2em]">
             Explore por região
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4 text-balance">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mt-3 mb-4 text-balance">
             Bairros de Brasília
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
+          <p className="text-white/50 max-w-xl mx-auto text-pretty text-sm">
             Conheça os melhores bairros da capital federal e encontre o lugar perfeito para você morar.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {neighborhoods.map((neighborhood) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {neighborhoods.map((neighborhood, i) => (
             <Link
               key={neighborhood.slug}
               href={`/bairros/${neighborhood.slug}`}
-              className="group relative overflow-hidden rounded-xl bg-primary p-6 text-primary-foreground transition-all duration-300 hover:bg-accent hover:shadow-lg hover:-translate-y-1"
+              className="group relative overflow-hidden rounded-xl p-5 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              style={{
+                background: cardGradients[i % cardGradients.length],
+                backgroundColor: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
             >
+              {/* Hover fill */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: 'rgba(182,136,99,0.08)' }}
+              />
+
               <div className="relative z-10">
-                <h3 className="font-semibold text-lg mb-1">{neighborhood.name}</h3>
-                <p className="text-xs text-primary-foreground/60 mb-3">{neighborhood.description}</p>
+                <h3 className="font-semibold text-base mb-1 leading-tight">{neighborhood.name}</h3>
+                <p className="text-xs text-white/45 mb-4 leading-relaxed line-clamp-2">
+                  {neighborhood.description}
+                </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-secondary">
+                  <span className="text-xs text-secondary font-medium">
                     {neighborhood.count} imóveis
                   </span>
-                  <ArrowRight className="h-4 w-4 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight className="h-3.5 w-3.5 text-secondary opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </div>
-              
-              {/* Background decoration */}
-              <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-secondary/10 rounded-full transition-transform group-hover:scale-150" />
             </Link>
           ))}
         </div>

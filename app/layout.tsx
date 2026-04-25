@@ -45,20 +45,11 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
     description: DEFAULT_DESCRIPTION,
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
     description: DEFAULT_DESCRIPTION,
-    images: ['/og-image.png'],
   },
   robots: {
     index: true,

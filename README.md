@@ -1,30 +1,95 @@
-# PrimeUrban product requirements
+# PrimeUrban
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Plataforma de curadoria imobiliária de alto padrão focada em Brasília, DF. Identidade visual navy escuro + dourado/bronze.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/l7xhUjtNMEc)
+## Stack
 
-## Overview
+- **Next.js 16** com App Router e React 19
+- **Tailwind CSS v4** + shadcn/ui
+- **TypeScript**
+- **Vitest** + Testing Library (testes unitários e de componentes)
+- **Playwright** (E2E — chromium desktop + mobile iPhone 13)
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Começando
 
-## Deployment
+```bash
+npm install
+npm run dev        # http://localhost:3000 (ou 3001 se porta ocupada)
+```
 
-Your project is live at:
+## Comandos
 
-**[https://vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban](https://vercel.com/gabriel-ramos-projects-c715690c/v0-prime-urban)**
+```bash
+npm run dev          # servidor de desenvolvimento
+npm run build        # build de produção
+npm run lint         # ESLint
+npm run test:run     # Vitest one-shot
+npm test             # Vitest watch mode
+npm run test:e2e     # Playwright E2E (requer servidor rodando)
+npm run test:e2e:ui  # Playwright com UI interativa
+```
 
-## Build your app
+## Estrutura
 
-Continue building your app on:
+```
+app/
+  page.tsx                    # Home (Server Component)
+  imoveis/
+    page.tsx                  # Listagem com filtros (Client Component)
+    [slug]/page.tsx           # Detalhe do imóvel (Server Component)
+components/
+  property-card.tsx           # Card + tipo Property
+  property-filters.tsx        # Filtros + tipo FilterState
+  property-gallery.tsx        # Galeria de imagens
+  property-info.tsx           # Ficha técnica
+  contact-form.tsx            # Formulário de contato
+  hero-section.tsx            # Hero da home
+  neighborhoods-section.tsx   # Seção de bairros
+  whatsapp-cta.tsx            # CTA WhatsApp
+lib/
+  mock-data.ts                # Base de imóveis (array estático)
+  filter-properties.ts        # Filtro e ordenação client-side
+  format.ts                   # formatCurrency()
+  property-labels.ts          # TYPE_LABELS (tipo → label pt-BR)
+  site-url.ts                 # getSiteUrl()
+  og-font.ts                  # Carrega Libre Baskerville para OG images
+  utils.ts                    # cn() (clsx + tailwind-merge)
+e2e/                          # Testes Playwright
+```
 
-**[https://v0.app/chat/l7xhUjtNMEc](https://v0.app/chat/l7xhUjtNMEc)**
+## Dados
 
-## How It Works
+Toda a base de imóveis está em `lib/mock-data.ts` — array estático sem banco de dados ou API. O tipo `Property` é definido e exportado por `components/property-card.tsx`.
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Design System
+
+Especificado em `DESIGN.md` (formato Google Labs Design.md). Paleta principal:
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--primary` | `#1D2D3A` | Navy — cor institucional |
+| `--secondary` | `#B68863` | Dourado/bronze — destaques e preços |
+| `--accent` | `#3D4D55` | Cinza-azulado |
+| `--background` | `#F9F6F0` | Creme quente |
+| `--whatsapp` | `#25D366` | Botões WhatsApp |
+
+Tipografia: **Libre Baskerville** (headings/preços) + **Inter** (corpo/UI).
+
+Valide o design system:
+
+```bash
+nvm use 22   # ou nvm use 24
+npx @google/design.md lint DESIGN.md
+```
+
+## Testes E2E
+
+O Playwright usa dois projetos: `chromium` (desktop) e `mobile` (iPhone 13). Testes que dependem de `fill()` em React controlled inputs ou elementos `sticky` são marcados com `@desktop` e pulados no mobile.
+
+```bash
+# Iniciar servidor antes
+npm run dev
+
+# Rodar E2E
+npm run test:e2e
+```

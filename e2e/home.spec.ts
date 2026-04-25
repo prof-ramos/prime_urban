@@ -24,7 +24,7 @@ test.describe("Página inicial", () => {
       page.getByRole("heading", { name: /Encontre o imóvel/i }),
     ).toBeVisible()
     await expect(
-      page.getByPlaceholder("Buscar por endereço ou código"),
+      page.getByPlaceholder("Endereço, bairro ou código"),
     ).toBeVisible()
     await expect(
       page.getByRole("button", { name: "Buscar Imóveis" }),
@@ -46,8 +46,8 @@ test.describe("Página inicial", () => {
     const section = page
       .locator("section")
       .filter({ hasText: "Bairros de Brasília" })
-    await expect(section.getByText("Asa Sul")).toBeVisible()
-    await expect(section.getByText("Noroeste")).toBeVisible()
+    await expect(section.getByText("Plano Piloto")).toBeVisible()
+    await expect(section.getByText("Lago Sul")).toBeVisible()
   })
 
   test("exibe footer", async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe("Página inicial", () => {
   test("busca no hero navega para /imoveis com parâmetros @desktop", async ({
     page,
   }) => {
-    await page.getByPlaceholder("Buscar por endereço ou código").fill("Asa Sul")
+    await page.getByPlaceholder("Endereço, bairro ou código").fill("Asa Sul")
     await page.getByRole("button", { name: "Buscar Imóveis" }).click()
     await page.waitForURL(/\/imoveis/)
     await expect(page).toHaveURL(/q=Asa/)

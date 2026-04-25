@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { Menu, X, Phone, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -14,6 +15,7 @@ const navLinks = [
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
@@ -50,15 +52,22 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-foreground/80 hover:text-secondary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors relative ${
+                    isActive
+                      ? 'text-secondary after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:bg-secondary'
+                      : 'text-foreground/70 hover:text-secondary'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
             <Button 
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
             >
@@ -83,17 +92,24 @@ export function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-base font-medium text-foreground/80 hover:text-secondary transition-colors py-2 min-h-[44px] flex items-center"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <div className="flex flex-col gap-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href + '/')
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`text-base font-medium py-2.5 px-3 rounded-lg min-h-[44px] flex items-center transition-colors ${
+                      isActive
+                        ? 'text-secondary bg-secondary/[8%]'
+                        : 'text-foreground/70 hover:text-secondary hover:bg-secondary/[5%]'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
               <Button 
                 className="bg-secondary hover:bg-secondary/90 text-secondary-foreground w-full mt-2 min-h-[44px]"
               >
