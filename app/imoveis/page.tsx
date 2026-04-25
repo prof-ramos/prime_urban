@@ -87,6 +87,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label="Visualização em grade"
                   onClick={() => setViewMode("grid")}
                   className={`rounded-none ${
                     viewMode === "grid" ? "bg-[var(--navy-700)] text-white" : ""
@@ -97,6 +98,7 @@ export default function PropertiesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  aria-label="Visualização em lista"
                   onClick={() => setViewMode("list")}
                   className={`rounded-none ${
                     viewMode === "list" ? "bg-[var(--navy-700)] text-white" : ""
