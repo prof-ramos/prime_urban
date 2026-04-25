@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest"
 import { filterProperties } from "@/lib/filter-properties"
+import { mockProperties } from "@/lib/mock-data"
 
 const defaultFilters = {
   search: "",
@@ -15,7 +16,7 @@ const defaultFilters = {
 describe("filterProperties", () => {
   it("returns all properties by default", () => {
     const results = filterProperties(defaultFilters)
-    expect(results).toHaveLength(12)
+    expect(results).toHaveLength(mockProperties.length)
   })
 
   it("filters by search term (title)", () => {
@@ -89,13 +90,13 @@ describe("filterProperties", () => {
   it("sorts by price descending", () => {
     const results = filterProperties(defaultFilters, "price-desc")
     const prices = results.map((p) => p.price)
-    expect(prices).toEqual([...prices].sort((a, b) => b - a))
+    expect(prices).toStrictEqual([...prices].sort((a, b) => b - a))
   })
 
   it("sorts by area descending", () => {
     const results = filterProperties(defaultFilters, "area-desc")
     const areas = results.map((p) => p.privateArea)
-    expect(areas).toEqual([...areas].sort((a, b) => b - a))
+    expect(areas).toStrictEqual([...areas].sort((a, b) => b - a))
   })
 
   it("returns empty array when no matches", () => {

@@ -43,14 +43,22 @@ export function filterProperties(
     results = results.filter((p) => p.neighborhood === neighborhood)
   }
 
-  results = results.filter((p) => p.price >= minPrice && p.price <= maxPrice)
+  if (Number.isFinite(minPrice) && Number.isFinite(maxPrice) && minPrice <= maxPrice) {
+    results = results.filter((p) => p.price >= minPrice && p.price <= maxPrice)
+  }
 
   if (bedrooms) {
-    results = results.filter((p) => p.bedrooms >= parseInt(bedrooms))
+    const minBedrooms = parseInt(bedrooms, 10)
+    if (Number.isFinite(minBedrooms)) {
+      results = results.filter((p) => p.bedrooms >= minBedrooms)
+    }
   }
 
   if (parkingSpaces) {
-    results = results.filter((p) => p.parkingSpaces >= parseInt(parkingSpaces))
+    const minParking = parseInt(parkingSpaces, 10)
+    if (Number.isFinite(minParking)) {
+      results = results.filter((p) => p.parkingSpaces >= minParking)
+    }
   }
 
   switch (sortBy) {

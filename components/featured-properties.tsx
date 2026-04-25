@@ -32,8 +32,14 @@ export function FeaturedProperties() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+          {featuredProperties.map((property, i) => (
+            <div
+              key={property.id}
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${i * 120}ms` }}
+            >
+              <PropertyCard property={property} />
+            </div>
           ))}
         </div>
       </div>

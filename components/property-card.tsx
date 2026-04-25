@@ -95,6 +95,19 @@ export function PropertyCard({ property }: PropertyCardProps) {
             {typeLabels[property.type]}
           </span>
         </div>
+
+        {/* Hover overlay — preço + CTA */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <p className="font-serif text-2xl font-bold text-secondary">
+            {formatCurrency(property.price)}
+            {property.transactionType === "aluguel" && (
+              <span className="text-sm font-normal text-white/70 ml-1">/mês</span>
+            )}
+          </p>
+          <span className="px-5 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full tracking-wide">
+            Ver imóvel
+          </span>
+        </div>
       </div>
 
       <CardContent className="p-4">

@@ -6,6 +6,7 @@ const pages = ['/', '/imoveis', '/sobre']
 for (const path of pages) {
   test(`a11y scan: ${path}`, async ({ page }) => {
     await page.goto(path)
+    await page.waitForLoadState('networkidle')
     const results = await new AxeBuilder({ page })
       // SelectTrigger do shadcn/ui não tem aria-label nem texto visível
       .exclude('[role="combobox"]')

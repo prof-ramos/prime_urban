@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.2",
+    "@google/design.md": "^0.1.1",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4.1.9",
     "@testing-library/dom": "^10.4.1",

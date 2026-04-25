@@ -101,8 +101,8 @@ export function Header() {
                     href={link.href}
                     className={`text-base font-medium py-2.5 px-3 rounded-lg min-h-[44px] flex items-center transition-colors ${
                       isActive
-                        ? 'text-secondary bg-secondary/8'
-                        : 'text-foreground/70 hover:text-secondary hover:bg-secondary/5'
+                        ? 'text-secondary bg-secondary/[8%]'
+                        : 'text-foreground/70 hover:text-secondary hover:bg-secondary/[5%]'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >

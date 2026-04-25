@@ -17,13 +17,13 @@ describe('PropertyGallery', () => {
     render(<PropertyGallery images={mockImages} title="Apartamento" />)
     const nextBtn = screen.getByLabelText('Próxima foto')
     fireEvent.click(nextBtn)
-    // Após navegar, a imagem 2 deve ser visível (ou pelo menos o botão existe)
-    expect(nextBtn).toBeInTheDocument()
+    // Após navegar, a imagem 2 deve ser visível (pode haver duplicatas mobile/desktop)
+    expect(screen.getAllByAltText('Apartamento - Foto 2').length).toBeGreaterThan(0)
   })
 
   it('renderiza sem crash quando não há imagens', () => {
     render(<PropertyGallery images={[]} title="Apartamento" />)
     // O componente usa fallback /placeholder-property.jpg
-    expect(document.querySelector('img')).toBeInTheDocument()
+    expect(screen.getByRole('img')).toBeInTheDocument()
   })
 })

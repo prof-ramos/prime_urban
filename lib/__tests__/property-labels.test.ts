@@ -19,6 +19,7 @@ describe('TYPE_LABELS', () => {
   })
 
   it('retorna undefined para tipo inexistente', () => {
+    // @ts-expect-error — chave inválida não deve existir no TYPE_LABELS
     expect(TYPE_LABELS['inexistente']).toBeUndefined()
   })
 })

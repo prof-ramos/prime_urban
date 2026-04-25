@@ -19,8 +19,9 @@ describe('ContactForm', () => {
 
   it('preenche mensagem com título do imóvel', () => {
     render(<ContactForm propertyTitle="Apartamento Teste" propertyId="1" />)
-    const textarea = screen.getByLabelText('Mensagem') as HTMLTextAreaElement
-    expect(textarea.value).toContain('Apartamento Teste')
+    const textarea = screen.getByLabelText('Mensagem')
+    expect(textarea).toBeInstanceOf(HTMLTextAreaElement)
+    expect((textarea as HTMLTextAreaElement).value).toContain('Apartamento Teste')
   })
 
   it('submete formulário e exibe estado de sucesso', async () => {
@@ -35,7 +36,7 @@ describe('ContactForm', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Mensagem enviada!')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Falar pelo WhatsApp agora/i })).toBeInTheDocument()
     })
-    expect(screen.getByRole('button', { name: /Falar pelo WhatsApp agora/i })).toBeInTheDocument()
   })
 })

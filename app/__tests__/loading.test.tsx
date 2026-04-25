@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
-import Loading from '../../app/loading'
+import Loading from '../loading'
 
 describe('Loading', () => {
   it('renderiza skeleton sem crash', () => {

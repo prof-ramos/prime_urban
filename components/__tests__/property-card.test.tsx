@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { PropertyCard } from '../property-card'
+import { PropertyCard, type Property } from '../property-card'
 
-const mockProperty = {
+const mockProperty: Property = {
   id: '1',
   slug: 'apartamento-asa-sul-sqn-308',
   title: 'Apartamento Teste',
-  type: 'apartamento' as const,
-  transactionType: 'venda' as const,
+  type: 'apartamento',
+  transactionType: 'venda',
   price: 1850000,
   condoFee: 1800,
   iptu: 650,
@@ -38,7 +38,8 @@ describe('PropertyCard', () => {
 
   it('renderiza preço formatado', () => {
     render(<PropertyCard property={mockProperty} />)
-    expect(screen.getByText('R$ 1.850.000')).toBeInTheDocument()
+    // O overlay de hover duplica o preço — verificamos que ao menos um elemento existe
+    expect(screen.getAllByText('R$ 1.850.000').length).toBeGreaterThan(0)
   })
 
   it('renderiza label do tipo', () => {

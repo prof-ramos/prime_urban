@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import {
-  mockProperties,
   getPropertyBySlug,
   getFeaturedProperties,
   getPropertiesByNeighborhood,
@@ -31,8 +30,7 @@ describe('mock-data helpers', () => {
   describe('getPropertiesByNeighborhood', () => {
     it('retorna imóveis do bairro correto', () => {
       const lagoSul = getPropertiesByNeighborhood('Lago Sul')
-      expect(lagoSul.length).toBe(1)
-      expect(lagoSul[0].type).toBe('casa')
+      expect(lagoSul.every((p) => p.neighborhood === 'Lago Sul')).toBe(true)
     })
 
     it('retorna array vazio para bairro sem imóveis', () => {

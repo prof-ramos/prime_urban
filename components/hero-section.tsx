@@ -63,7 +63,7 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
+            className="animate-fade-in-up delay-0 inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
             style={{
               background: 'rgba(182,136,99,0.12)',
               border: '1px solid rgba(182,136,99,0.30)',
@@ -76,19 +76,19 @@ export function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 text-balance">
+          <h1 className="animate-fade-in-up delay-200 font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 text-balance">
             Encontre o imóvel dos seus sonhos em{" "}
             <span className="text-secondary">Brasília</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto text-pretty">
+          <p className="animate-fade-in-up delay-300 text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto text-pretty">
             Curadoria exclusiva de apartamentos, casas e coberturas nos melhores bairros da capital federal.
           </p>
 
           {/* Search Box — glassmorphism integrado ao fundo escuro */}
           <div
-            className="rounded-2xl p-4 md:p-6 max-w-3xl mx-auto"
+            className="animate-fade-in-up delay-400 rounded-2xl p-4 md:p-6 max-w-3xl mx-auto"
             style={{
               background: 'rgba(255,255,255,0.06)',
               backdropFilter: 'blur(20px)',
@@ -151,7 +151,7 @@ export function HeroSection() {
 
           {/* Stats */}
           <div
-            className="inline-flex flex-wrap justify-center gap-0 mt-12 rounded-2xl overflow-hidden"
+            className="animate-fade-in-up delay-500 inline-flex flex-wrap justify-center gap-0 mt-12 rounded-2xl overflow-hidden"
             style={{ border: '1px solid rgba(182,136,99,0.18)' }}
           >
             {[
