@@ -8,4 +8,15 @@ test.describe('Mobile viewport', () => {
     await menuBtn.click()
     await expect(page.getByRole('button', { name: 'Fechar menu' })).toBeVisible()
   })
+
+  test('filtros da listagem funcionam no sheet mobile', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile', 'Apenas no projeto mobile')
+    await page.goto('/imoveis')
+
+    await page.getByRole('button', { name: /Filtros/ }).click()
+    await page.getByRole('combobox', { name: 'Tipo de negócio' }).click()
+    await page.getByRole('option', { name: 'Alugar' }).click()
+
+    await expect(page.getByText(/\d+\s+(imóvel|imóveis)\s+encontrado(s)?/)).toBeVisible()
+  })
 })

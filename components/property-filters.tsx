@@ -63,11 +63,9 @@ const formatCurrency = (value: number) => {
 
 export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFiltersProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [localFilters, setLocalFilters] = useState(filters)
 
   const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
-    const newFilters = { ...localFilters, [key]: value }
-    setLocalFilters(newFilters)
+    const newFilters = { ...filters, [key]: value }
     onFilterChange(newFilters)
   }
 
@@ -80,16 +78,16 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
     filters.minPrice > 0 ||
     filters.maxPrice < 10000000
 
-  const FilterContent = () => (
+  const renderFilterContent = () => (
     <div className="space-y-6">
       {/* Transaction Type */}
       <div className="space-y-2">
         <Label>Tipo de negócio</Label>
         <Select
-          value={localFilters.transactionType}
+          value={filters.transactionType}
           onValueChange={(value) => updateFilter("transactionType", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger aria-label="Tipo de negócio" className="h-12">
             <SelectValue placeholder="Comprar ou Alugar" />
           </SelectTrigger>
           <SelectContent>
@@ -103,10 +101,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       <div className="space-y-2">
         <Label>Tipo de imóvel</Label>
         <Select
-          value={localFilters.propertyType}
+          value={filters.propertyType}
           onValueChange={(value) => updateFilter("propertyType", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger aria-label="Tipo de imóvel" className="h-12">
             <SelectValue placeholder="Todos os tipos" />
           </SelectTrigger>
           <SelectContent>
@@ -123,10 +121,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       <div className="space-y-2">
         <Label>Bairro</Label>
         <Select
-          value={localFilters.neighborhood}
+          value={filters.neighborhood}
           onValueChange={(value) => updateFilter("neighborhood", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger aria-label="Bairro" className="h-12">
             <SelectValue placeholder="Todos os bairros" />
           </SelectTrigger>
           <SelectContent>
@@ -144,20 +142,19 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
         <Label>Faixa de preço</Label>
         <div className="pt-2">
           <Slider
-            value={[localFilters.minPrice, localFilters.maxPrice]}
+            value={[filters.minPrice, filters.maxPrice]}
             min={0}
             max={10000000}
             step={50000}
             onValueChange={([min, max]) => {
-              setLocalFilters({ ...localFilters, minPrice: min, maxPrice: max })
-              onFilterChange({ ...localFilters, minPrice: min, maxPrice: max })
+              onFilterChange({ ...filters, minPrice: min, maxPrice: max })
             }}
             className="[&_[role=slider]]:bg-secondary"
           />
         </div>
         <div className="flex justify-between text-sm text-muted-foreground">
-          <span>{formatCurrency(localFilters.minPrice)}</span>
-          <span>{formatCurrency(localFilters.maxPrice)}</span>
+          <span>{formatCurrency(filters.minPrice)}</span>
+          <span>{formatCurrency(filters.maxPrice)}</span>
         </div>
       </div>
 
@@ -165,10 +162,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       <div className="space-y-2">
         <Label>Quartos</Label>
         <Select
-          value={localFilters.bedrooms}
+          value={filters.bedrooms}
           onValueChange={(value) => updateFilter("bedrooms", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger aria-label="Quartos" className="h-12">
             <SelectValue placeholder="Qualquer quantidade" />
           </SelectTrigger>
           <SelectContent>
@@ -184,10 +181,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       <div className="space-y-2">
         <Label>Vagas de garagem</Label>
         <Select
-          value={localFilters.parkingSpaces}
+          value={filters.parkingSpaces}
           onValueChange={(value) => updateFilter("parkingSpaces", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger aria-label="Vagas de garagem" className="h-12">
             <SelectValue placeholder="Qualquer quantidade" />
           </SelectTrigger>
           <SelectContent>
@@ -204,16 +201,6 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
           variant="outline"
           onClick={() => {
             onReset()
-            setLocalFilters({
-              search: "",
-              transactionType: "",
-              propertyType: "",
-              neighborhood: "",
-              minPrice: 0,
-              maxPrice: 10000000,
-              bedrooms: "",
-              parkingSpaces: "",
-            })
           }}
           className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white"
         >
@@ -233,7 +220,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
           <Input
             type="text"
             placeholder="Buscar por endereço, bairro ou código..."
-            value={localFilters.search}
+            value={filters.search}
             onChange={(e) => updateFilter("search", e.target.value)}
             className="pl-10 h-12 text-base"
           />
@@ -242,10 +229,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
         {/* Desktop Filters */}
         <div className="hidden lg:flex gap-3">
           <Select
-            value={localFilters.transactionType}
+            value={filters.transactionType}
             onValueChange={(value) => updateFilter("transactionType", value)}
           >
-            <SelectTrigger className="w-[140px] h-12">
+            <SelectTrigger aria-label="Tipo de negócio" className="w-[140px] h-12">
               <SelectValue placeholder="Comprar/Alugar" />
             </SelectTrigger>
             <SelectContent>
@@ -255,10 +242,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
           </Select>
 
           <Select
-            value={localFilters.propertyType}
+            value={filters.propertyType}
             onValueChange={(value) => updateFilter("propertyType", value)}
           >
-            <SelectTrigger className="w-[160px] h-12">
+            <SelectTrigger aria-label="Tipo de imóvel" className="w-[160px] h-12">
               <SelectValue placeholder="Tipo de imóvel" />
             </SelectTrigger>
             <SelectContent>
@@ -271,10 +258,10 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
           </Select>
 
           <Select
-            value={localFilters.neighborhood}
+            value={filters.neighborhood}
             onValueChange={(value) => updateFilter("neighborhood", value)}
           >
-            <SelectTrigger className="w-[160px] h-12">
+            <SelectTrigger aria-label="Bairro" className="w-[160px] h-12">
               <SelectValue placeholder="Bairro" />
             </SelectTrigger>
             <SelectContent>
@@ -319,7 +306,7 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
               <SheetTitle>Filtrar imóveis</SheetTitle>
             </SheetHeader>
             <div className="mt-6">
-              <FilterContent />
+              {renderFilterContent()}
             </div>
           </SheetContent>
         </Sheet>

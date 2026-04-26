@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
 import { PropertyFilters, type FilterState } from "@/components/property-filters"
-import { filterProperties } from "@/lib/filter-properties"
+import { filterProperties, type SortOption } from "@/lib/filter-properties"
 import { LayoutGrid, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,7 +29,7 @@ const initialFilters: FilterState = {
 
 export default function PropertiesPage() {
   const [filters, setFilters] = useState<FilterState>(initialFilters)
-  const [sortBy, setSortBy] = useState("recent")
+  const [sortBy, setSortBy] = useState<SortOption>("recent")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   const filteredProperties = useMemo(
@@ -70,8 +70,8 @@ export default function PropertiesPage() {
 
             <div className="flex items-center gap-3">
               {/* Sort */}
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[180px]">
+              <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+                <SelectTrigger aria-label="Ordenar imóveis" className="w-[180px]">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent>

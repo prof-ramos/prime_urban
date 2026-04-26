@@ -29,6 +29,24 @@ npm run test:e2e     # Playwright E2E (requer servidor rodando)
 npm run test:e2e:ui  # Playwright com UI interativa
 ```
 
+## Payload seed
+
+Quando a integração com Payload estiver habilitada, copie `.env.example` para
+`.env.local`, preencha `PAYLOAD_SECRET`, `DATABASE_URL`,
+`PAYLOAD_ADMIN_EMAIL` e `PAYLOAD_ADMIN_PASSWORD`, e rode:
+
+```bash
+npm run payload:seed
+```
+
+Gere um `PAYLOAD_SECRET` local seguro com:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Nunca commite `.env.local` ou credenciais reais.
+
 ## Estrutura
 
 ```

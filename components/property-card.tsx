@@ -126,7 +126,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Price Section */}
         <div className="mt-3 pb-3 border-b border-border/50">
-          <p className="text-2xl font-bold text-secondary leading-none">
+          <p className="text-2xl font-bold text-secondary leading-none" data-testid="property-card-price">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
               <span className="text-sm font-normal text-muted-foreground ml-1">/mês</span>

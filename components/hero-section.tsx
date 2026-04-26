@@ -114,7 +114,7 @@ export function HeroSection() {
 
               {/* Transaction Type */}
               <Select value={transactionType} onValueChange={setTransactionType}>
-                <SelectTrigger className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
+                <SelectTrigger aria-label="Tipo de negócio" className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
                   <Home className="h-4 w-4 mr-2 text-white/40 shrink-0" />
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
@@ -126,7 +126,7 @@ export function HeroSection() {
 
               {/* Neighborhood */}
               <Select value={neighborhood} onValueChange={setNeighborhood}>
-                <SelectTrigger className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
+                <SelectTrigger aria-label="Bairro" className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
                   <MapPin className="h-4 w-4 mr-2 text-white/40 shrink-0" />
                   <SelectValue placeholder="Bairro" />
                 </SelectTrigger>

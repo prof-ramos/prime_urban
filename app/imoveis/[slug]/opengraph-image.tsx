@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import type { ImageResponseOptions } from 'next/server'
 import { getPropertyBySlug } from '@/lib/mock-data'
 import { loadOgFont } from '@/lib/og-font'
 import { getSiteUrl } from '@/lib/site-url'
@@ -27,7 +28,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         weight: 400,
       },
     ],
-  }
+  } satisfies ImageResponseOptions
 
   if (!property) {
     return new ImageResponse(

@@ -5,11 +5,9 @@ const pages = ['/', '/imoveis', '/sobre']
 
 for (const path of pages) {
   test(`a11y scan: ${path}`, async ({ page }) => {
-    await page.goto(path)
-    await page.waitForLoadState('networkidle')
+    await page.goto(path, { waitUntil: 'networkidle' })
+
     const results = await new AxeBuilder({ page })
-      // SelectTrigger do shadcn/ui não tem aria-label nem texto visível
-      .exclude('[role="combobox"]')
       // Dourado #B68863 sobre navy #1D2D3A tem contraste 4.49 (threshold: 4.5)
       // Não modificável sem alterar o design system
       .disableRules(['color-contrast'])
