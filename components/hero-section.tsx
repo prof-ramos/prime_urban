@@ -117,7 +117,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto]">
+              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
                 <HeroSelectField
                   icon={Home}
                   label="Tipo de negócio"
@@ -284,10 +284,10 @@ function HeroSelectField({
   options: FilterOption[]
 }) {
   return (
-    <div className="border-b border-navy-900/10 px-5 py-4 xl:border-b-0 xl:border-r">
-      <Label className="mb-2 flex items-center gap-2 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
+    <div className="min-w-0 border-b border-navy-900/10 px-5 py-4 xl:border-b-0 xl:border-r">
+      <Label className="mb-2 flex min-w-0 items-center gap-2 overflow-hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
         <Icon className="h-3.5 w-3.5 shrink-0" />
-        {label}
+        <span className="truncate">{label}</span>
       </Label>
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger
