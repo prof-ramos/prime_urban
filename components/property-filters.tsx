@@ -24,6 +24,7 @@ import {
   DEFAULT_FILTERS,
   DEFAULT_MAX_PRICE,
   PARKING_OPTIONS,
+  PRICE_STEP,
   PROPERTY_TYPES,
   type FilterOption,
 } from "@/lib/properties/filter-options"
@@ -265,8 +266,9 @@ function ActiveFilterSummary({
           <Button
             type="button"
             variant="link"
+            aria-expanded={isAdvancedOpen}
             aria-label={isAdvancedOpen ? "Fechar busca avançada" : "Abrir busca avançada"}
-            className="h-auto justify-start px-0 py-1 text-[var(--bronze-700)] underline-offset-4 has-[>svg]:px-0"
+            className="h-auto justify-start px-0 py-1 text-bronze-700 underline-offset-4 has-[>svg]:px-0"
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
             Busca avançada
@@ -278,7 +280,7 @@ function ActiveFilterSummary({
           </Button>
         </CollapsibleTrigger>
         {activeFilterCount > 0 && (
-          <Badge variant="outline" className="h-8 border-[var(--bronze-700)]/40 text-[var(--bronze-700)]">
+          <Badge variant="outline" className="h-8 border-bronze-700/40 text-bronze-700">
             {activeFilterCount} filtros ativos
           </Badge>
         )}
@@ -310,7 +312,7 @@ function AdvancedPropertyFilters({
 }) {
   return (
     <CollapsibleContent>
-      <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg bg-[var(--navy-900)]/5 p-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg bg-navy-900/5 p-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="xl:col-span-2 self-end">
           <Label id="price-range-label">Faixa de preço</Label>
           <PriceSlider
@@ -355,7 +357,7 @@ function AdvancedPropertyFilters({
 function PriceSlider({
   min,
   max,
-  step = 100_000,
+  step = PRICE_STEP,
   value,
   onChange,
 }: {

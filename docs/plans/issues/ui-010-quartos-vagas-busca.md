@@ -9,3 +9,5 @@ Filtros decisivos para imóveis de alto padrão devem estar na busca rápida.
 
 ## Arquivos Prováveis
 - `components/property-filters.tsx`
+- `components/hero-section.tsx`
+- `lib/search-params.ts`

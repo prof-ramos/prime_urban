@@ -12,4 +12,4 @@ Texto "Encontre o imóvel dos seus sonhos" tem a parte superior cortada. Aumenta
 - `app/globals.css` (se necessário ajustar tokens)
 
 ## Notas
-Verificar se o header fixed está causando overlap com o hero.
+Verificar se o header sticky está causando overlap com o hero.

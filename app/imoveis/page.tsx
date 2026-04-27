@@ -55,7 +55,7 @@ function PropertiesPageContent() {
       <Header />
       <main className="flex-1 bg-background">
         {/* Page Header */}
-        <div className="bg-[var(--navy-900)] py-12 md:py-16">
+        <div className="bg-navy-900 py-12 md:py-16">
           <div className="container mx-auto px-4">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-white mb-2 text-balance">
               Imóveis em Brasília
@@ -111,7 +111,7 @@ function PropertiesPageContent() {
                   aria-label="Visualização em grade"
                   onClick={() => setViewMode("grid")}
                   className={`rounded-none ${
-                    viewMode === "grid" ? "bg-[var(--navy-700)] text-white" : ""
+                    viewMode === "grid" ? "bg-navy-700 text-white" : ""
                   }`}
                 >
                   <LayoutGrid className="h-4 w-4" />
@@ -122,7 +122,7 @@ function PropertiesPageContent() {
                   aria-label="Visualização em lista"
                   onClick={() => setViewMode("list")}
                   className={`rounded-none ${
-                    viewMode === "list" ? "bg-[var(--navy-700)] text-white" : ""
+                    viewMode === "list" ? "bg-navy-700 text-white" : ""
                   }`}
                 >
                   <List className="h-4 w-4" />
@@ -156,7 +156,7 @@ function PropertiesPageContent() {
               <Button
                 variant="outline"
                 onClick={() => setFilters(DEFAULT_FILTERS)}
-                className="border-[var(--navy-700)] text-[var(--navy-700)]"
+                className="border-navy-700 text-navy-700"
               >
                 Limpar filtros
               </Button>

@@ -75,7 +75,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             {property.transactionType === "venda" ? "Venda" : "Aluguel"}
           </Badge>
           {property.featured && (
-            <Badge className="bg-[var(--bronze-800)] text-white">
+            <Badge className="bg-bronze-800 text-white">
               Destaque
             </Badge>
           )}
@@ -83,7 +83,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Favorite Button */}
         <button 
-          className="absolute top-3 right-3 p-2 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center z-20"
+          className="absolute top-3 right-3 p-2 rounded-full bg-black/40 hover:bg-black/60 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center z-20"
           aria-label="Adicionar aos favoritos"
         >
           <Heart className="h-5 w-5 text-white/80 hover:text-white" />
@@ -91,13 +91,13 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Type Label */}
         <div className="absolute bottom-3 left-3">
-          <span className="px-3 py-1 bg-card/90 backdrop-blur text-sm font-medium text-foreground rounded-full">
+          <span className="px-3 py-1 bg-card/90 text-sm font-medium text-foreground rounded-full">
             {typeLabels[property.type]}
           </span>
         </div>
 
         {/* Hover overlay  preço + CTA */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <p className="font-serif text-2xl font-bold text-secondary">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
@@ -106,7 +106,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </p>
           <Link 
             href={`/imoveis/${property.slug}`}
-            className="px-5 py-2 bg-secondary text-[var(--navy-950)] text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
+            className="px-5 py-2 bg-secondary text-navy-950 text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
           >
             Ver detalhes
           </Link>
@@ -120,36 +120,36 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
       <CardContent className="p-4">
         {/* Location */}
-        <div className="flex items-center gap-1 text-[var(--navy-700)] text-sm mb-2">
+        <div className="flex items-center gap-1 text-navy-700 text-sm mb-2">
           <MapPin className="h-4 w-4 flex-shrink-0" />
           <span className="truncate">{property.neighborhood} - Brasília</span>
         </div>
 
         {/* Title */}
         <Link href={`/imoveis/${property.slug}`}>
-          <h3 className="font-semibold text-[var(--navy-950)] line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]">
+          <h3 className="font-semibold text-navy-950 line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]">
             {property.title}
           </h3>
         </Link>
 
         {/* Price Section */}
         <div className="mt-3 pb-3 border-b border-border/50">
-          <p className="text-2xl font-bold text-[var(--bronze-800)] leading-none">
+          <p className="text-2xl font-bold text-bronze-800 leading-none">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
-              <span className="text-sm font-normal text-[var(--navy-700)] ml-1">/mês</span>
+              <span className="text-sm font-normal text-navy-700 ml-1">/mês</span>
             )}
           </p>
           {monthlyCost > 0 && (
-            <p className="text-sm font-medium text-[var(--navy-700)] mt-2 flex items-center gap-1">
-              <span className="text-xs font-normal text-[var(--navy-700)]">+{formatCurrency(monthlyCost)}/mês</span>
-              <span className="text-[10px] text-[var(--navy-700)]">(cond. + IPTU)</span>
+            <p className="text-sm font-medium text-navy-700 mt-2 flex items-center gap-1">
+              <span className="text-xs font-normal text-navy-700">+{formatCurrency(monthlyCost)}/mês</span>
+              <span className="text-[10px] text-navy-700">(cond. + IPTU)</span>
             </p>
           )}
         </div>
 
         {/* Features */}
-        <div className="flex items-center gap-4 mt-3 text-sm text-[var(--navy-700)]">
+        <div className="flex items-center gap-4 mt-3 text-sm text-navy-700">
           <div className="flex items-center gap-1.5">
             <Maximize2 className="h-3.5 w-3.5 text-secondary shrink-0" />
             <span>{property.privateArea} m²</span>

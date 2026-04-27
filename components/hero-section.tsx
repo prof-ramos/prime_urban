@@ -69,7 +69,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
 
   return (
     <section
-      className="relative flex min-h-[400px] items-center justify-center overflow-hidden bg-[var(--navy-900)] bg-cover bg-center md:min-h-[600px] lg:min-h-[86vh]"
+      className="relative flex min-h-[400px] items-center justify-center overflow-hidden bg-navy-900 bg-cover bg-center md:min-h-[600px] lg:min-h-[86vh]"
       style={{ backgroundImage: "url('/images/hero-prime-urban.png')" }}
     >
       <div
@@ -103,21 +103,21 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
 
           <div className="animate-fade-in-up delay-400 mx-auto max-w-5xl">
             <div className="rounded-[2rem] border border-secondary/25 bg-[var(--background)] p-3 text-left shadow-[0_26px_80px_rgba(0,0,0,0.38)] md:p-4">
-              <div className="mb-3 flex flex-col gap-2 px-2 text-[var(--navy-900)] sm:flex-row sm:items-end sm:justify-between">
+              <div className="mb-3 flex flex-col gap-2 px-2 text-navy-900 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--navy-950)]">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-navy-950">
                     Busca personalizada
                   </p>
                   <p className="mt-1 font-serif text-xl font-bold">
                     Diga o perfil do imóvel, nós refinamos o caminho.
                   </p>
                 </div>
-                <p className="max-w-xs text-xs leading-relaxed text-[var(--navy-700)]">
+                <p className="max-w-xs text-xs leading-relaxed text-navy-700">
                   Filtros essenciais na frente. Detalhes finos ficam a um toque.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-[var(--navy-900)]/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.8fr_auto]">
+              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.8fr_auto]">
                 <HeroSelectField
                   icon={Home}
                   label="Tipo de negócio"
@@ -170,10 +170,10 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                   options={PARKING_OPTIONS}
                 />
 
-                <div className="flex items-stretch border-t border-[var(--navy-900)]/10 bg-[var(--navy-900)] p-2 md:col-span-2 xl:col-span-1 xl:border-l xl:border-t-0">
+                <div className="flex items-stretch border-t border-navy-900/10 bg-navy-900 p-2 md:col-span-2 xl:col-span-1 xl:border-l xl:border-t-0">
                   <Button
                     onClick={handleSearch}
-                      className="h-16 w-full rounded-2xl bg-secondary px-8 text-base font-bold text-[var(--navy-950)] shadow-[0_12px_24px_rgba(182,136,99,0.26)] hover:bg-secondary/90 xl:w-48"
+                      className="h-16 w-full rounded-2xl bg-secondary px-8 text-base font-bold text-navy-950 shadow-[0_12px_24px_rgba(182,136,99,0.26)] hover:bg-secondary/90 xl:w-48"
                   >
                     <Search className="mr-2 h-4 w-4" />
                     Buscar Imóveis
@@ -187,8 +187,9 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                     <Button
                       type="button"
                       variant="link"
+                      aria-expanded={isAdvancedOpen}
                       aria-label={isAdvancedOpen ? "Fechar busca avançada" : "Abrir busca avançada"}
-                      className="h-auto min-h-[44px] min-w-[44px] justify-start px-2 py-1 text-sm font-semibold text-[var(--navy-950)] underline-offset-4 hover:text-[var(--navy-900)]"
+                      className="h-auto min-h-[44px] min-w-[44px] justify-start px-2 py-1 text-sm font-semibold text-navy-950 underline-offset-4 hover:text-navy-900"
                     >
                       <SlidersHorizontal className="mr-2 h-4 w-4" />
                       Busca avançada
@@ -199,7 +200,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                       />
                     </Button>
                   </CollapsibleTrigger>
-                  <p className="px-2 text-xs text-[var(--navy-700)]">
+                  <p className="px-2 text-xs text-navy-700">
                     Código, palavra-chave e faixa de preço.
                   </p>
                 </div>
@@ -283,15 +284,15 @@ function HeroSelectField({
   options: FilterOption[]
 }) {
   return (
-    <div className="border-b border-[var(--navy-900)]/10 px-5 py-4 xl:border-b-0 xl:border-r">
-      <Label className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--navy-950)]">
+    <div className="border-b border-navy-900/10 px-5 py-4 xl:border-b-0 xl:border-r">
+      <Label className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
         <Icon className="h-3.5 w-3.5" />
         {label}
       </Label>
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger
           aria-label={label}
-          className="min-h-[44px] border-none bg-transparent p-0 font-serif text-lg text-[var(--navy-950)] shadow-none focus:ring-0 data-[placeholder]:text-[var(--navy-950)] [&>svg]:text-[var(--navy-950)] [&_span]:text-[var(--navy-950)]"
+          className="min-h-[44px] border-none bg-transparent p-0 font-serif text-lg text-navy-950 shadow-none focus:ring-0 data-[placeholder]:text-navy-950 [&>svg]:text-navy-950 [&_span]:text-navy-950"
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -333,7 +334,7 @@ function AdvancedInput({
     <div className={className}>
       <Label
         htmlFor={inputId}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--navy-700)]/70"
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.18em] text-navy-700/70"
       >
         {label}
       </Label>
@@ -344,7 +345,7 @@ function AdvancedInput({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-11 border-[var(--navy-900)]/10 bg-white text-[var(--navy-900)] placeholder:text-[var(--navy-700)]/35"
+        className="h-11 border-navy-900/10 bg-white text-navy-900 placeholder:text-navy-700/35"
       />
     </div>
   )

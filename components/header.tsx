@@ -19,7 +19,7 @@ export function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95">
       {/* Top Bar */}
       <div className="hidden md:block bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 py-2 flex justify-end items-center text-sm">

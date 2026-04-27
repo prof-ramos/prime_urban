@@ -6,6 +6,7 @@ export type FilterOption = {
 }
 
 export const DEFAULT_MAX_PRICE = 10000000
+export const PRICE_STEP = 100_000
 
 export const DEFAULT_FILTERS: FilterState = {
   search: "",

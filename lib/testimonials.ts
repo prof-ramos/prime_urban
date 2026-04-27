@@ -1,12 +1,4 @@
-export type Testimonial = {
-  name: string
-  role: string
-  neighborhood: string
-  quote: string
-  imageUrl: string
-}
-
-export const testimonials: Testimonial[] = [
+export const testimonials = [
   {
     name: "Mariana e Felipe Costa",
     role: "Compradores",

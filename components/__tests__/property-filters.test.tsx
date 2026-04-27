@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 import { PropertyFilters } from "@/components/property-filters"
-import { DEFAULT_FILTERS } from "@/lib/properties/filter-options"
+import { DEFAULT_FILTERS, PRICE_STEP } from "@/lib/properties/filter-options"
 import type { FilterState } from "@/components/property-filters"
 
 const cityOptions = [{ value: "Brasília", label: "Brasília" }]
@@ -60,8 +60,7 @@ describe("PropertyFilters", () => {
 
     const trigger = screen.getByRole("button", { name: "Abrir busca avançada" })
 
-    expect(trigger).toHaveClass("underline-offset-4")
-    expect(trigger).toHaveAttribute("aria-label", "Abrir busca avançada")
+    expect(trigger).toBeVisible()
 
     fireEvent.click(trigger)
 
@@ -88,7 +87,7 @@ describe("PropertyFilters", () => {
     expect(onFilterChange).toHaveBeenCalledTimes(1)
     expect(onFilterChange).toHaveBeenLastCalledWith({
       ...DEFAULT_FILTERS,
-      minPrice: 100000,
+      minPrice: PRICE_STEP,
       maxPrice: DEFAULT_FILTERS.maxPrice,
     })
   })

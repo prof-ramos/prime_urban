@@ -8,7 +8,7 @@ export function WhatsAppCTA() {
   const whatsappUrl = buildWhatsAppUrl()
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden bg-[var(--navy-900)]">
+    <section className="relative py-16 md:py-24 overflow-hidden bg-navy-900">
       {/* Gradient mesh atmosférico */}
       <div className="absolute inset-0 pointer-events-none" style={{
         background: `
@@ -61,7 +61,7 @@ export function WhatsAppCTA() {
           <Button
             asChild
             size="lg"
-            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-[var(--navy-950)] text-base font-semibold px-8 py-6 h-auto min-h-[56px] shadow-lg hover:shadow-[0_0_32px_rgba(37,211,102,0.35)] transition-shadow duration-300"
+            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-navy-950 text-base font-semibold px-8 py-6 h-auto min-h-[56px] shadow-lg hover:shadow-[0_0_32px_rgba(37,211,102,0.35)] transition-shadow duration-300"
           >
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-5 w-5" />
