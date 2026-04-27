@@ -1,13 +1,43 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bed, Car, Maximize2, MapPin, Heart } from "lucide-react"
+import { Bed, Bath, Car, Maximize2, MapPin, Heart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { formatCurrency } from "@/lib/format"
-import type { Property } from "@/lib/properties/types"
+
+export interface Property {
+  id: string
+  slug: string
+  title: string
+  type: "apartamento" | "casa" | "cobertura" | "sala_comercial"
+  transactionType: "venda" | "aluguel"
+  price: number
+  condoFee?: number
+  iptu?: number
+  neighborhood: string
+  address: string
+  privateArea: number
+  totalArea?: number
+  bedrooms: number
+  suites?: number
+  bathrooms: number
+  parkingSpaces: number
+  images: string[]
+  featured?: boolean
+  acceptsPets?: boolean
+  solarOrientation?: string
+}
 
 interface PropertyCardProps {
   property: Property
+}
+
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)
 }
 
 const typeLabels: Record<string, string> = {
@@ -34,12 +64,12 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
         
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+        <div className="absolute top-3 left-3 flex flex-wrap gap-2 z-20">
           <Badge 
             className={`${
               property.transactionType === "venda" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-accent text-accent-foreground"
+                ? "bg-[hsl(148,60%,40%)] text-white" 
+                : "bg-[hsl(210,70%,45%)] text-white"
             }`}
           >
             {property.transactionType === "venda" ? "Venda" : "Aluguel"}
@@ -53,10 +83,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Favorite Button */}
         <button 
-          className="absolute top-3 right-3 p-2 rounded-full bg-card/90 hover:bg-card transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="absolute top-3 right-3 p-2 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center z-20"
           aria-label="Adicionar aos favoritos"
         >
-          <Heart className="h-5 w-5 text-primary" />
+          <Heart className="h-5 w-5 text-white/80 hover:text-white" />
         </button>
 
         {/* Type Label */}
@@ -66,17 +96,25 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </span>
         </div>
 
-        {/* Hover overlay — preço + CTA */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Hover overlay  preço + CTA */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-primary/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <p className="font-serif text-2xl font-bold text-secondary">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
               <span className="text-sm font-normal text-white/70 ml-1">/mês</span>
             )}
           </p>
-          <span className="px-5 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full tracking-wide">
-            Ver imóvel
-          </span>
+          <Link 
+            href={`/imoveis/${property.slug}`}
+            className="px-5 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
+          >
+            Ver detalhes
+          </Link>
+          {property.transactionType === "venda" && (
+            <span className="px-4 py-1.5 border border-white/30 text-white/80 text-xs font-medium rounded-full">
+              Agendar visita
+            </span>
+          )}
         </div>
       </div>
 
@@ -84,7 +122,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         {/* Location */}
         <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2">
           <MapPin className="h-4 w-4 flex-shrink-0" />
-          <span className="truncate">{property.neighborhood} - {property.city}</span>
+          <span className="truncate">{property.neighborhood} - Brasília</span>
         </div>
 
         {/* Title */}
@@ -103,8 +141,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
             )}
           </p>
           {monthlyCost > 0 && (
-            <p className="text-xs text-muted-foreground mt-1">
-              + {formatCurrency(monthlyCost)}/mês (cond. + IPTU)
+            <p className="text-sm font-medium text-foreground/80 mt-2 flex items-center gap-1">
+              <span className="text-xs font-normal text-muted-foreground">+{formatCurrency(monthlyCost)}/mês</span>
+              <span className="text-[10px] text-muted-foreground/70">(cond. + IPTU)</span>
             </p>
           )}
         </div>

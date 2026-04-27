@@ -38,19 +38,18 @@ export function NeighborhoodsSection() {
               className="group relative overflow-hidden rounded-xl p-5 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
               style={{
                 background: cardGradients[i % cardGradients.length],
-                backgroundColor: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                backgroundColor: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.12)',
               }}
             >
-              {/* Hover fill */}
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: 'rgba(182,136,99,0.08)' }}
+                style={{ background: 'rgba(182,136,99,0.12)' }}
               />
 
               <div className="relative z-10">
-                <h3 className="font-semibold text-base mb-1 leading-tight">{neighborhood.name}</h3>
-                <p className="text-xs text-white/45 mb-4 leading-relaxed line-clamp-2">
+                <h3 className="font-semibold text-base mb-1 leading-tight text-white/95">{neighborhood.name}</h3>
+                <p className="text-xs text-white/70 mb-4 leading-relaxed line-clamp-2">
                   {neighborhood.description}
                 </p>
                 <div className="flex items-center justify-between">

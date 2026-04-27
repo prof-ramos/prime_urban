@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
-import { Menu, X, Phone, MapPin } from "lucide-react"
+import { Menu, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { siteConfig } from "@/lib/site-config"
 
@@ -22,18 +22,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       {/* Top Bar */}
       <div className="hidden md:block bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-2 flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              {siteConfig.defaultRegion}
-            </span>
-            <span className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              {siteConfig.contact.phone.display}
-            </span>
-          </div>
-          <span className="text-secondary">Curadoria Imobiliária de Alto Padrão</span>
+        <div className="container mx-auto px-4 py-2 flex justify-end items-center text-sm">
+          <a 
+            href="tel:+5561999999999"
+            className="flex items-center gap-2 text-primary-foreground/70 hover:text-secondary transition-colors"
+          >
+            <Phone className="h-3.5 w-3.5" />
+            <span className="text-xs">{siteConfig.contact.phone.display}</span>
+          </a>
         </div>
       </div>
 
@@ -43,7 +39,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2">
             <div className="flex flex-col">
               <span className="font-serif text-xl md:text-2xl font-bold text-primary">
-                {siteConfig.name}
+                PrimeUrban
               </span>
               <span className="text-[10px] md:text-xs text-secondary tracking-widest uppercase">
                 {siteConfig.defaultCity}

@@ -1,6 +1,5 @@
 import Link from "next/link"
-import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react"
-import { siteConfig } from "@/lib/site-config"
+import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Award } from "lucide-react"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -8,23 +7,27 @@ export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {/* Brand */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          {/* Brand + CRECI */}
           <div className="space-y-4">
             <div className="flex flex-col">
               <span className="font-serif text-2xl font-bold text-primary-foreground">
-                {siteConfig.name}
+                PrimeUrban
               </span>
               <span className="text-xs text-secondary tracking-widest uppercase">
-                {siteConfig.defaultCity}
+                Brasília
               </span>
             </div>
             <p className="text-sm text-primary-foreground/70 leading-relaxed">
-              {siteConfig.description}
-            </p>
-            <div className="flex gap-4">
+              Curadoria exclusiva de imóveis de alto padrão em Brasília. Encontre seu próximo lar com quem entende do mercado local.
+            </p>            
+            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/10 border border-secondary/20">
+              <Award className="h-4 w-4 text-secondary" />
+              <span className="text-xs font-medium text-secondary">CRECI-DF 00000-J</span>
+            </div>            
+            <div className="flex gap-3 pt-2">
               <a 
-                href={siteConfig.social.instagram}
+                href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -33,7 +36,7 @@ export function Footer() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a 
-                href={siteConfig.social.facebook}
+                href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -42,7 +45,7 @@ export function Footer() {
                 <Facebook className="h-5 w-5" />
               </a>
               <a 
-                href={siteConfig.social.linkedin}
+                href="https://linkedin.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -53,73 +56,57 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links  todos os links */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-secondary">Links Rápidos</h4>
-            <nav className="flex flex-col gap-3">
-              <Link href="/imoveis" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+            <h4 className="font-semibold text-secondary">Navegação</h4>
+            <nav className="flex flex-col gap-2">
+              <Link href="/imoveis" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
                 Todos os Imóveis
               </Link>
-              <Link href="/imoveis?tipo=venda" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+              <Link href="/imoveis?tipo=venda" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
                 Imóveis à Venda
               </Link>
-              <Link href="/imoveis?tipo=aluguel" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+              <Link href="/imoveis?tipo=aluguel" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
                 Imóveis para Alugar
               </Link>
-              <Link href="/bairros" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+              <Link href="/bairros" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
                 Bairros de Brasília
               </Link>
-            </nav>
-          </div>
-
-          {/* Neighborhoods */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-secondary">Bairros</h4>
-            <nav className="flex flex-col gap-3">
-              <Link href="/bairros/plano-piloto" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Plano Piloto
+              <Link href="/sobre" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
+                Sobre Nós
               </Link>
-              <Link href="/bairros/lago-sul" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Lago Sul
-              </Link>
-              <Link href="/bairros/aguas-claras" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Águas Claras
-              </Link>
-              <Link href="/bairros/sudoeste-octogonal" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Sudoeste/Octogonal
-              </Link>
-              <Link href="/bairros/taguatinga" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Taguatinga
+              <Link href="/contato" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
+                Contato
               </Link>
             </nav>
           </div>
 
-          {/* Contact */}
+          {/* Contact  completo */}
           <div className="space-y-4">
             <h4 className="font-semibold text-secondary">Contato</h4>
             <div className="flex flex-col gap-3">
               <a 
-                href={siteConfig.contact.mapsUrl}
+                href="https://maps.google.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
-                <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                <span>{siteConfig.contact.address}</span>
+                <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5 text-secondary/70" />
+                <span>SHIS QI 9, Bloco A, Sala 101<br />Lago Sul, Brasília - DF</span>
               </a>
               <a 
-                href={siteConfig.contact.phone.href}
+                href="tel:+5561999999999"
                 className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
-                <Phone className="h-5 w-5 flex-shrink-0" />
-                <span>{siteConfig.contact.phone.display}</span>
+                <Phone className="h-5 w-5 flex-shrink-0 text-secondary/70" />
+                <span>(61) 99999-9999</span>
               </a>
               <a 
-                href={`mailto:${siteConfig.contact.email}`}
+                href="mailto:contato@primeurban.com.br"
                 className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
-                <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>{siteConfig.contact.email}</span>
+                <Mail className="h-5 w-5 flex-shrink-0 text-secondary/70" />
+                <span>contato@primeurban.com.br</span>
               </a>
             </div>
           </div>
@@ -128,8 +115,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/50">
-            <p>&copy; {currentYear} {siteConfig.legalName}. Todos os direitos reservados.</p>
-            <p>CRECI-DF 00000-J</p>
+            <p>&copy; {currentYear} PrimeUrban Brasília. Todos os direitos reservados.</p>
           </div>
         </div>
       </div>
