@@ -1,11 +1,14 @@
 # UI-001: Remover overlay "Compiling..." em dev
 
+## Status
+**COMPLETED — merged to main**
+
 ## Descrição
 Overlay "Compiling..." aparece no canto inferior esquerdo durante desenvolvimento. Verificar se é componente de dev-only e garantir que não vaze para produção.
 
 ## Critério de Aceite
-- [ ] Overlay não aparece em produção
-- [ ] Build de dev continua funcionando sem erros
+- [x] Overlay não aparece em produção
+- [x] Build de dev continua funcionando sem erros
 
 ## Arquivos Prováveis
 - `app/layout.tsx`
