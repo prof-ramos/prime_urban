@@ -41,7 +41,7 @@ export function WhatsAppCTA() {
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-4 text-balance">
             Fale com um especialista agora
           </h2>
-          <p className="text-lg text-white/55 mb-8 max-w-2xl mx-auto text-pretty">
+          <p className="text-lg text-white/[82%] mb-8 max-w-2xl mx-auto text-pretty">
             Nossa equipe está pronta para ajudá-lo a encontrar o imóvel perfeito. Atendimento personalizado via WhatsApp.
           </p>
 
@@ -51,7 +51,7 @@ export function WhatsAppCTA() {
               { icon: Clock,        label: 'Seg-Sáb 8h-20h' },
               { icon: Phone,        label: 'Sem compromisso' },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 text-white/65">
+              <div key={label} className="flex items-center gap-2 text-white/[82%]">
                 <Icon className="h-5 w-5 text-[var(--whatsapp)]" />
                 <span className="text-sm font-medium">{label}</span>
               </div>
@@ -61,7 +61,7 @@ export function WhatsAppCTA() {
           <Button
             asChild
             size="lg"
-            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-white text-base font-semibold px-8 py-6 h-auto min-h-[56px] shadow-lg hover:shadow-[0_0_32px_rgba(37,211,102,0.35)] transition-shadow duration-300"
+            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-[var(--navy-950)] text-base font-semibold px-8 py-6 h-auto min-h-[56px] shadow-lg hover:shadow-[0_0_32px_rgba(37,211,102,0.35)] transition-shadow duration-300"
           >
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-5 w-5" />

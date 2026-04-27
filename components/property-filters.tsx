@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import * as SliderPrimitive from "@radix-ui/react-slider"
 import { ChevronDown, Search, SlidersHorizontal, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
 import {
   Select,
   SelectContent,
@@ -20,12 +20,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  BEDROOM_OPTIONS,
   DEFAULT_FILTERS,
   DEFAULT_MAX_PRICE,
+  PARKING_OPTIONS,
   PROPERTY_TYPES,
   type FilterOption,
 } from "@/lib/properties/filter-options"
 import type { FilterState } from "@/lib/properties/types"
+export type { FilterState }
 
 interface PropertyFiltersProps {
   filters: FilterState
@@ -60,6 +63,10 @@ export function PropertyFilters({
 
   const updateFilter: UpdateFilter = (key, value) => {
     onFilterChange({ ...filters, [key]: value })
+  }
+
+  const updateFilters = (updatedFilters: Partial<FilterState>) => {
+    onFilterChange({ ...filters, ...updatedFilters })
   }
 
   const resetFilters = () => {
@@ -109,7 +116,11 @@ export function PropertyFilters({
           onReset={resetFilters}
         />
 
-        <AdvancedPropertyFilters filters={filters} onUpdate={updateFilter} />
+        <AdvancedPropertyFilters
+          filters={filters}
+          onUpdate={updateFilter}
+          onUpdateMany={updateFilters}
+        />
       </Collapsible>
     </div>
   )
@@ -127,14 +138,14 @@ function PrimaryPropertyFilters({
   neighborhoodOptions: FilterOption[]
 }) {
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
       <div className="space-y-2">
         <Label htmlFor="transaction-type">Tipo de negócio</Label>
         <Select
           value={filters.transactionType}
           onValueChange={(value) => onUpdate("transactionType", value)}
         >
-          <SelectTrigger id="transaction-type" className="h-12">
+          <SelectTrigger id="transaction-type" aria-label="Tipo de negócio" className="h-12">
             <SelectValue placeholder="Comprar ou alugar" />
           </SelectTrigger>
           <SelectContent>
@@ -150,7 +161,7 @@ function PrimaryPropertyFilters({
           value={filters.propertyType}
           onValueChange={(value) => onUpdate("propertyType", value)}
         >
-          <SelectTrigger id="property-type" className="h-12">
+          <SelectTrigger id="property-type" aria-label="Tipo de imóvel" className="h-12">
             <SelectValue placeholder="Todos os tipos" />
           </SelectTrigger>
           <SelectContent>
@@ -166,7 +177,7 @@ function PrimaryPropertyFilters({
       <div className="space-y-2">
         <Label htmlFor="city">Cidade</Label>
         <Select value={filters.city} onValueChange={(value) => onUpdate("city", value)}>
-          <SelectTrigger id="city" className="h-12">
+          <SelectTrigger id="city" aria-label="Cidade" className="h-12">
             <SelectValue placeholder="Todas as cidades" />
           </SelectTrigger>
           <SelectContent>
@@ -185,13 +196,48 @@ function PrimaryPropertyFilters({
           value={filters.neighborhood}
           onValueChange={(value) => onUpdate("neighborhood", value)}
         >
-          <SelectTrigger id="neighborhood" className="h-12">
+          <SelectTrigger id="neighborhood" aria-label="Bairro" className="h-12">
             <SelectValue placeholder="Todos os bairros" />
           </SelectTrigger>
           <SelectContent>
             {neighborhoodOptions.map((neighborhood) => (
               <SelectItem key={neighborhood.value} value={neighborhood.value}>
                 {neighborhood.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="bedrooms">Min. quartos</Label>
+        <Select value={filters.bedrooms} onValueChange={(value) => onUpdate("bedrooms", value)}>
+          <SelectTrigger id="bedrooms" aria-label="Min. quartos" className="h-12">
+            <SelectValue placeholder="Qualquer" />
+          </SelectTrigger>
+          <SelectContent>
+            {BEDROOM_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="parking-spaces">Min. vagas</Label>
+        <Select
+          value={filters.parkingSpaces}
+          onValueChange={(value) => onUpdate("parkingSpaces", value)}
+        >
+          <SelectTrigger id="parking-spaces" aria-label="Min. vagas" className="h-12">
+            <SelectValue placeholder="Qualquer" />
+          </SelectTrigger>
+          <SelectContent>
+            {PARKING_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -218,8 +264,9 @@ function ActiveFilterSummary({
         <CollapsibleTrigger asChild>
           <Button
             type="button"
-            variant="outline"
-            className="h-10 border-secondary text-secondary"
+            variant="link"
+            aria-label={isAdvancedOpen ? "Fechar busca avançada" : "Abrir busca avançada"}
+            className="h-auto justify-start px-0 py-1 text-[var(--bronze-700)] underline-offset-4 has-[>svg]:px-0"
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
             Busca avançada
@@ -231,7 +278,7 @@ function ActiveFilterSummary({
           </Button>
         </CollapsibleTrigger>
         {activeFilterCount > 0 && (
-          <Badge variant="outline" className="h-8 border-secondary/40 text-secondary">
+          <Badge variant="outline" className="h-8 border-[var(--bronze-700)]/40 text-[var(--bronze-700)]">
             {activeFilterCount} filtros ativos
           </Badge>
         )}
@@ -255,37 +302,23 @@ function ActiveFilterSummary({
 function AdvancedPropertyFilters({
   filters,
   onUpdate,
+  onUpdateMany,
 }: {
   filters: FilterState
   onUpdate: UpdateFilter
+  onUpdateMany: (updatedFilters: Partial<FilterState>) => void
 }) {
   return (
     <CollapsibleContent>
-      <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg bg-[var(--navy-900)]/5 p-4 md:grid-cols-2 xl:grid-cols-5">
-        <div className="space-y-2">
-          <Label htmlFor="bedrooms">Min. quartos</Label>
-          <Select value={filters.bedrooms} onValueChange={(value) => onUpdate("bedrooms", value)}>
-            <SelectTrigger id="bedrooms" className="h-12 bg-background">
-              <SelectValue placeholder="Qualquer" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1+ quarto</SelectItem>
-              <SelectItem value="2">2+ quartos</SelectItem>
-              <SelectItem value="3">3+ quartos</SelectItem>
-              <SelectItem value="4">4+ quartos</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
+      <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg bg-[var(--navy-900)]/5 p-4 md:grid-cols-2 xl:grid-cols-4">
         <div className="xl:col-span-2 self-end">
-          <Label>Faixa de preço</Label>
+          <Label id="price-range-label">Faixa de preço</Label>
           <PriceSlider
             min={DEFAULT_FILTERS.minPrice}
             max={DEFAULT_MAX_PRICE}
             value={[filters.minPrice, filters.maxPrice]}
             onChange={([min, max]) => {
-              onUpdate("minPrice", min)
-              onUpdate("maxPrice", max)
+              onUpdateMany({ minPrice: min, maxPrice: max })
             }}
           />
         </div>
@@ -341,15 +374,38 @@ function PriceSlider({
         <span>{displayMin}</span>
         <span>{displayMax}</span>
       </div>
-      <Slider
+      <SliderPrimitive.Root
+        data-slot="slider"
         defaultValue={[min, max]}
         value={value}
         min={min}
         max={max}
         step={step}
         onValueChange={(v) => onChange(v as [number, number])}
-        className="w-full"
-      />
+        aria-labelledby="price-range-label"
+        className="relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50"
+      >
+        <SliderPrimitive.Track
+          data-slot="slider-track"
+          className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted"
+        >
+          <SliderPrimitive.Range data-slot="slider-range" className="absolute h-full bg-primary" />
+        </SliderPrimitive.Track>
+        <SliderPrimitive.Thumb
+          data-slot="slider-thumb"
+          aria-label="Preço mínimo"
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+        >
+          <span className="block size-4 rounded-full border border-primary bg-white shadow-sm" />
+        </SliderPrimitive.Thumb>
+        <SliderPrimitive.Thumb
+          data-slot="slider-thumb"
+          aria-label="Preço máximo"
+          className="flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+        >
+          <span className="block size-4 rounded-full border border-primary bg-white shadow-sm" />
+        </SliderPrimitive.Thumb>
+      </SliderPrimitive.Root>
     </div>
   )
 }

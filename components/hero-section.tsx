@@ -1,9 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import { Search, MapPin, Home, ArrowRight, Building2, MapIcon, ThumbsUp } from "lucide-react"
+import { useRouter } from "next/navigation"
+import {
+  BedDouble,
+  Building2,
+  Car,
+  ChevronDown,
+  Home,
+  MapIcon,
+  MapPin,
+  Search,
+  SlidersHorizontal,
+  ThumbsUp,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -11,171 +29,323 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  BEDROOM_OPTIONS,
+  DEFAULT_FILTERS,
+  DEFAULT_MAX_PRICE,
+  PARKING_OPTIONS,
+  PROPERTY_TYPES,
+  type FilterOption,
+} from "@/lib/properties/filter-options"
+import { toPropertySearchParams } from "@/lib/properties/search-params"
+import type { FilterState } from "@/lib/properties/types"
 
-const neighborhoods = [
-  "Asa Sul",
-  "Asa Norte",
-  "Águas Claras",
-  "Sudoeste",
-  "Noroeste",
-  "Lago Sul",
-  "Lago Norte",
-  "Park Sul",
-  "Guará",
-]
+interface HeroSectionProps {
+  cityOptions: FilterOption[]
+  neighborhoodOptions: FilterOption[]
+}
 
-export function HeroSection() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [transactionType, setTransactionType] = useState<string>("")
-  const [neighborhood, setNeighborhood] = useState<string>("")
+const parseCurrencyInput = (value: string, fallback: number) => {
+  const digits = value.replace(/\D/g, "")
+  if (!digits) return fallback
+  const parsed = Number(digits)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionProps) {
+  const router = useRouter()
+  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS)
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+
+  const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
+    setFilters((currentFilters) => ({ ...currentFilters, [key]: value }))
+  }
 
   const handleSearch = () => {
-    const params = new URLSearchParams()
-    if (searchQuery) params.set("q", searchQuery)
-    if (transactionType) params.set("tipo", transactionType)
-    if (neighborhood) params.set("bairro", neighborhood)
-    window.location.href = `/imoveis?${params.toString()}`
+    const params = toPropertySearchParams(filters)
+    const queryString = params.toString()
+    router.push(queryString ? `/imoveis?${queryString}` : "/imoveis")
   }
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center bg-[var(--navy-900)] overflow-hidden">
-      {/* Gradient mesh de fundo */}
-      <div className="absolute inset-0" style={{
-        background: `
-          radial-gradient(ellipse 80% 60% at 10% 20%, rgba(182,136,99,0.18) 0%, transparent 60%),
-          radial-gradient(ellipse 60% 80% at 90% 80%, rgba(68,111,145,0.22) 0%, transparent 55%),
-          radial-gradient(ellipse 100% 50% at 50% 110%, rgba(182,136,99,0.10) 0%, transparent 50%)
-        `
-      }} />
+    <section
+      className="relative flex min-h-[400px] items-center justify-center overflow-hidden bg-[var(--navy-900)] bg-cover bg-center md:min-h-[600px] lg:min-h-[86vh]"
+      style={{ backgroundImage: "url('/images/hero-prime-urban.png')" }}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            linear-gradient(180deg, rgba(12,25,36,0.72) 0%, rgba(12,25,36,0.56) 46%, rgba(12,25,36,0.82) 100%),
+            radial-gradient(ellipse 95% 82% at 50% 42%, rgba(12,25,36,0.10) 0%, rgba(12,25,36,0.76) 100%),
+            linear-gradient(90deg, rgba(12,25,36,0.80) 0%, rgba(12,25,36,0.24) 48%, rgba(12,25,36,0.80) 100%)
+          `,
+        }}
+      />
 
-      {/* Dot pattern sutil */}
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle, rgba(182,136,99,0.06) 1px, transparent 1px)`,
-        backgroundSize: '48px 48px'
-      }} />
-
-      {/* Vinheta nas bordas */}
-      <div className="absolute inset-0" style={{
-        background: `radial-gradient(ellipse 120% 100% at 50% 50%, transparent 40%, rgba(15,29,40,0.7) 100%)`
-      }} />
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div
-            className="animate-fade-in-up delay-0 inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
-            style={{
-              background: 'rgba(182,136,99,0.12)',
-              border: '1px solid rgba(182,136,99,0.30)',
-            }}
-          >
+      <div className="container relative z-10 mx-auto px-4 py-16">
+        <div className="mx-auto max-w-5xl text-center">
+          <div className="animate-fade-in-up delay-0 mb-6 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/10 px-4 py-1.5">
             <MapPin className="h-3.5 w-3.5 text-secondary" />
-            <span className="text-xs font-medium text-secondary tracking-widest uppercase">
+            <span className="text-xs font-medium uppercase tracking-[0.22em] text-secondary">
               Especialistas em Brasília, DF
             </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="animate-fade-in-up delay-200 font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 text-balance">
-            Imóveis selecionados em{" "}
-            <span className="text-secondary">Brasília</span>
-            {" "}com atendimento exclusivo
+          <h1 className="animate-fade-in-up delay-200 mx-auto mb-6 max-w-4xl text-balance font-serif text-4xl font-bold leading-tight text-primary-foreground md:text-5xl lg:text-6xl">
+            Encontre o imóvel dos seus sonhos em{" "}
+            <span className="italic text-secondary">Brasília</span>
           </h1>
 
-          {/* Subheadline */}
-          <p className="animate-fade-in-up delay-300 text-lg md:text-xl text-primary-foreground/70 mb-10 max-w-2xl mx-auto text-pretty">
-            Há mais de 10 anos conectando famílias aos melhores apartamentos, casas e coberturas da capital federal.
+          <p className="animate-fade-in-up delay-300 mx-auto mb-10 max-w-2xl text-pretty text-lg leading-relaxed text-primary-foreground/[68%] md:text-xl">
+            Curadoria precisa, bairros desejados e atendimento humano para quem quer comprar ou alugar sem ruído.
           </p>
 
-          {/* Search Box — glassmorphism integrado ao fundo escuro */}
-          <div
-            className="animate-fade-in-up delay-400 rounded-2xl p-4 md:p-6 max-w-3xl mx-auto"
-            style={{
-              background: 'rgba(255,255,255,0.06)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(182,136,99,0.20)',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
-            }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-              {/* Search Input */}
-              <div className="md:col-span-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
-                  <Input
-                    type="text"
-                    placeholder="Endereço, bairro ou código"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 text-base text-white placeholder:text-white/35 bg-white/8 border-white/15 focus:border-secondary focus:bg-white/10"
-                  />
+          <div className="animate-fade-in-up delay-400 mx-auto max-w-5xl">
+            <div className="rounded-[2rem] border border-secondary/25 bg-[var(--background)] p-3 text-left shadow-[0_26px_80px_rgba(0,0,0,0.38)] md:p-4">
+              <div className="mb-3 flex flex-col gap-2 px-2 text-[var(--navy-900)] sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--navy-950)]">
+                    Busca personalizada
+                  </p>
+                  <p className="mt-1 font-serif text-xl font-bold">
+                    Diga o perfil do imóvel, nós refinamos o caminho.
+                  </p>
+                </div>
+                <p className="max-w-xs text-xs leading-relaxed text-[var(--navy-700)]">
+                  Filtros essenciais na frente. Detalhes finos ficam a um toque.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-[var(--navy-900)]/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.8fr_auto]">
+                <HeroSelectField
+                  icon={Home}
+                  label="Tipo de negócio"
+                  value={filters.transactionType}
+                  placeholder="Comprar ou alugar"
+                  onValueChange={(value) => updateFilter("transactionType", value)}
+                  options={[
+                    { value: "venda", label: "Comprar" },
+                    { value: "aluguel", label: "Alugar" },
+                  ]}
+                />
+                <HeroSelectField
+                  icon={Building2}
+                  label="Tipo de imóvel"
+                  value={filters.propertyType}
+                  placeholder="Todos os tipos"
+                  onValueChange={(value) => updateFilter("propertyType", value)}
+                  options={PROPERTY_TYPES}
+                />
+                <HeroSelectField
+                  icon={MapPin}
+                  label="Cidade"
+                  value={filters.city}
+                  placeholder="Todas as cidades"
+                  onValueChange={(value) => updateFilter("city", value)}
+                  options={cityOptions}
+                />
+                <HeroSelectField
+                  icon={MapIcon}
+                  label="Bairro"
+                  value={filters.neighborhood}
+                  placeholder="Todos os bairros"
+                  onValueChange={(value) => updateFilter("neighborhood", value)}
+                  options={neighborhoodOptions}
+                />
+                <HeroSelectField
+                  icon={BedDouble}
+                  label="Min. quartos"
+                  value={filters.bedrooms}
+                  placeholder="Qualquer"
+                  onValueChange={(value) => updateFilter("bedrooms", value)}
+                  options={BEDROOM_OPTIONS}
+                />
+                <HeroSelectField
+                  icon={Car}
+                  label="Min. vagas"
+                  value={filters.parkingSpaces}
+                  placeholder="Qualquer"
+                  onValueChange={(value) => updateFilter("parkingSpaces", value)}
+                  options={PARKING_OPTIONS}
+                />
+
+                <div className="flex items-stretch border-t border-[var(--navy-900)]/10 bg-[var(--navy-900)] p-2 md:col-span-2 xl:col-span-1 xl:border-l xl:border-t-0">
+                  <Button
+                    onClick={handleSearch}
+                      className="h-16 w-full rounded-2xl bg-secondary px-8 text-base font-bold text-[var(--navy-950)] shadow-[0_12px_24px_rgba(182,136,99,0.26)] hover:bg-secondary/90 xl:w-48"
+                  >
+                    <Search className="mr-2 h-4 w-4" />
+                    Buscar Imóveis
+                  </Button>
                 </div>
               </div>
 
-              {/* Transaction Type */}
-              <Select value={transactionType} onValueChange={setTransactionType}>
-                <SelectTrigger className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
-                  <Home className="h-4 w-4 mr-2 text-white/40 shrink-0" />
-                  <SelectValue placeholder="Tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="venda">Comprar</SelectItem>
-                  <SelectItem value="aluguel">Alugar</SelectItem>
-                </SelectContent>
-              </Select>
+              <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
+                <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="link"
+                      aria-label={isAdvancedOpen ? "Fechar busca avançada" : "Abrir busca avançada"}
+                      className="h-auto min-h-[44px] min-w-[44px] justify-start px-2 py-1 text-sm font-semibold text-[var(--navy-950)] underline-offset-4 hover:text-[var(--navy-900)]"
+                    >
+                      <SlidersHorizontal className="mr-2 h-4 w-4" />
+                      Busca avançada
+                      <ChevronDown
+                        className={`ml-1 h-4 w-4 transition-transform ${
+                          isAdvancedOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <p className="px-2 text-xs text-[var(--navy-700)]">
+                    Código, palavra-chave e faixa de preço.
+                  </p>
+                </div>
 
-              {/* Neighborhood */}
-              <Select value={neighborhood} onValueChange={setNeighborhood}>
-                <SelectTrigger className="h-12 text-white border-white/15 bg-white/8 focus:border-secondary [&>span]:text-white/60 data-[placeholder]:text-white/35">
-                  <MapPin className="h-4 w-4 mr-2 text-white/40 shrink-0" />
-                  <SelectValue placeholder="Bairro" />
-                </SelectTrigger>
-                <SelectContent>
-                  {neighborhoods.map((n) => (
-                    <SelectItem key={n} value={n.toLowerCase().replace(/ /g, "-")}>
-                      {n}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <CollapsibleContent>
+                  <div className="mt-3 grid grid-cols-1 gap-3 rounded-[1.25rem] border border-secondary/20 bg-secondary/[0.07] p-3 md:grid-cols-2 xl:grid-cols-5">
+                    <AdvancedInput
+                      label="Palavra-chave"
+                      placeholder="Endereço, bairro, código"
+                      value={filters.search}
+                      onChange={(value) => updateFilter("search", value)}
+                      className="xl:col-span-2"
+                    />
+                    <AdvancedInput
+                      label="Código do imóvel"
+                      placeholder="PU-0002"
+                      value={filters.code}
+                      onChange={(value) => updateFilter("code", value)}
+                    />
+                    <AdvancedInput
+                      label="Min. preço"
+                      placeholder="R$ 0"
+                      value={filters.minPrice > 0 ? filters.minPrice.toLocaleString("pt-BR") : ""}
+                      onChange={(value) => updateFilter("minPrice", parseCurrencyInput(value, 0))}
+                      inputMode="numeric"
+                    />
+                    <AdvancedInput
+                      label="Max. preço"
+                      placeholder="Sem limite"
+                      value={
+                        filters.maxPrice < DEFAULT_MAX_PRICE
+                          ? filters.maxPrice.toLocaleString("pt-BR")
+                          : ""
+                      }
+                      onChange={(value) =>
+                        updateFilter("maxPrice", parseCurrencyInput(value, DEFAULT_MAX_PRICE))
+                      }
+                      inputMode="numeric"
+                    />
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
-
-            <Button
-              onClick={handleSearch}
-              className="w-full mt-3 h-12 bg-secondary hover:bg-secondary/90 text-secondary-foreground text-base font-semibold tracking-wide"
-            >
-              <Search className="mr-2 h-4 w-4" />
-              Buscar Imóveis
-            </Button>
           </div>
 
-          {/* Stats */}
-          <div
-            className="animate-fade-in-up delay-500 inline-flex flex-wrap justify-center gap-0 mt-12 rounded-2xl overflow-hidden"
-            style={{ border: '1px solid rgba(182,136,99,0.18)' }}
-          >
+          <div className="animate-fade-in-up delay-500 mt-12 inline-flex flex-wrap justify-center overflow-hidden rounded-2xl border border-secondary/20">
             {[
-              { value: '500+', label: 'Imóveis disponíveis', icon: Building2 },
-              { value: '15',   label: 'Bairros atendidos', icon: MapIcon },
-              { value: '98%',  label: 'Clientes satisfeitos', icon: ThumbsUp },
-            ].map((stat, i) => (
+              { value: "500+", label: "Imóveis disponíveis", icon: Building2 },
+              { value: "15", label: "Bairros atendidos", icon: MapIcon },
+              { value: "98%", label: "Clientes satisfeitos", icon: ThumbsUp },
+            ].map((stat, index) => (
               <div
                 key={stat.label}
-                className="flex flex-col items-center px-8 py-4"
-                style={{
-                  borderLeft: i > 0 ? '1px solid rgba(182,136,99,0.18)' : undefined,
-                  background: 'rgba(255,255,255,0.03)',
-                }}
+                className={`flex min-w-36 flex-col items-center bg-white/[0.035] px-7 py-4${index > 0 ? " border-l border-secondary/[18%]" : ""}`}
               >
-                <stat.icon className="h-5 w-5 text-secondary/70 mb-1" />
+                <stat.icon className="mb-1 h-5 w-5 text-secondary/70" />
                 <p className="font-serif text-3xl font-bold text-secondary">{stat.value}</p>
-                <p className="text-xs text-white/50 mt-0.5 whitespace-nowrap">{stat.label}</p>
+                <p className="mt-0.5 whitespace-nowrap text-xs text-white/50">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function HeroSelectField({
+  icon: Icon,
+  label,
+  value,
+  placeholder,
+  onValueChange,
+  options,
+}: {
+  icon: typeof Home
+  label: string
+  value: string
+  placeholder: string
+  onValueChange: (value: string) => void
+  options: FilterOption[]
+}) {
+  return (
+    <div className="border-b border-[var(--navy-900)]/10 px-5 py-4 xl:border-b-0 xl:border-r">
+      <Label className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--navy-950)]">
+        <Icon className="h-3.5 w-3.5" />
+        {label}
+      </Label>
+      <Select value={value} onValueChange={onValueChange}>
+        <SelectTrigger
+          aria-label={label}
+          className="min-h-[44px] border-none bg-transparent p-0 font-serif text-lg text-[var(--navy-950)] shadow-none focus:ring-0 data-[placeholder]:text-[var(--navy-950)] [&>svg]:text-[var(--navy-950)] [&_span]:text-[var(--navy-950)]"
+        >
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  )
+}
+
+function AdvancedInput({
+  label,
+  placeholder,
+  value,
+  onChange,
+  inputMode,
+  className,
+}: {
+  label: string
+  placeholder: string
+  value: string
+  onChange: (value: string) => void
+  inputMode?: "numeric"
+  className?: string
+}) {
+  const inputId = `hero-advanced-${label
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`
+
+  return (
+    <div className={className}>
+      <Label
+        htmlFor={inputId}
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--navy-700)]/70"
+      >
+        {label}
+      </Label>
+      <Input
+        id={inputId}
+        aria-label={label}
+        inputMode={inputMode}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="h-11 border-[var(--navy-900)]/10 bg-white text-[var(--navy-900)] placeholder:text-[var(--navy-700)]/35"
+      />
+    </div>
   )
 }

@@ -67,15 +67,15 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className="absolute top-3 left-3 flex flex-wrap gap-2 z-20">
           <Badge 
             className={`${
-              property.transactionType === "venda" 
-                ? "bg-[hsl(148,60%,40%)] text-white" 
-                : "bg-[hsl(210,70%,45%)] text-white"
+              property.transactionType === "venda"
+                ? "bg-[var(--badge-venda)] text-white"
+                : "bg-[var(--badge-aluguel)] text-white"
             }`}
           >
             {property.transactionType === "venda" ? "Venda" : "Aluguel"}
           </Badge>
           {property.featured && (
-            <Badge className="bg-secondary text-secondary-foreground">
+            <Badge className="bg-[var(--bronze-800)] text-white">
               Destaque
             </Badge>
           )}
@@ -106,7 +106,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </p>
           <Link 
             href={`/imoveis/${property.slug}`}
-            className="px-5 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
+            className="px-5 py-2 bg-secondary text-[var(--navy-950)] text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
           >
             Ver detalhes
           </Link>
@@ -120,36 +120,36 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
       <CardContent className="p-4">
         {/* Location */}
-        <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2">
+        <div className="flex items-center gap-1 text-[var(--navy-700)] text-sm mb-2">
           <MapPin className="h-4 w-4 flex-shrink-0" />
           <span className="truncate">{property.neighborhood} - Brasília</span>
         </div>
 
         {/* Title */}
         <Link href={`/imoveis/${property.slug}`}>
-          <h3 className="font-semibold text-foreground line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]">
+          <h3 className="font-semibold text-[var(--navy-950)] line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]">
             {property.title}
           </h3>
         </Link>
 
         {/* Price Section */}
         <div className="mt-3 pb-3 border-b border-border/50">
-          <p className="text-2xl font-bold text-secondary leading-none">
+          <p className="text-2xl font-bold text-[var(--bronze-800)] leading-none">
             {formatCurrency(property.price)}
             {property.transactionType === "aluguel" && (
-              <span className="text-sm font-normal text-muted-foreground ml-1">/mês</span>
+              <span className="text-sm font-normal text-[var(--navy-700)] ml-1">/mês</span>
             )}
           </p>
           {monthlyCost > 0 && (
-            <p className="text-sm font-medium text-foreground/80 mt-2 flex items-center gap-1">
-              <span className="text-xs font-normal text-muted-foreground">+{formatCurrency(monthlyCost)}/mês</span>
-              <span className="text-[10px] text-muted-foreground/70">(cond. + IPTU)</span>
+            <p className="text-sm font-medium text-[var(--navy-700)] mt-2 flex items-center gap-1">
+              <span className="text-xs font-normal text-[var(--navy-700)]">+{formatCurrency(monthlyCost)}/mês</span>
+              <span className="text-[10px] text-[var(--navy-700)]">(cond. + IPTU)</span>
             </p>
           )}
         </div>
 
         {/* Features */}
-        <div className="flex items-center gap-4 mt-3 text-sm text-foreground/70">
+        <div className="flex items-center gap-4 mt-3 text-sm text-[var(--navy-700)]">
           <div className="flex items-center gap-1.5">
             <Maximize2 className="h-3.5 w-3.5 text-secondary shrink-0" />
             <span>{property.privateArea} m²</span>
