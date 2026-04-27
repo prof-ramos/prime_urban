@@ -9,9 +9,8 @@ import {
   getNeighborhoodBySlugFromPayload,
   getPropertiesByNeighborhoodFromPayload,
 } from "@/lib/payload/neighborhoods"
-import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 
-export const revalidate = REVALIDATE_TIMES.NEIGHBORHOODS
+export const revalidate = 300
 
 type Props = { params: Promise<{ slug: string }> }
 

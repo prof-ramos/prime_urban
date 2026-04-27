@@ -69,7 +69,7 @@
   --navy-800: #1A2D3A;
   --navy-900: #0F1D28;
   --navy-950: #0A1620;
-  --bronze-300: #D8B997;
+  --bronze-300: #B88655;
   --bronze-700: #8A5A36;
   --bronze-800: #704625;
 
@@ -77,8 +77,8 @@
   --badge-venda: #14532d;
   --badge-aluguel: #1e3a8a;
 
-  /* Texto sobre fundo escuro (substitui rgba hardcoded) */
-  --color-on-dark: rgb(255 255 255 / 0.82);
+  /* Texto sobre fundo escuro (substitui rgba hardcoded) - Aumentado para melhor contraste (WCAG) */
+  --color-on-dark: rgb(255 255 255 / 0.95);
 }
 
 .dark {
@@ -171,7 +171,7 @@
   --color-navy-950: #0A1620;
 
   /* Bronze scale */
-  --color-bronze-300: #D8B997;
+  --color-bronze-300: #B88655;
   --color-bronze-700: #8A5A36;
   --color-bronze-800: #704625;
 }

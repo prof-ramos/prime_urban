@@ -44,7 +44,7 @@ export default function SobrePage() {
         {/* Hero */}
         <section className="bg-primary py-16 md:py-24">
           <div className="container mx-auto px-4 text-center max-w-3xl">
-            <span className="text-sm font-medium text-secondary uppercase tracking-wider">
+            <span className="text-sm font-medium text-primary-foreground/90 uppercase tracking-wider">
               Quem somos
             </span>
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary-foreground mt-2 mb-6 text-balance">

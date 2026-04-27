@@ -105,7 +105,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Title */}
         <Link href={`/imoveis/${property.slug}`}>
-          <h3 className="font-semibold text-navy-950 line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]">
+          <h3
+            data-testid="property-card-title"
+            className="font-semibold text-navy-950 line-clamp-2 hover:text-secondary transition-colors min-h-[3rem]"
+          >
             {property.title}
           </h3>
         </Link>

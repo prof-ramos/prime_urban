@@ -1,7 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { afterEach, describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ContactForm } from '../contact-form'
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 describe('ContactForm', () => {
   it('renderiza formulário com campos obrigatórios', () => {
@@ -25,6 +29,14 @@ describe('ContactForm', () => {
   })
 
   it('submete formulário e exibe estado de sucesso', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ ok: true }),
+      }),
+    )
+
     const user = userEvent.setup()
     render(<ContactForm propertyTitle="Apartamento Teste" propertyId="1" />)
 
@@ -38,5 +50,26 @@ describe('ContactForm', () => {
       expect(screen.getByText('Mensagem enviada!')).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /Falar pelo WhatsApp agora/i })).toBeInTheDocument()
     })
+  })
+
+  it('exibe erro quando a API rejeita o envio', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 422,
+        json: async () => ({ message: 'Dados inválidos.' }),
+      }),
+    )
+
+    const user = userEvent.setup()
+    render(<ContactForm propertyTitle="Apartamento Teste" propertyId="1" />)
+
+    await user.type(screen.getByLabelText('Nome completo'), 'João Silva')
+    await user.type(screen.getByLabelText('E-mail'), 'joao@teste.com')
+    await user.type(screen.getByLabelText('Telefone'), '61988888888')
+    await user.click(screen.getByRole('button', { name: /Enviar mensagem/i }))
+
+    await expect(screen.findByRole('alert')).resolves.toHaveTextContent('Dados inválidos.')
   })
 })

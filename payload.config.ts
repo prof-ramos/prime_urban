@@ -4,6 +4,7 @@ import { buildConfig } from 'payload'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { pt } from '@payloadcms/translations/languages/pt'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
+import sharp from 'sharp'
 
 import { Media } from './collections/Media'
 import { Neighborhoods } from './collections/Neighborhoods'
@@ -23,6 +24,7 @@ function getPayloadSecret() {
 
 export default buildConfig({
   secret: getPayloadSecret(),
+  sharp,
   i18n: {
     fallbackLanguage: 'pt',
     supportedLanguages: { pt },

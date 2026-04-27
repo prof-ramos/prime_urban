@@ -29,12 +29,14 @@ npx playwright test e2e/imoveis.spec.ts --project=chromium  # projeto específic
 ## Stack
 
 - **Next.js 16** com App Router e React 19
+- **Payload CMS 3** — admin em `/admin`, REST API em `/api`, Local API em Server Components
 - **Tailwind CSS v4** (via `@tailwindcss/postcss`) + `tw-animate-css`
 - **shadcn/ui** — componentes em `components/ui/`, configurados em `components.json`
-- **TypeScript** com `ignoreBuildErrors: true` no `next.config.mjs`
+- **TypeScript** com build/typecheck obrigatório
 - **Vitest** + Testing Library para testes unitários e de componentes (`lib/__tests__/`, `components/__tests__/`, `app/__tests__/`)
 - **Playwright** para E2E (`e2e/`) — dois projetos: `chromium` (desktop) e `mobile` (iPhone 13)
-- Sem banco de dados, sem autenticação
+- **Banco local/dev:** SQLite via Payload (`DATABASE_URL=file:./payload.db`). Produção deve usar PostgreSQL conforme `docs/production-readiness.md`.
+- **Auth:** Payload Users para o admin.
 
 ## Arquitetura
 
@@ -55,17 +57,22 @@ OG images dinâmicas via Satori: `app/opengraph-image.tsx` e `app/imoveis/[slug]
 
 ### Dados
 
-Toda a base de imóveis está em **`lib/mock-data.ts`** — um array estático `mockProperties`. Não há API nem banco.
+Runtime público: Payload CMS via Local API em Server Components.
+`lib/mock-data.ts` é usado como fonte de seed local, não como fonte pública principal.
 
-- O tipo `Property` é definido e exportado por **`components/property-card.tsx`** (não em `lib/`).
-- Funções de acesso: `getFeaturedProperties()` e `getPropertyBySlug(slug)`.
-- Para adicionar imóveis: inserir objetos no array `mockProperties` seguindo a interface `Property`.
+- O tipo público `Property` é definido e exportado por **`lib/properties/types.ts`**.
+- Funções de acesso runtime: `lib/payload/properties.ts` e `lib/payload/neighborhoods.ts`.
+- Para seed local: atualize `lib/mock-data.ts` e rode `npm run payload:seed`.
+- Para produção: siga `docs/production-readiness.md` para PostgreSQL, mídia persistente e variáveis de ambiente.
 
 ### Utilitários (`lib/`)
 
 | Arquivo | Exporta | Uso |
 |---------|---------|-----|
-| `mock-data.ts` | `mockProperties`, `getFeaturedProperties()`, `getPropertyBySlug()`, `getPropertiesByNeighborhood()`, `mockNeighborhoods`, `getNeighborhoodBySlug()` | Fonte de dados estática |
+| `payload/properties.ts` | `getAllPublishedProperties()`, `getPropertyBySlugFromPayload()`, `getFeaturedPropertiesFromPayload()` | Consultas Payload de imóveis |
+| `payload/neighborhoods.ts` | `getActiveNeighborhoods()`, `getNeighborhoodBySlugFromPayload()`, `getPropertiesByNeighborhoodFromPayload()` | Consultas Payload de bairros |
+| `payload/adapters.ts` | `adaptProperty()`, `adaptNeighborhood()`, `isPubliclyListable()` | Adapta docs Payload para tipos públicos |
+| `mock-data.ts` | `mockProperties`, `mockNeighborhoods` | Fonte de seed local |
 | `filter-properties.ts` | `filterProperties(filters, sortBy)`, `SortOption` | Filtro e ordenação client-side da listagem |
 | `format.ts` | `formatCurrency(value)` | Formata número como `R$ 1.850.000` (instância `Intl` em nível de módulo) |
 | `property-labels.ts` | `TYPE_LABELS` | Mapa `tipo → label` em português |
@@ -75,7 +82,7 @@ Toda a base de imóveis está em **`lib/mock-data.ts`** — um array estático `
 
 ### Componentes de negócio
 
-- `components/property-card.tsx` — card usado na listagem e em destaques; define o tipo `Property`
+- `components/property-card.tsx` — card usado na listagem e em destaques
 - `components/property-filters.tsx` — filtros com tipo `FilterState` exportado
 - `components/property-gallery.tsx` — galeria de imagens no detalhe
 - `components/property-info.tsx` — ficha técnica no detalhe

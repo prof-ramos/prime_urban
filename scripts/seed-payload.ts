@@ -2,7 +2,68 @@ import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env.local' })
 
 import type { BasePayload } from 'payload'
+import type { Neighborhood, Property, User } from '../payload-types'
 import { mockNeighborhoods, mockProperties } from '../lib/mock-data'
+
+type CollectionSeedData = {
+  users: Pick<User, 'email' | 'name' | 'roles'> & { password: string }
+  neighborhoods: Pick<Neighborhood, 'name' | 'slug' | 'description' | 'legacyCount'> &
+    Partial<Pick<Neighborhood, 'featured' | 'active'>>
+  properties: Pick<
+    Property,
+    | 'legacyId'
+    | 'slug'
+    | 'title'
+    | 'type'
+    | 'transactionType'
+    | 'statusEditorial'
+    | 'statusComercial'
+    | 'price'
+    | 'neighborhood'
+    | 'address'
+    | 'privateArea'
+    | 'bedrooms'
+    | 'bathrooms'
+    | 'parkingSpaces'
+    | 'images'
+  > &
+    Partial<
+      Pick<
+        Property,
+        | 'condoFee'
+        | 'iptu'
+        | 'totalArea'
+        | 'suites'
+        | 'featured'
+        | 'acceptsPets'
+        | 'solarOrientation'
+        | '_status'
+      >
+    >
+}
+
+type UpsertInput =
+  | {
+      payload: BasePayload
+      collection: 'users'
+      field: string
+      value: string
+      data: CollectionSeedData['users']
+    }
+  | {
+      payload: BasePayload
+      collection: 'neighborhoods'
+      field: string
+      value: string
+      data: CollectionSeedData['neighborhoods']
+    }
+  | {
+      payload: BasePayload
+      collection: 'properties'
+      field: string
+      value: string
+      data: CollectionSeedData['properties']
+    }
 
 async function upsertByField({
   payload,
@@ -10,13 +71,7 @@ async function upsertByField({
   field,
   value,
   data,
-}: {
-  payload: BasePayload
-  collection: 'users' | 'neighborhoods' | 'properties'
-  field: string
-  value: string
-  data: Record<string, unknown>
-}) {
+}: UpsertInput) {
   const existing = await payload.find({
     collection,
     where: {
@@ -26,9 +81,43 @@ async function upsertByField({
   })
 
   if (existing.docs[0]) {
+    if (collection === 'users') {
+      return payload.update({
+        collection,
+        id: existing.docs[0].id,
+        data,
+        overrideAccess: true,
+      })
+    }
+
+    if (collection === 'neighborhoods') {
+      return payload.update({
+        collection,
+        id: existing.docs[0].id,
+        data,
+        overrideAccess: true,
+      })
+    }
+
     return payload.update({
       collection,
       id: existing.docs[0].id,
+      data,
+      overrideAccess: true,
+    })
+  }
+
+  if (collection === 'users') {
+    return payload.create({
+      collection,
+      data,
+      overrideAccess: true,
+    })
+  }
+
+  if (collection === 'neighborhoods') {
+    return payload.create({
+      collection,
       data,
       overrideAccess: true,
     })
@@ -38,6 +127,7 @@ async function upsertByField({
     collection,
     data,
     overrideAccess: true,
+    draft: true,
   })
 }
 
@@ -153,7 +243,7 @@ async function verifySeedIntegrity(payload: BasePayload) {
 
 async function main() {
   const { getPayload } = await import('payload')
-  const { default: config } = await import('../payload.config.ts')
+  const { default: config } = await import('../payload.config')
 
   console.log('Seeding Payload...')
   const payload = await getPayload({ config })

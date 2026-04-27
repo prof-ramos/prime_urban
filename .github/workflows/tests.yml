@@ -10,6 +10,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  PAYLOAD_SECRET: test-payload-secret-for-ci-only
+  DATABASE_URL: file:./payload.db
+  NEXT_PUBLIC_SITE_URL: http://localhost:3001
+
 jobs:
   unit:
     runs-on: ubuntu-latest

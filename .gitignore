@@ -22,6 +22,21 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local agent/tooling
+.claude/agents/
+.claude/scripts/
+.claude/skills/
+.claude/commands/all-tools.md
+.claude/commands/code-review.md
+.claude/commands/containerize-application.md
+.claude/commands/create-prd.md
+.claude/commands/workflow-orchestrator.md
+
+# payload local data
+payload.db
+payload.db-*
+media/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

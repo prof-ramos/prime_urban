@@ -4,9 +4,8 @@ import { ArrowRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { getActiveNeighborhoods } from "@/lib/payload/neighborhoods"
-import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 
-export const revalidate = REVALIDATE_TIMES.NEIGHBORHOODS
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: "Bairros de Brasília | PrimeUrban",
