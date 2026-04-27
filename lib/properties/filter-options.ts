@@ -27,6 +27,20 @@ export const PROPERTY_TYPES: Array<{ value: PropertyType; label: string }> = [
   { value: "sala_comercial", label: "Sala Comercial" },
 ]
 
+export const BEDROOM_OPTIONS: FilterOption[] = [
+  { value: "1", label: "1+ quarto" },
+  { value: "2", label: "2+ quartos" },
+  { value: "3", label: "3+ quartos" },
+  { value: "4", label: "4+ quartos" },
+]
+
+export const PARKING_OPTIONS: FilterOption[] = [
+  { value: "1", label: "1+ vaga" },
+  { value: "2", label: "2+ vagas" },
+  { value: "3", label: "3+ vagas" },
+  { value: "4", label: "4+ vagas" },
+]
+
 export function getCities(properties: Property[]): FilterOption[] {
   return toOptions(properties.map((property) => property.city))
 }
