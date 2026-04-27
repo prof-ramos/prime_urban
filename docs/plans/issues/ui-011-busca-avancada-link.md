@@ -10,5 +10,6 @@
 - [ ] Estado expandido é acessível via teclado (aria-expanded propagado)
 
 ## Arquivos Prováveis
+
 - `components/property-filters.tsx`
 - `components/hero-section.tsx`

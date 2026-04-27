@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { NeighborhoodMap } from "@/components/neighborhood-map"
+import { mockNeighborhoods } from "@/lib/mock-data"
 
-const BAIRROS_MOCK = [
-  { slug: "plano-piloto", name: "Plano Piloto", href: "/imoveis?bairro=Plano%20Piloto" },
-  { slug: "lago-sul", name: "Lago Sul", href: "/imoveis?bairro=Lago%20Sul" },
-  { slug: "aguas-claras", name: "Águas Claras", href: "/imoveis?bairro=%C3%81guas%20Claras" },
-]
+const BAIRROS_MOCK = ["plano-piloto", "lago-sul", "aguas-claras"].map((slug) => {
+  const n = mockNeighborhoods.find((x) => x.slug === slug)!
+  return { slug, name: n.name, href: `/imoveis?bairro=${encodeURIComponent(n.name)}` }
+})
 
 describe("NeighborhoodMap", () => {
   it("renderiza pins clicaveis para busca de imoveis por bairro", () => {

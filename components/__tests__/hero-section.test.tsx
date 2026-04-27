@@ -29,13 +29,8 @@ describe("HeroSection", () => {
 
     fireEvent.click(trigger)
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Fechar busca avançada" })).toHaveAttribute(
-        "aria-label",
-        "Fechar busca avançada",
-      )
-      expect(screen.getByRole("textbox", { name: "Palavra-chave" })).toBeInTheDocument()
-      expect(screen.getByRole("textbox", { name: "Código do imóvel" })).toBeInTheDocument()
-    })
+    expect(await screen.findByRole("button", { name: "Fechar busca avançada" })).toBeVisible()
+    expect(screen.getByRole("textbox", { name: "Palavra-chave" })).toBeInTheDocument()
+    expect(screen.getByRole("textbox", { name: "Código do imóvel" })).toBeInTheDocument()
   })
 })

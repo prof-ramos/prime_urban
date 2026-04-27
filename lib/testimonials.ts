@@ -1,4 +1,6 @@
-export const testimonials = [
+import type { Testimonial } from "@/components/testimonials-section"
+
+export const testimonials: Testimonial[] = [
   {
     name: "Mariana e Felipe Costa",
     role: "Compradores",

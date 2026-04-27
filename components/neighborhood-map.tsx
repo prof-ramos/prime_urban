@@ -33,7 +33,7 @@ export function NeighborhoodMap() {
 
   if (mappedNeighborhoods.length === 0) {
     return (
-      <div className="mt-8 rounded-lg border border-white/[12%] bg-white/[0.06] p-8 text-center text-white/70">
+      <div className="mt-8 rounded-lg border border-white/[12%] bg-white/[6%] p-8 text-center text-white/70">
         Nenhum bairro disponível no momento.
       </div>
     )

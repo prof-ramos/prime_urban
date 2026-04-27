@@ -13,7 +13,7 @@ vi.mock("next/image", () => ({
 const TESTIMONIALS_COUNT = testimonials.length
 
 describe("TestimonialsSection", () => {
-  it("renderiza tres depoimentos com fotos e textos", () => {
+  it("renderiza todos os depoimentos definidos em testimonials com fotos e textos", () => {
     render(<TestimonialsSection />)
 
     expect(screen.getByRole("heading", { name: "Clientes que encontraram seu lugar" })).toBeInTheDocument()

@@ -6,9 +6,15 @@ import { WhatsAppFloat } from '@/components/whatsapp-float'
 import { siteConfig } from '@/lib/site-config'
 import './globals.css'
 
-import { Inter } from 'next/font/google'
+import { Inter, Libre_Baskerville } from 'next/font/google'
 
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
+const inter = Inter({ subsets: ["latin"], variable: '--font-inter' })
+const libre = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: '--font-serif',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -76,7 +82,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="bg-background">
-      <body className={`${inter.variable} font-serif antialiased`}>
+      <body className={`${inter.variable} ${libre.variable} font-serif antialiased`}>
         {children}
         <WhatsAppFloat />
         <Analytics />

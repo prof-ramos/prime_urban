@@ -76,6 +76,9 @@
   /* Badge de tipo de transação */
   --badge-venda: #14532d;
   --badge-aluguel: #1e3a8a;
+
+  /* Texto sobre fundo escuro (substitui rgba hardcoded) */
+  --color-on-dark: rgb(255 255 255 / 0.82);
 }
 
 .dark {
@@ -171,15 +174,6 @@
   --color-bronze-300: #D8B997;
   --color-bronze-700: #8A5A36;
   --color-bronze-800: #704625;
-
-  /* Shadow tokens */
-  --shadow-card:   0 4px 24px rgb(0 0 0 / 0.18);
-  --shadow-subtle: 0 2px 12px rgb(29 45 58 / 0.12);
-  --shadow-hero:   0 8px 40px rgb(0 0 0 / 0.24);
-}
-
-:root {
-  --color-on-dark: rgb(255 255 255 / 0.82);
 }
 
 @layer base {

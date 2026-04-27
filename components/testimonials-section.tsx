@@ -1,6 +1,7 @@
 // TODO: implementar com depoimentos reais de clientes em versão futura
 "use client"
 
+import { useCallback } from "react"
 import Image from "next/image"
 import { Quote, Star } from "lucide-react"
 import { testimonials } from "@/lib/testimonials"
@@ -13,7 +14,16 @@ export type Testimonial = {
   imageUrl: string
 }
 
+const AVATAR_FALLBACK = "/images/avatar-placeholder.svg"
+
 function TestimonialImage({ src, alt }: { src: string; alt: string }) {
+  const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget
+    if (img.src !== AVATAR_FALLBACK) {
+      img.src = AVATAR_FALLBACK
+    }
+  }, [])
+
   return (
     <Image
       src={src}
@@ -21,9 +31,7 @@ function TestimonialImage({ src, alt }: { src: string; alt: string }) {
       width={56}
       height={56}
       className="h-14 w-14 rounded-full object-cover"
-      onError={(e) => {
-        ;(e.currentTarget as HTMLImageElement).src = "/images/avatar-placeholder.svg"
-      }}
+      onError={handleImageError}
     />
   )
 }
