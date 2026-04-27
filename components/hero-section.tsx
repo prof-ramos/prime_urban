@@ -117,7 +117,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.8fr_auto]">
+              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_auto]">
                 <HeroSelectField
                   icon={Home}
                   label="Tipo de negócio"
@@ -285,8 +285,8 @@ function HeroSelectField({
 }) {
   return (
     <div className="border-b border-navy-900/10 px-5 py-4 xl:border-b-0 xl:border-r">
-      <Label className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
-        <Icon className="h-3.5 w-3.5" />
+      <Label className="mb-2 flex items-center gap-2 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
+        <Icon className="h-3.5 w-3.5 shrink-0" />
         {label}
       </Label>
       <Select value={value} onValueChange={onValueChange}>

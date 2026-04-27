@@ -58,7 +58,7 @@ export function Footer() {
 
           {/* Quick Links  todos os links */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-secondary">Navegação</h4>
+            <h2 className="font-semibold text-secondary text-base">Navegação</h2>
             <nav className="flex flex-col gap-2">
               <Link href="/imoveis" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors py-1">
                 Todos os Imóveis
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Contact  completo */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-secondary">Contato</h4>
+            <h2 className="font-semibold text-secondary text-base">Contato</h2>
             <div className="flex flex-col gap-3">
               <a 
                 href="https://maps.google.com" 
