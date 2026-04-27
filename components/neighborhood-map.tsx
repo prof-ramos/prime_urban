@@ -1,11 +1,15 @@
 import Link from "next/link"
 import { MapPin } from "lucide-react"
-import { mockNeighborhoods } from "@/lib/mock-data"
+import type { Neighborhood } from "@/lib/properties/types"
 
 type MapPoint = {
   slug: string
   x: number
   y: number
+}
+
+type NeighborhoodMapProps = {
+  neighborhoods: Neighborhood[]
 }
 
 const points: MapPoint[] = [
@@ -17,15 +21,14 @@ const points: MapPoint[] = [
   { slug: "park-way", x: 47, y: 73 },
 ]
 
-const neighborhoodsBySlug = new Map(
-  mockNeighborhoods.map((neighborhood) => [neighborhood.slug, neighborhood]),
-)
-
 function getNeighborhoodSearchHref(name: string) {
   return `/imoveis?bairro=${encodeURIComponent(name)}`
 }
 
-export function NeighborhoodMap() {
+export function NeighborhoodMap({ neighborhoods }: NeighborhoodMapProps) {
+  const neighborhoodsBySlug = new Map(
+    neighborhoods.map((neighborhood) => [neighborhood.slug, neighborhood]),
+  )
   const mappedNeighborhoods = points.flatMap((point) => {
     const neighborhood = neighborhoodsBySlug.get(point.slug)
     return neighborhood ? [{ ...point, ...neighborhood }] : []

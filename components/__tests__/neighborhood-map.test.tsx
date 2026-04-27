@@ -10,7 +10,7 @@ const BAIRROS_MOCK = ["plano-piloto", "lago-sul", "aguas-claras"].map((slug) => 
 
 describe("NeighborhoodMap", () => {
   it("renderiza pins clicaveis para busca de imoveis por bairro", () => {
-    render(<NeighborhoodMap />)
+    render(<NeighborhoodMap neighborhoods={mockNeighborhoods} />)
 
     expect(
       screen.getByRole("heading", { name: "Mapa dos bairros mais procurados" }),

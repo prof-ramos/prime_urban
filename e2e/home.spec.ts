@@ -40,8 +40,7 @@ test.describe("Página inicial", () => {
     const section = page
       .locator("section")
       .filter({ hasText: "Imóveis em Destaque" })
-    // Cada card de destaque tem um link /imoveis/[slug]
-    await expect(section.locator('a[href^="/imoveis/"]')).toHaveCount(3)
+    await expect(section.getByTestId("property-card-title")).toHaveCount(3)
   })
 
   test("exibe seção de bairros", async ({ page }) => {
@@ -60,7 +59,7 @@ test.describe("Página inicial", () => {
     page,
   }) => {
     await page.getByRole("button", { name: /Busca avançada/i }).click()
-    await page.getByPlaceholder("Palavra-chave").fill("Asa Sul")
+    await page.getByPlaceholder("Bairro ou endereço").fill("Asa Sul")
     await page.getByRole("button", { name: "Buscar Imóveis" }).click()
     await page.waitForURL(/\/imoveis/)
     await expect(page).toHaveURL(/q=Asa/)

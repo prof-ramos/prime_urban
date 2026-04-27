@@ -5,6 +5,7 @@ Plataforma de curadoria imobiliária de alto padrão focada em Brasília, DF. Id
 ## Stack
 
 - **Next.js 16** com App Router e React 19
+- **Payload CMS 3** para imóveis, bairros, mídia e admin em `/admin`
 - **Tailwind CSS v4** + shadcn/ui
 - **TypeScript**
 - **Vitest** + Testing Library (testes unitários e de componentes)
@@ -37,8 +38,11 @@ app/
   imoveis/
     page.tsx                  # Listagem com filtros (Client Component)
     [slug]/page.tsx           # Detalhe do imóvel (Server Component)
+  (payload)/
+    admin/                    # Admin Payload
+    api/                      # REST API Payload
 components/
-  property-card.tsx           # Card + tipo Property
+  property-card.tsx           # Card de imóvel
   property-filters.tsx        # Filtros + tipo FilterState
   property-gallery.tsx        # Galeria de imagens
   property-info.tsx           # Ficha técnica
@@ -47,7 +51,9 @@ components/
   neighborhoods-section.tsx   # Seção de bairros
   whatsapp-cta.tsx            # CTA WhatsApp
 lib/
-  mock-data.ts                # Base de imóveis (array estático)
+  payload/                    # Consultas/adapters do Payload via Local API
+  mock-data.ts                # Fonte de seed local, não runtime público principal
+  properties/types.ts         # Tipos públicos Property/Neighborhood/FilterState
   filter-properties.ts        # Filtro e ordenação client-side
   format.ts                   # formatCurrency()
   property-labels.ts          # TYPE_LABELS (tipo → label pt-BR)
@@ -59,7 +65,11 @@ e2e/                          # Testes Playwright
 
 ## Dados
 
-Toda a base de imóveis está em `lib/mock-data.ts` — array estático sem banco de dados ou API. O tipo `Property` é definido e exportado por `components/property-card.tsx`.
+Runtime público: Payload CMS via Local API em Server Components.
+`lib/mock-data.ts` é usado como fonte de seed local, não como fonte pública principal.
+O tipo público `Property` fica em `lib/properties/types.ts`.
+
+Consulte `docs/production-readiness.md` antes de deploy para decisões de banco, mídia, variáveis de ambiente e checklist de produção.
 
 ## Design System
 
@@ -87,9 +97,5 @@ npx @google/design.md lint DESIGN.md
 O Playwright usa dois projetos: `chromium` (desktop) e `mobile` (iPhone 13). Testes que dependem de `fill()` em React controlled inputs ou elementos `sticky` são marcados com `@desktop` e pulados no mobile.
 
 ```bash
-# Iniciar servidor antes
-npm run dev
-
-# Rodar E2E
 npm run test:e2e
 ```

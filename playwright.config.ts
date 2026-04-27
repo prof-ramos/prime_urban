@@ -19,9 +19,9 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["iPhone 13"] }, grepInvert: /@desktop/ },
   ],
   webServer: {
-    command: "npm run dev -- --port 3001",
+    command: "npm run build && npm run start -- --port=3001",
     url: "http://localhost:3001",
-    reuseExistingServer: true,
-    timeout: 30000,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
   },
 })

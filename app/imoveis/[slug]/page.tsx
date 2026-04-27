@@ -12,11 +12,10 @@ import { PropertyInfo } from "@/components/property-info"
 import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
 import { getAllPublishedProperties, getPropertyBySlugFromPayload } from "@/lib/payload/properties"
-import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 import { formatCurrency } from "@/lib/format"
 import type { Metadata } from "next"
 
-export const revalidate = REVALIDATE_TIMES.PROPERTIES
+export const revalidate = 60
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>
@@ -150,6 +149,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 Favoritar
               </Button>
             </div>
+          </div>
+
+          <div className="mb-6">
+            <p className="text-sm font-medium uppercase tracking-[0.1em] text-secondary">
+              {property.neighborhood}
+            </p>
+            <h1 className="mt-2 font-serif text-3xl font-bold text-foreground md:text-4xl">
+              {property.title}
+            </h1>
           </div>
 
           {/* Main Content */}

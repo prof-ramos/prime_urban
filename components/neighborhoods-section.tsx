@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { mockNeighborhoods } from "@/lib/mock-data"
+import type { Neighborhood } from "@/lib/properties/types"
 
-const neighborhoods = mockNeighborhoods.filter((n) => n.featured)
+type NeighborhoodsSectionProps = {
+  neighborhoods: Neighborhood[]
+}
 
 // Gradiente sutil único por índice — cada bairro tem identidade visual distinta
 const cardGradients = [
@@ -14,12 +16,14 @@ const cardGradients = [
   'radial-gradient(ellipse at 50% 100%, rgba(182,136,99,0.16) 0%, transparent 70%)',
 ]
 
-export function NeighborhoodsSection() {
+export function NeighborhoodsSection({ neighborhoods }: NeighborhoodsSectionProps) {
+  const featuredNeighborhoods = neighborhoods.filter((n) => n.featured)
+
   return (
     <section className="py-16 md:py-24 bg-[var(--navy-900)]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="text-xs font-medium text-secondary uppercase tracking-[0.2em]">
+          <span className="text-xs font-medium text-white/80 uppercase tracking-[0.1em]">
             Explore por região
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mt-3 mb-4 text-balance">
@@ -31,7 +35,7 @@ export function NeighborhoodsSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {neighborhoods.map((neighborhood, i) => (
+          {featuredNeighborhoods.map((neighborhood, i) => (
             <Link
               key={neighborhood.slug}
               href={`/bairros/${neighborhood.slug}`}

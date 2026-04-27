@@ -6,10 +6,10 @@ import { NeighborhoodsSection } from "@/components/neighborhoods-section"
 import { WhatsAppCTA } from "@/components/whatsapp-cta"
 import { Footer } from "@/components/footer"
 import { getAllPublishedProperties } from "@/lib/payload/properties"
+import { getActiveNeighborhoods } from "@/lib/payload/neighborhoods"
 import { getCities, getNeighborhoods } from "@/lib/properties/filter-options"
-import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 
-export const revalidate = REVALIDATE_TIMES.PROPERTIES
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "PrimeUrban | Imóveis em Brasília",
@@ -23,21 +23,26 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   let properties: Awaited<ReturnType<typeof getAllPublishedProperties>> = []
+  let neighborhoods: Awaited<ReturnType<typeof getActiveNeighborhoods>> = []
   try {
-    properties = await getAllPublishedProperties()
+    ;[properties, neighborhoods] = await Promise.all([
+      getAllPublishedProperties(),
+      getActiveNeighborhoods(),
+    ])
   } catch (err) {
-    console.error('[HomePage] failed to fetch properties:', err)
+    console.error('[HomePage] failed to fetch content:', err)
   }
   const cityOptions = getCities(properties)
   const neighborhoodOptions = getNeighborhoods(properties)
+  const featuredProperties = properties.filter((property) => property.featured)
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
         <HeroSection cityOptions={cityOptions} neighborhoodOptions={neighborhoodOptions} />
-        <FeaturedProperties />
-        <NeighborhoodsSection />
+        <FeaturedProperties properties={featuredProperties} />
+        <NeighborhoodsSection neighborhoods={neighborhoods} />
         {/* TestimonialsSection será implementado em versão futura, quando houver clientes reais */}
         <WhatsAppCTA />
       </main>

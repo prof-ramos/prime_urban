@@ -64,11 +64,8 @@ describe('Payload adapters', () => {
   })
 
   it('keeps sold and rented detail pages public but excludes them from listings', () => {
-    // @ts-expect-error -- Payload generated type differs from hand-written fixture
     expect(isPubliclyListable({ ...propertyDoc, statusComercial: 'vendido' })).toBe(false)
-    // @ts-expect-error -- Payload generated type differs from hand-written fixture
     expect(isPubliclyListable({ ...propertyDoc, statusComercial: 'alugado' })).toBe(false)
-    // @ts-expect-error -- Payload generated type differs from hand-written fixture
     expect(isPubliclyListable({ ...propertyDoc, statusComercial: 'reservado' })).toBe(true)
   })
 })

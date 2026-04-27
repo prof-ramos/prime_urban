@@ -23,16 +23,37 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 100))
-    
-    setIsSubmitting(false)
-    setSubmitted(true)
+    setSubmitError("")
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, propertyId, propertyTitle }),
+      })
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => null)
+        const message =
+          body?.message ??
+          (response.status === 422
+            ? "Revise os campos informados."
+            : "Não foi possível enviar sua mensagem.")
+        setSubmitError(message)
+        return
+      }
+
+      setSubmitted(true)
+    } catch {
+      setSubmitError("Não foi possível enviar sua mensagem.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleWhatsApp = () => {
@@ -154,6 +175,11 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
           >
             {isSubmitting ? "Enviando..." : "Enviar mensagem"}
           </Button>
+          {submitError && (
+            <p role="alert" className="text-sm text-destructive">
+              {submitError}
+            </p>
+          )}
         </form>
 
         <p className="text-xs text-muted-foreground text-center">

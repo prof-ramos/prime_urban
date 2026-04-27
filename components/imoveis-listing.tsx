@@ -93,7 +93,7 @@ function ImoveisListingContent({ initialProperties }: ImoveisListingProps) {
                 value={sortBy}
                 onValueChange={(value) => setSortBy(value as SortOption)}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="min-h-[44px] min-w-[44px] w-[180px]" aria-label="Ordenar por">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent>

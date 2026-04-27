@@ -2,10 +2,14 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { PropertyCard } from "@/components/property-card"
 import { Button } from "@/components/ui/button"
-import { getFeaturedProperties } from "@/lib/mock-data"
+import type { Property } from "@/lib/properties/types"
 
-export function FeaturedProperties() {
-  const featuredProperties = getFeaturedProperties().slice(0, 3)
+type FeaturedPropertiesProps = {
+  properties: Property[]
+}
+
+export function FeaturedProperties({ properties }: FeaturedPropertiesProps) {
+  const featuredProperties = properties.slice(0, 3)
 
   return (
     <section className="py-16 md:py-24 bg-[var(--base-cream)]">
