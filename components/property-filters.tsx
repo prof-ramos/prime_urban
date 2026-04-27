@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Slider } from "@/components/ui/slider"
 import {
   Select,
   SelectContent,
@@ -46,13 +47,6 @@ const formatCurrency = (value: number) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value)
-}
-
-const parseCurrencyInput = (value: string, fallback: number) => {
-  const digits = value.replace(/\D/g, "")
-  if (!digits) return fallback
-  const parsed = Number(digits)
-  return Number.isFinite(parsed) ? parsed : fallback
 }
 
 export function PropertyFilters({
@@ -283,25 +277,18 @@ function AdvancedPropertyFilters({
           </Select>
         </div>
 
-        <PriceInput
-          id="min-price"
-          label="Min. preço"
-          value={filters.minPrice}
-          placeholder="R$ 0"
-          fallback={DEFAULT_FILTERS.minPrice}
-          shouldDisplay={(value) => value > DEFAULT_FILTERS.minPrice}
-          onChange={(value) => onUpdate("minPrice", value)}
-        />
-
-        <PriceInput
-          id="max-price"
-          label="Max. preço"
-          value={filters.maxPrice}
-          placeholder="Sem limite"
-          fallback={DEFAULT_MAX_PRICE}
-          shouldDisplay={(value) => value < DEFAULT_MAX_PRICE}
-          onChange={(value) => onUpdate("maxPrice", value)}
-        />
+        <div className="xl:col-span-2 self-end">
+          <Label>Faixa de preço</Label>
+          <PriceSlider
+            min={DEFAULT_FILTERS.minPrice}
+            max={DEFAULT_MAX_PRICE}
+            value={[filters.minPrice, filters.maxPrice]}
+            onChange={([min, max]) => {
+              onUpdate("minPrice", min)
+              onUpdate("maxPrice", max)
+            }}
+          />
+        </div>
 
         <div className="space-y-2">
           <Label htmlFor="property-code">Código do imóvel</Label>
@@ -332,33 +319,36 @@ function AdvancedPropertyFilters({
   )
 }
 
-function PriceInput({
-  id,
-  label,
+function PriceSlider({
+  min,
+  max,
+  step = 100_000,
   value,
-  placeholder,
-  fallback,
-  shouldDisplay,
   onChange,
 }: {
-  id: string
-  label: string
-  value: number
-  placeholder: string
-  fallback: number
-  shouldDisplay: (value: number) => boolean
-  onChange: (value: number) => void
+  min: number
+  max: number
+  step?: number
+  value: [number, number]
+  onChange: (range: [number, number]) => void
 }) {
+  const displayMin = formatCurrency(value[0])
+  const displayMax = formatCurrency(value[1])
+
   return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input
-        id={id}
-        inputMode="numeric"
-        value={shouldDisplay(value) ? formatCurrency(value) : ""}
-        onChange={(event) => onChange(parseCurrencyInput(event.target.value, fallback))}
-        placeholder={placeholder}
-        className="h-12 bg-background"
+    <div className="space-y-3">
+      <div className="flex justify-between text-sm font-medium text-foreground">
+        <span>{displayMin}</span>
+        <span>{displayMax}</span>
+      </div>
+      <Slider
+        defaultValue={[min, max]}
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onValueChange={(v) => onChange(v as [number, number])}
+        className="w-full"
       />
     </div>
   )
