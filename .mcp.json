@@ -14,6 +14,18 @@
         "-y",
         "@modelcontextprotocol/server-memory"
       ]
+    },
+    "primeurban-payload": {
+      "type": "http",
+      "url": "http://localhost:3001/api/mcp"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--autoConnect"
+      ]
     }
   }
 }

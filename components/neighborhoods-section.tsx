@@ -16,7 +16,7 @@ const cardGradients = [
 
 export function NeighborhoodsSection() {
   return (
-    <section className="py-16 md:py-24 bg-navy-900">
+    <section className="py-16 md:py-24 bg-[var(--navy-900)]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <span className="text-xs font-medium text-secondary uppercase tracking-[0.2em]">

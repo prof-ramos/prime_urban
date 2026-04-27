@@ -1,8 +1,20 @@
 import type { MetadataRoute } from "next"
-import { mockProperties, mockNeighborhoods } from "@/lib/mock-data"
+import { getAllPublishedProperties } from "@/lib/payload/properties"
+import { getActiveNeighborhoods } from "@/lib/payload/neighborhoods"
 import { siteConfig } from "@/lib/site-config"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let properties: Awaited<ReturnType<typeof getAllPublishedProperties>> = []
+  let neighborhoods: Awaited<ReturnType<typeof getActiveNeighborhoods>> = []
+
+  try {
+    ;[properties, neighborhoods] = await Promise.all([
+      getAllPublishedProperties(),
+      getActiveNeighborhoods(),
+    ])
+  } catch (err) {
+    console.error('[sitemap] failed to fetch data:', err)
+  }
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: siteConfig.siteUrl,
@@ -36,14 +48,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const propertyRoutes: MetadataRoute.Sitemap = mockProperties.map((p) => ({
+  const propertyRoutes: MetadataRoute.Sitemap = properties.map((p) => ({
     url: `${siteConfig.siteUrl}/imoveis/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }))
 
-  const neighborhoodRoutes: MetadataRoute.Sitemap = mockNeighborhoods.map((n) => ({
+  const neighborhoodRoutes: MetadataRoute.Sitemap = neighborhoods.map((n) => ({
     url: `${siteConfig.siteUrl}/bairros/${n.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",

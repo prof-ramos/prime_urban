@@ -1,0 +1,5 @@
+export const REVALIDATE_TIMES = {
+  PROPERTIES: 60,
+  NEIGHBORHOODS: 300,
+  FEATURED: 60,
+} as const

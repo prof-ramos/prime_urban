@@ -50,9 +50,9 @@ export function getNeighborhoods(properties: Property[]): FilterOption[] {
   return toOptions(properties.map((property) => property.neighborhood))
 }
 
-function toOptions(values: string[]): FilterOption[] {
+function toOptions(values: (string | undefined | null)[]): FilterOption[] {
   return Array.from(new Set(values))
-    .filter(Boolean)
+    .filter((v): v is string => Boolean(v))
     .sort((a, b) => a.localeCompare(b, "pt-BR"))
     .map((name) => ({ value: name, label: name }))
 }

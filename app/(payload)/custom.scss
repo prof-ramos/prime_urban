@@ -1,0 +1,87 @@
+// PrimeUrban Admin — Design System Override
+// Força tema claro com paleta navy/bronze independente do data-theme
+
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
+  // Fundo e texto principais
+  --theme-bg: #F9F6F0;
+  --theme-input-bg: #FFFFFF;
+  --theme-text: #1D2D3A;
+
+  // Elevação: escala creme → navy
+  --theme-elevation-0:   #F9F6F0;
+  --theme-elevation-50:  #F4EDE2;
+  --theme-elevation-100: #EDE3D5;
+  --theme-elevation-150: #E4D8C7;
+  --theme-elevation-200: #DBCDB8;
+  --theme-elevation-250: #D2C1A8;
+  --theme-elevation-300: #D9C3A9;
+  --theme-elevation-400: #C8AC8A;
+  --theme-elevation-500: #B68863;
+  --theme-elevation-600: #9A7050;
+  --theme-elevation-700: #3D4D55;
+  --theme-elevation-750: #2E3E49;
+  --theme-elevation-800: #253540;
+  --theme-elevation-850: #1F2D38;
+  --theme-elevation-900: #1D2D3A;
+  --theme-elevation-950: #172430;
+  --theme-elevation-1000: #0F1D28;
+
+  // Success
+  --theme-success-50:  #E8F5E9;
+  --theme-success-100: #C8E6C9;
+  --theme-success-200: #A5D6A7;
+  --theme-success-300: #81C784;
+  --theme-success-400: #66BB6A;
+  --theme-success-500: #2E7D32;
+  --theme-success-600: #256427;
+  --theme-success-700: #1B5E20;
+
+  // Error
+  --theme-error-50:  #FFEBEE;
+  --theme-error-100: #FFCDD2;
+  --theme-error-200: #EF9A9A;
+  --theme-error-300: #E57373;
+  --theme-error-400: #EF5350;
+  --theme-error-500: #C62828;
+  --theme-error-600: #B71C1C;
+  --theme-error-700: #8B0000;
+
+  // Warning
+  --theme-warning-50:  #FFF8E1;
+  --theme-warning-100: #FFECB3;
+  --theme-warning-200: #FFE082;
+  --theme-warning-300: #FFD54F;
+  --theme-warning-400: #FFCA28;
+  --theme-warning-500: #E65100;
+  --theme-warning-600: #BF360C;
+  --theme-warning-700: #8B1A00;
+}
+
+// Botões primários → bronze/dourado
+.btn,
+button[class*="btn"],
+a[class*="btn"] {
+  &[class*="--style-primary"],
+  &[class*="primary"] {
+    --button-bg: #B68863;
+    --button-color: #1D2D3A;
+  }
+}
+
+// Header do admin → navy
+.nav {
+  background-color: var(--theme-elevation-900) !important;
+  border-right-color: rgba(182, 136, 99, 0.2) !important;
+
+  a, button, span {
+    color: var(--theme-bg) !important;
+  }
+}
+
+// Barra de topo
+.app-header {
+  background-color: var(--theme-bg) !important;
+  border-bottom: 1px solid rgba(29, 45, 58, 0.12) !important;
+}

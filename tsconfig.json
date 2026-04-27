@@ -25,7 +25,8 @@
     "paths": {
       "@/*": [
         "./*"
-      ]
+      ],
+      "@payload-config": ["./payload.config.ts"]
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },

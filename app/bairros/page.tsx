@@ -1,15 +1,20 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { mockNeighborhoods } from "@/lib/mock-data"
+import { getActiveNeighborhoods } from "@/lib/payload/neighborhoods"
+import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 
-export const metadata = {
+export const revalidate = REVALIDATE_TIMES.NEIGHBORHOODS
+
+export const metadata: Metadata = {
   title: "Bairros de Brasília | PrimeUrban",
   description: "Explore os melhores bairros de Brasília e encontre imóveis na região ideal para você.",
 }
 
-export default function BairrosPage() {
+export default async function BairrosPage() {
+  const neighborhoods = await getActiveNeighborhoods()
   return (
     <>
       <Header />
@@ -31,7 +36,7 @@ export default function BairrosPage() {
         <section className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockNeighborhoods.map((neighborhood) => (
+              {neighborhoods.map((neighborhood) => (
                 <Link
                   key={neighborhood.slug}
                   href={`/bairros/${neighborhood.slug}`}

@@ -117,7 +117,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
+              <div className="grid grid-cols-1 overflow-hidden rounded-[1.35rem] border border-navy-900/10 bg-white shadow-sm md:grid-cols-2 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1fr)_auto]">
                 <HeroSelectField
                   icon={Home}
                   label="Tipo de negócio"
@@ -153,22 +153,6 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                   onValueChange={(value) => updateFilter("neighborhood", value)}
                   options={neighborhoodOptions}
                 />
-                <HeroSelectField
-                  icon={BedDouble}
-                  label="Min. quartos"
-                  value={filters.bedrooms}
-                  placeholder="Qualquer"
-                  onValueChange={(value) => updateFilter("bedrooms", value)}
-                  options={BEDROOM_OPTIONS}
-                />
-                <HeroSelectField
-                  icon={Car}
-                  label="Min. vagas"
-                  value={filters.parkingSpaces}
-                  placeholder="Qualquer"
-                  onValueChange={(value) => updateFilter("parkingSpaces", value)}
-                  options={PARKING_OPTIONS}
-                />
 
                 <div className="flex items-stretch border-t border-navy-900/10 bg-navy-900 p-2 md:col-span-2 xl:col-span-1 xl:border-l xl:border-t-0">
                   <Button
@@ -201,18 +185,25 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                     </Button>
                   </CollapsibleTrigger>
                   <p className="px-2 text-xs text-navy-700">
-                    Código, palavra-chave e faixa de preço.
+                    Quartos, vagas, código, palavra-chave e preços.
                   </p>
                 </div>
 
                 <CollapsibleContent>
-                  <div className="mt-3 grid grid-cols-1 gap-3 rounded-[1.25rem] border border-secondary/20 bg-secondary/[0.07] p-3 md:grid-cols-2 xl:grid-cols-5">
-                    <AdvancedInput
-                      label="Palavra-chave"
-                      placeholder="Endereço, bairro, código"
-                      value={filters.search}
-                      onChange={(value) => updateFilter("search", value)}
-                      className="xl:col-span-2"
+                  <div className="mt-3 grid grid-cols-1 gap-3 rounded-[1.25rem] border border-secondary/20 bg-secondary/[0.07] p-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                    <AdvancedSelect
+                      label="Min. quartos"
+                      placeholder="Qualquer"
+                      value={filters.bedrooms}
+                      onValueChange={(value) => updateFilter("bedrooms", value)}
+                      options={BEDROOM_OPTIONS}
+                    />
+                    <AdvancedSelect
+                      label="Min. vagas"
+                      placeholder="Qualquer"
+                      value={filters.parkingSpaces}
+                      onValueChange={(value) => updateFilter("parkingSpaces", value)}
+                      options={PARKING_OPTIONS}
                     />
                     <AdvancedInput
                       label="Código do imóvel"
@@ -221,8 +212,15 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                       onChange={(value) => updateFilter("code", value)}
                     />
                     <AdvancedInput
+                      label="Palavra-chave"
+                      placeholder="Bairro ou endereço"
+                      value={filters.search}
+                      onChange={(value) => updateFilter("search", value)}
+                    />
+                    <AdvancedInput
                       label="Min. preço"
                       placeholder="R$ 0"
+                      prefix="R$"
                       value={filters.minPrice > 0 ? filters.minPrice.toLocaleString("pt-BR") : ""}
                       onChange={(value) => updateFilter("minPrice", parseCurrencyInput(value, 0))}
                       inputMode="numeric"
@@ -230,6 +228,7 @@ export function HeroSection({ cityOptions, neighborhoodOptions }: HeroSectionPro
                     <AdvancedInput
                       label="Max. preço"
                       placeholder="Sem limite"
+                      prefix="R$"
                       value={
                         filters.maxPrice < DEFAULT_MAX_PRICE
                           ? filters.maxPrice.toLocaleString("pt-BR")
@@ -284,15 +283,15 @@ function HeroSelectField({
   options: FilterOption[]
 }) {
   return (
-    <div className="min-w-0 border-b border-navy-900/10 px-5 py-4 xl:border-b-0 xl:border-r">
-      <Label className="mb-2 flex min-w-0 items-center gap-2 overflow-hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-950">
+    <div className="min-w-0 border-b border-navy-900/10 px-4 py-4 xl:border-b-0 xl:border-r">
+      <Label className="mb-2 flex min-w-0 items-center gap-2 overflow-hidden text-[10px] font-semibold uppercase tracking-[0.1em] text-navy-950">
         <Icon className="h-3.5 w-3.5 shrink-0" />
         <span className="truncate">{label}</span>
       </Label>
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger
           aria-label={label}
-          className="min-h-[44px] border-none bg-transparent p-0 font-serif text-lg text-navy-950 shadow-none focus:ring-0 data-[placeholder]:text-navy-950 [&>svg]:text-navy-950 [&_span]:text-navy-950"
+          className="min-h-[44px] border-none bg-transparent p-0 font-serif text-base text-navy-950 shadow-none focus:ring-0 data-[placeholder]:text-navy-950 [&>svg]:text-navy-950 [&_span]:text-navy-950"
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -314,6 +313,7 @@ function AdvancedInput({
   value,
   onChange,
   inputMode,
+  prefix,
   className,
 }: {
   label: string
@@ -321,6 +321,7 @@ function AdvancedInput({
   value: string
   onChange: (value: string) => void
   inputMode?: "numeric"
+  prefix?: string
   className?: string
 }) {
   const inputId = `hero-advanced-${label
@@ -338,15 +339,74 @@ function AdvancedInput({
       >
         {label}
       </Label>
-      <Input
-        id={inputId}
-        aria-label={label}
-        inputMode={inputMode}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        className="h-11 border-navy-900/10 bg-white text-navy-900 placeholder:text-navy-700/35"
-      />
+      <div className="relative">
+        {prefix && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-navy-700/40">
+            {prefix}
+          </span>
+        )}
+        <Input
+          id={inputId}
+          aria-label={label}
+          inputMode={inputMode}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          className={`h-11 border-navy-900/10 bg-white text-navy-900 placeholder:text-navy-700/35 ${
+            prefix ? "pl-9" : ""
+          }`}
+        />
+      </div>
+    </div>
+  )
+}
+
+function AdvancedSelect({
+  label,
+  placeholder,
+  value,
+  onValueChange,
+  options,
+  className,
+}: {
+  label: string
+  placeholder: string
+  value: string
+  onValueChange: (value: string) => void
+  options: FilterOption[]
+  className?: string
+}) {
+  const selectId = `hero-advanced-${label
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`
+
+  return (
+    <div className={className}>
+      <Label
+        htmlFor={selectId}
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.18em] text-navy-700/70"
+      >
+        {label}
+      </Label>
+      <Select value={value} onValueChange={onValueChange}>
+        <SelectTrigger
+          id={selectId}
+          aria-label={label}
+          className="h-11 border-navy-900/10 bg-white text-navy-900 shadow-none focus:ring-navy-900/20"
+        >
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   )
 }

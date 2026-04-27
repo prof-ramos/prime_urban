@@ -5,23 +5,28 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
 import {
-  getNeighborhoodBySlug,
-  getPropertiesByNeighborhood,
-  mockNeighborhoods,
-} from "@/lib/mock-data"
+  getActiveNeighborhoods,
+  getNeighborhoodBySlugFromPayload,
+  getPropertiesByNeighborhoodFromPayload,
+} from "@/lib/payload/neighborhoods"
+import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
+
+export const revalidate = REVALIDATE_TIMES.NEIGHBORHOODS
 
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
-  return mockNeighborhoods.map((n) => ({ slug: n.slug }))
+  const neighborhoods = await getActiveNeighborhoods()
+  return neighborhoods.map((n) => ({ slug: n.slug }))
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
-  const neighborhood = getNeighborhoodBySlug(slug)
+  const neighborhood = await getNeighborhoodBySlugFromPayload(slug)
   if (!neighborhood) return {}
   const title = `Imóveis no ${neighborhood.name}`
-  const description = `Encontre imóveis no ${neighborhood.name}, Brasília. ${neighborhood.description}.`
+  const cleanDesc = neighborhood.description.replace(/[.!?]+$/, '')
+  const description = `Encontre imóveis no ${neighborhood.name}, Brasília. ${cleanDesc}.`
 
   return {
     title,
@@ -42,10 +47,10 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function BairroDetalhePage({ params }: Props) {
   const { slug } = await params
-  const neighborhood = getNeighborhoodBySlug(slug)
+  const neighborhood = await getNeighborhoodBySlugFromPayload(slug)
   if (!neighborhood) return notFound()
 
-  const properties = getPropertiesByNeighborhood(neighborhood.name)
+  const properties = await getPropertiesByNeighborhoodFromPayload(neighborhood.name)
 
   return (
     <>

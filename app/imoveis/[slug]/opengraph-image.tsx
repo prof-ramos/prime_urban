@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { getPropertyBySlug } from '@/lib/mock-data'
+import { getPropertyBySlugFromPayload as getPropertyBySlug } from '@/lib/payload/properties'
 import { loadOgFont } from '@/lib/og-font'
 import { getSiteUrl } from '@/lib/site-url'
 import { TYPE_LABELS } from '@/lib/property-labels'
@@ -14,7 +14,7 @@ function pluralize(count: number, singular: string, plural: string) {
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const property = getPropertyBySlug(slug)
+  const property = await getPropertyBySlug(slug)
   const fontData = await loadOgFont()
 
   const imageOptions = {

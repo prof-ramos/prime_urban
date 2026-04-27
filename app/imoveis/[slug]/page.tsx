@@ -11,9 +11,12 @@ const PropertyGallery = dynamic(() =>
 import { PropertyInfo } from "@/components/property-info"
 import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
-import { getPropertyBySlug, mockProperties } from "@/lib/mock-data"
+import { getAllPublishedProperties, getPropertyBySlugFromPayload } from "@/lib/payload/properties"
+import { REVALIDATE_TIMES } from "@/lib/payload/revalidate"
 import { formatCurrency } from "@/lib/format"
 import type { Metadata } from "next"
+
+export const revalidate = REVALIDATE_TIMES.PROPERTIES
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>
@@ -21,8 +24,8 @@ interface PropertyPageProps {
 
 export async function generateMetadata({ params }: PropertyPageProps): Promise<Metadata> {
   const { slug } = await params
-  const property = getPropertyBySlug(slug)
-  
+  const property = await getPropertyBySlugFromPayload(slug)
+
   if (!property) {
     return {
       title: "Imóvel não encontrado",
@@ -60,14 +63,15 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
 }
 
 export async function generateStaticParams() {
-  return mockProperties.map((property) => ({
+  const properties = await getAllPublishedProperties()
+  return properties.map((property) => ({
     slug: property.slug,
   }))
 }
 
 export default async function PropertyPage({ params }: PropertyPageProps) {
   const { slug } = await params
-  const property = getPropertyBySlug(slug)
+  const property = await getPropertyBySlugFromPayload(slug)
 
   if (!property) {
     notFound()

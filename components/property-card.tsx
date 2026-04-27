@@ -1,31 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bed, Bath, Car, Maximize2, MapPin, Heart } from "lucide-react"
+import { Bed, Car, Maximize2, MapPin, Heart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-
-export interface Property {
-  id: string
-  slug: string
-  title: string
-  type: "apartamento" | "casa" | "cobertura" | "sala_comercial"
-  transactionType: "venda" | "aluguel"
-  price: number
-  condoFee?: number
-  iptu?: number
-  neighborhood: string
-  address: string
-  privateArea: number
-  totalArea?: number
-  bedrooms: number
-  suites?: number
-  bathrooms: number
-  parkingSpaces: number
-  images: string[]
-  featured?: boolean
-  acceptsPets?: boolean
-  solarOrientation?: string
-}
+import type { Property } from "@/lib/properties/types"
 
 interface PropertyCardProps {
   property: Property
@@ -106,7 +84,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </p>
           <Link 
             href={`/imoveis/${property.slug}`}
-            className="px-5 py-2 bg-secondary text-navy-950 text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
+            className="px-5 py-2 bg-secondary text-[var(--navy-950)] text-sm font-semibold rounded-full tracking-wide hover:bg-secondary/90 transition-colors"
           >
             Ver detalhes
           </Link>

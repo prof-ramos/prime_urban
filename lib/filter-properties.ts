@@ -25,9 +25,9 @@ export function filterProperties(
     results = results.filter(
       (p) =>
         p.title.toLowerCase().includes(searchLower) ||
-        p.code.toLowerCase().includes(searchLower) ||
+        p.code?.toLowerCase().includes(searchLower) ||
         p.address.toLowerCase().includes(searchLower) ||
-        p.city.toLowerCase().includes(searchLower) ||
+        p.city?.toLowerCase().includes(searchLower) ||
         p.neighborhood.toLowerCase().includes(searchLower),
     )
   }
@@ -50,7 +50,7 @@ export function filterProperties(
 
   if (code) {
     const codeLower = code.toLowerCase().trim()
-    results = results.filter((p) => p.code.toLowerCase().includes(codeLower))
+    results = results.filter((p) => p.code?.toLowerCase().includes(codeLower))
   }
 
   if (Number.isFinite(minPrice) && Number.isFinite(maxPrice) && minPrice <= maxPrice) {

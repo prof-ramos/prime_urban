@@ -4,7 +4,7 @@ export type TransactionType = "venda" | "aluguel"
 
 export interface Property {
   id: string
-  code: string
+  code?: string
   slug: string
   title: string
   type: PropertyType
@@ -12,7 +12,7 @@ export interface Property {
   price: number
   condoFee?: number
   iptu?: number
-  city: string
+  city?: string
   neighborhood: string
   address: string
   privateArea: number
