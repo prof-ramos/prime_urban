@@ -10,8 +10,16 @@ npm run build        # build de produção
 npm run lint         # ESLint
 npm run test:run     # Vitest one-shot (unit + component)
 npm test             # Vitest watch mode
+npm run test:ui      # Vitest com UI interativa
 npm run test:e2e     # Playwright E2E (requer servidor rodando: npm run dev)
 npm run test:e2e:ui  # Playwright com UI interativa
+```
+
+**Rodar um único arquivo de teste:**
+```bash
+npx vitest run lib/__tests__/format.test.ts          # unit — arquivo específico
+npx playwright test e2e/home.spec.ts                 # E2E — arquivo específico
+npx playwright test e2e/imoveis.spec.ts --project=chromium  # projeto específico
 ```
 
 > Há outro servidor Next.js em `/repos/projetos/v0-prime-urban` que pode ocupar a porta 3000. Nesse caso, este projeto sobe automaticamente na **3001**.
@@ -34,9 +42,16 @@ npm run test:e2e:ui  # Playwright com UI interativa
 
 | Rota | Arquivo | Observação |
 |------|---------|------------|
-| `/` | `app/page.tsx` | Server Component — monta a home com seções |
+| `/` | `app/page.tsx` | Server Component — home com seções |
 | `/imoveis` | `app/imoveis/page.tsx` | Client Component — listagem com filtros client-side |
 | `/imoveis/[slug]` | `app/imoveis/[slug]/page.tsx` | Server Component — detalhe do imóvel, com `generateStaticParams` |
+| `/bairros` | `app/bairros/page.tsx` | Server Component — listagem de bairros |
+| `/bairros/[slug]` | `app/bairros/[slug]/page.tsx` | Server Component — imóveis por bairro, com `generateStaticParams` |
+| `/sobre` | `app/sobre/page.tsx` | Server Component — página institucional |
+| `/contato` | `app/contato/page.tsx` | Server Component — usa `ContactPageForm` (Client Component) |
+
+Arquivos especiais: `app/sitemap.ts`, `app/robots.ts`, `app/not-found.tsx`, `app/error.tsx`, `app/loading.tsx`.
+OG images dinâmicas via Satori: `app/opengraph-image.tsx` e `app/imoveis/[slug]/opengraph-image.tsx`.
 
 ### Dados
 
@@ -64,7 +79,8 @@ Toda a base de imóveis está em **`lib/mock-data.ts`** — um array estático `
 - `components/property-filters.tsx` — filtros com tipo `FilterState` exportado
 - `components/property-gallery.tsx` — galeria de imagens no detalhe
 - `components/property-info.tsx` — ficha técnica no detalhe
-- `components/contact-form.tsx` — formulário de contato no detalhe
+- `components/contact-form.tsx` — formulário de contato no detalhe do imóvel (sticky, validado com Zod + react-hook-form)
+- `components/contact-page-form.tsx` — formulário da página `/contato` (Client Component separado)
 - `components/header.tsx`, `footer.tsx`, `hero-section.tsx`, `neighborhoods-section.tsx`, `whatsapp-cta.tsx`, `whatsapp-float.tsx` — layout e seções da home
 
 ### Design system / Cores

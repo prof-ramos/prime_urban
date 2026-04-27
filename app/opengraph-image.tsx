@@ -160,8 +160,8 @@ export default async function Image() {
         {
           name: 'Libre Baskerville',
           data: fontData,
-          style: 'normal',
-          weight: 400,
+          style: 'normal' as const,
+          weight: 400 as const,
         },
       ],
     },

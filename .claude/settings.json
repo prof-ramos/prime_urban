@@ -1,0 +1,91 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Edit",
+      "MultiEdit",
+      "Write",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(eslint:*)",
+      "Bash(tsc:*)",
+      "Bash(vitest:*)",
+      "Bash(playwright:*)",
+      "Bash(next:*)",
+      "Bash(vite:*)"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(rm -rf:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "120000",
+    "BASH_MAX_OUTPUT_LENGTH": "20000",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "NODE_ENV": "development"
+  },
+  "includeCoAuthoredBy": true,
+  "cleanupPeriodDays": 30,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"\\(.tool_input.command) - \\(.tool_input.description // \"No description\")\"' >> ~/.claude/bash-command-log.txt"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo $STDIN_JSON | jq -r '.tool_input.file_path // \"\"'); CONTENT=$(echo $STDIN_JSON | jq -r '.tool_input.content // \"\"'); if [[ \"$FILE\" =~ \\.(js|jsx|ts|tsx)$ ]] && echo \"$CONTENT\" | grep -q 'console\\.log'; then echo 'Warning: console.log statements should be removed before committing' >&2; exit 2; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo $STDIN_JSON | jq -r '.tool_input.file_path // \"\"'); if [[ \"$FILE\" =~ \\.(js|jsx|ts|tsx)$ && \"$FILE\" != *\".test.\"* && \"$FILE\" != *\".spec.\"* ]]; then DIR=$(dirname \"$FILE\"); BASENAME=$(basename \"$FILE\" | sed -E 's/\\.(js|jsx|ts|tsx)$//'); for TEST_FILE in \"$DIR/$BASENAME.test.\"* \"$DIR/$BASENAME.spec.\"*; do if [ -f \"$TEST_FILE\" ]; then echo \"Running tests for $TEST_FILE...\"; npx vitest run \"$TEST_FILE\"; break; fi; done; fi",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Claude Code notification: $(date)\" >> ~/.claude/notifications.log"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CHANGED=$(git diff --name-only --diff-filter=ACMR 2>/dev/null | grep -E '\\.(js|jsx|ts|tsx)$'); if [[ -f package.json && -n \"$CHANGED\" ]]; then echo 'Running linter on changed files...'; echo \"$CHANGED\" | xargs npx eslint --max-warnings=0; fi",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

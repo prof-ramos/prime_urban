@@ -1,12 +1,5 @@
-import type { Property } from "@/components/property-card"
-
-export type Neighborhood = {
-  name: string
-  slug: string
-  count: number
-  description: string
-  featured?: boolean
-}
+import { cache } from "react"
+import type { Neighborhood, Property } from "@/lib/properties/types"
 
 export const mockNeighborhoods: Neighborhood[] = [
   { name: "Plano Piloto", slug: "plano-piloto", count: 312, description: "RA I · Centro histórico e político", featured: true },
@@ -49,6 +42,7 @@ export const mockNeighborhoods: Neighborhood[] = [
 export const mockProperties: Property[] = [
   {
     id: "1",
+    code: "PU-0001",
     slug: "apartamento-asa-sul-sqn-308",
     title: "Apartamento 4 quartos com vista para o Parque da Cidade",
     type: "apartamento",
@@ -56,6 +50,7 @@ export const mockProperties: Property[] = [
     price: 1850000,
     condoFee: 1800,
     iptu: 650,
+    city: "Brasília",
     neighborhood: "Plano Piloto",
     address: "SQS 308, Bloco A",
     privateArea: 180,
@@ -71,6 +66,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "2",
+    code: "PU-0002",
     slug: "cobertura-noroeste-sqnw-111",
     title: "Cobertura duplex com terraço gourmet no Noroeste",
     type: "cobertura",
@@ -78,6 +74,7 @@ export const mockProperties: Property[] = [
     price: 3200000,
     condoFee: 2500,
     iptu: 1200,
+    city: "Brasília",
     neighborhood: "Plano Piloto",
     address: "SQNW 111, Bloco B",
     privateArea: 320,
@@ -93,6 +90,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "3",
+    code: "PU-0003",
     slug: "apartamento-aguas-claras-rua-37",
     title: "Apartamento moderno 3 quartos em Águas Claras",
     type: "apartamento",
@@ -100,6 +98,7 @@ export const mockProperties: Property[] = [
     price: 4500,
     condoFee: 800,
     iptu: 200,
+    city: "Brasília",
     neighborhood: "Águas Claras",
     address: "Rua 37 Norte, Lote 12",
     privateArea: 95,
@@ -115,6 +114,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "4",
+    code: "PU-0004",
     slug: "casa-lago-sul-shis-qi-25",
     title: "Casa de alto padrão com piscina no Lago Sul",
     type: "casa",
@@ -122,6 +122,7 @@ export const mockProperties: Property[] = [
     price: 8500000,
     condoFee: 0,
     iptu: 3500,
+    city: "Brasília",
     neighborhood: "Lago Sul",
     address: "SHIS QI 25, Conjunto 8",
     privateArea: 550,
@@ -137,6 +138,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "5",
+    code: "PU-0005",
     slug: "apartamento-sudoeste-sqsw-300",
     title: "Apartamento reformado 2 quartos no Sudoeste",
     type: "apartamento",
@@ -144,6 +146,7 @@ export const mockProperties: Property[] = [
     price: 3800,
     condoFee: 950,
     iptu: 280,
+    city: "Brasília",
     neighborhood: "Sudoeste/Octogonal",
     address: "SQSW 300, Bloco C",
     privateArea: 75,
@@ -159,6 +162,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "6",
+    code: "PU-0006",
     slug: "apartamento-asa-norte-sqs-405",
     title: "Apartamento amplo 3 quartos próximo ao Parque Olhos D'água",
     type: "apartamento",
@@ -166,6 +170,7 @@ export const mockProperties: Property[] = [
     price: 1450000,
     condoFee: 1400,
     iptu: 520,
+    city: "Brasília",
     neighborhood: "Plano Piloto",
     address: "SQN 405, Bloco D",
     privateArea: 140,
@@ -181,6 +186,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "7",
+    code: "PU-0007",
     slug: "casa-lago-norte-sqln-314",
     title: "Casa moderna 4 quartos à beira do Lago Norte",
     type: "casa",
@@ -188,6 +194,7 @@ export const mockProperties: Property[] = [
     price: 4200000,
     condoFee: 0,
     iptu: 1800,
+    city: "Brasília",
     neighborhood: "Lago Norte",
     address: "SQLN 314, Conjunto 6",
     privateArea: 420,
@@ -203,6 +210,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "8",
+    code: "PU-0008",
     slug: "chacara-park-way-conjunto-3",
     title: "Chácara com piscina e área gourmet no Park Way",
     type: "casa",
@@ -210,6 +218,7 @@ export const mockProperties: Property[] = [
     price: 6500000,
     condoFee: 0,
     iptu: 2800,
+    city: "Brasília",
     neighborhood: "Park Way",
     address: "SMPW Quadra 3, Conjunto 5",
     privateArea: 800,
@@ -225,6 +234,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "9",
+    code: "PU-0009",
     slug: "apartamento-taguatinga-cnh-1",
     title: "Apartamento reformado 3 quartos em Taguatinga Norte",
     type: "apartamento",
@@ -232,6 +242,7 @@ export const mockProperties: Property[] = [
     price: 850000,
     condoFee: 600,
     iptu: 280,
+    city: "Brasília",
     neighborhood: "Taguatinga",
     address: "CNH 1, Bloco B",
     privateArea: 90,
@@ -247,6 +258,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "10",
+    code: "PU-0010",
     slug: "apartamento-guara-qe-22",
     title: "Apartamento 2 quartos no Guará II",
     type: "apartamento",
@@ -254,6 +266,7 @@ export const mockProperties: Property[] = [
     price: 3200,
     condoFee: 750,
     iptu: 180,
+    city: "Brasília",
     neighborhood: "Guará",
     address: "QE 22, Bloco D",
     privateArea: 70,
@@ -269,6 +282,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "11",
+    code: "PU-0011",
     slug: "casa-vicente-pires-condominio-villa",
     title: "Casa em condomínio fechado 3 quartos em Vicente Pires",
     type: "casa",
@@ -276,6 +290,7 @@ export const mockProperties: Property[] = [
     price: 1100000,
     condoFee: 900,
     iptu: 380,
+    city: "Brasília",
     neighborhood: "Vicente Pires",
     address: "Trecho 2, Conjunto 5",
     privateArea: 160,
@@ -291,6 +306,7 @@ export const mockProperties: Property[] = [
   },
   {
     id: "12",
+    code: "PU-0012",
     slug: "casa-jardim-botanico-condominio-real",
     title: "Casa com jardim e área verde no Jardim Botânico",
     type: "casa",
@@ -298,6 +314,7 @@ export const mockProperties: Property[] = [
     price: 7500,
     condoFee: 1200,
     iptu: 420,
+    city: "Brasília",
     neighborhood: "Jardim Botânico",
     address: "SHJE Área Especial, Conjunto 3",
     privateArea: 240,
@@ -319,7 +336,7 @@ export const mockNeighborhoodsWithCount: Neighborhood[] = mockNeighborhoods.map(
 }))
 
 export const getFeaturedProperties = () => mockProperties.filter((p) => p.featured)
-export const getPropertyBySlug = (slug: string) => mockProperties.find((p) => p.slug === slug)
+export const getPropertyBySlug = cache((slug: string) => mockProperties.find((p) => p.slug === slug))
 export const getNeighborhoodBySlug = (slug: string) => mockNeighborhoods.find((n) => n.slug === slug)
 export const getPropertiesByNeighborhood = (name: string) =>
   mockProperties.filter((p) => p.neighborhood === name)

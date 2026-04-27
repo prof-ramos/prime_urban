@@ -7,20 +7,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { buildWhatsAppUrl, getPropertyInterestMessage } from "@/lib/site-config"
 
 interface ContactFormProps {
   propertyTitle: string
   propertyId: string
 }
 
-const WHATSAPP_NUMBER = "5561999999999"
-
 export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    message: `Olá! Tenho interesse no imóvel: ${propertyTitle}. Gostaria de mais informações.`,
+    message: `${getPropertyInterestMessage(propertyTitle)} Código: ${propertyId}.`,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -30,16 +29,14 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
     setIsSubmitting(true)
     
     // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 100))
     
     setIsSubmitting(false)
     setSubmitted(true)
   }
 
   const handleWhatsApp = () => {
-    const message = `Olá! Tenho interesse no imóvel: ${propertyTitle}. Gostaria de mais informações.`
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
-    window.open(url, "_blank")
+    window.open(buildWhatsAppUrl(getPropertyInterestMessage(propertyTitle)), "_blank")
   }
 
   if (submitted) {
@@ -55,7 +52,7 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
           </p>
           <Button
             onClick={handleWhatsApp}
-            className="bg-[#25D366] hover:bg-[#128C7E] text-white w-full"
+            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-white w-full"
           >
             <MessageCircle className="mr-2 h-5 w-5" />
             Falar pelo WhatsApp agora
@@ -74,7 +71,7 @@ export function ContactForm({ propertyTitle, propertyId }: ContactFormProps) {
         {/* WhatsApp Button */}
         <Button
           onClick={handleWhatsApp}
-          className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white h-12"
+          className="w-full bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-white h-12"
         >
           <MessageCircle className="mr-2 h-5 w-5" />
           Chamar no WhatsApp

@@ -1,0 +1,6 @@
+Starting CodeRabbit review in plain text mode...
+
+Review directory: /Users/gabrielramos/Downloads/prime_urban
+
+Connecting to review service
+Setting up

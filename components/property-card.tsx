@@ -1,43 +1,13 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Bed, Bath, Car, Maximize2, MapPin, Heart } from "lucide-react"
+import { Bed, Car, Maximize2, MapPin, Heart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-
-export interface Property {
-  id: string
-  slug: string
-  title: string
-  type: "apartamento" | "casa" | "cobertura" | "sala_comercial"
-  transactionType: "venda" | "aluguel"
-  price: number
-  condoFee?: number
-  iptu?: number
-  neighborhood: string
-  address: string
-  privateArea: number
-  totalArea?: number
-  bedrooms: number
-  suites?: number
-  bathrooms: number
-  parkingSpaces: number
-  images: string[]
-  featured?: boolean
-  acceptsPets?: boolean
-  solarOrientation?: string
-}
+import { formatCurrency } from "@/lib/format"
+import type { Property } from "@/lib/properties/types"
 
 interface PropertyCardProps {
   property: Property
-}
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
 }
 
 const typeLabels: Record<string, string> = {
@@ -114,7 +84,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         {/* Location */}
         <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2">
           <MapPin className="h-4 w-4 flex-shrink-0" />
-          <span className="truncate">{property.neighborhood} - Brasília</span>
+          <span className="truncate">{property.neighborhood} - {property.city}</span>
         </div>
 
         {/* Title */}

@@ -1,11 +1,20 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { Suspense, useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { PropertyCard } from "@/components/property-card"
-import { PropertyFilters, type FilterState } from "@/components/property-filters"
+import { PropertyFilters } from "@/components/property-filters"
 import { filterProperties } from "@/lib/filter-properties"
+import { mockProperties } from "@/lib/mock-data"
+import {
+  DEFAULT_FILTERS,
+  getCities,
+  getNeighborhoods,
+} from "@/lib/properties/filter-options"
+import { parseFiltersFromSearchParams } from "@/lib/properties/search-params"
+import type { FilterState, SortOption } from "@/lib/properties/types"
 import { LayoutGrid, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,24 +25,28 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const initialFilters: FilterState = {
-  search: "",
-  transactionType: "",
-  propertyType: "",
-  neighborhood: "",
-  minPrice: 0,
-  maxPrice: 10000000,
-  bedrooms: "",
-  parkingSpaces: "",
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={null}>
+      <PropertiesPageContent />
+    </Suspense>
+  )
 }
 
-export default function PropertiesPage() {
+function PropertiesPageContent() {
+  const searchParams = useSearchParams()
+  const initialFilters = useMemo(
+    () => parseFiltersFromSearchParams(searchParams),
+    [searchParams],
+  )
   const [filters, setFilters] = useState<FilterState>(initialFilters)
-  const [sortBy, setSortBy] = useState("recent")
+  const [sortBy, setSortBy] = useState<SortOption>("recent")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const cityOptions = useMemo(() => getCities(mockProperties), [])
+  const neighborhoodOptions = useMemo(() => getNeighborhoods(mockProperties), [])
 
   const filteredProperties = useMemo(
-    () => filterProperties(filters, sortBy),
+    () => filterProperties(mockProperties, filters, sortBy),
     [filters, sortBy]
   )
 
@@ -58,7 +71,9 @@ export default function PropertiesPage() {
           <PropertyFilters
             filters={filters}
             onFilterChange={setFilters}
-            onReset={() => setFilters(initialFilters)}
+            onReset={() => setFilters(DEFAULT_FILTERS)}
+            cityOptions={cityOptions}
+            neighborhoodOptions={neighborhoodOptions}
           />
 
           {/* Results Header */}
@@ -70,15 +85,21 @@ export default function PropertiesPage() {
 
             <div className="flex items-center gap-3">
               {/* Sort */}
-              <Select value={sortBy} onValueChange={setSortBy}>
+              <Select
+                value={sortBy}
+                onValueChange={(value) => setSortBy(value as SortOption)}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="recent">Mais recentes</SelectItem>
+                  <SelectItem value="default">Ordem padrão</SelectItem>
+                  <SelectItem value="az">A a Z</SelectItem>
+                  <SelectItem value="za">Z a A</SelectItem>
                   <SelectItem value="price-asc">Menor preço</SelectItem>
                   <SelectItem value="price-desc">Maior preço</SelectItem>
-                  <SelectItem value="area-desc">Maior área</SelectItem>
+                  <SelectItem value="oldest">Mais antigos</SelectItem>
+                  <SelectItem value="recent">Mais recentes</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -134,7 +155,7 @@ export default function PropertiesPage() {
               </p>
               <Button
                 variant="outline"
-                onClick={() => setFilters(initialFilters)}
+                onClick={() => setFilters(DEFAULT_FILTERS)}
                 className="border-[var(--navy-700)] text-[var(--navy-700)]"
               >
                 Limpar filtros

@@ -3,11 +3,16 @@ import Link from "next/link"
 import { ChevronLeft, Share2, Heart } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { PropertyGallery } from "@/components/property-gallery"
+import dynamic from "next/dynamic"
+
+const PropertyGallery = dynamic(() =>
+  import("@/components/property-gallery").then((m) => m.PropertyGallery)
+)
 import { PropertyInfo } from "@/components/property-info"
 import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
 import { getPropertyBySlug, mockProperties } from "@/lib/mock-data"
+import { formatCurrency } from "@/lib/format"
 import type { Metadata } from "next"
 
 interface PropertyPageProps {
@@ -22,14 +27,6 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
     return {
       title: "Imóvel não encontrado",
     }
-  }
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 0,
-    }).format(value)
   }
 
   const description = `${property.type === "apartamento" ? "Apartamento" : property.type} ${
@@ -76,8 +73,36 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
     notFound()
   }
 
+  const description = `${property.type === "apartamento" ? "Apartamento" : property.type} ${
+    property.transactionType === "venda" ? "à venda" : "para alugar"
+  } em ${property.neighborhood}, Brasília. ${property.bedrooms} quartos, ${property.privateArea}m². ${formatCurrency(property.price)}`
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    "name": property.title,
+    "description": description,
+    "image": property.images,
+    "offers": {
+      "@type": "Offer",
+      "price": property.price,
+      "priceCurrency": "BRL",
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": property.address,
+      "addressLocality": property.neighborhood,
+      "addressRegion": "DF",
+      "addressCountry": "BR",
+    },
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main className="flex-1 bg-background">
         <div className="container mx-auto px-4 py-6 md:py-8">

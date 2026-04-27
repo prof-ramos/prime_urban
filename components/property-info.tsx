@@ -3,28 +3,19 @@ import {
   Bath,
   Car,
   Maximize2,
-  Sun,
   PawPrint,
   FileText,
   Compass,
   Building2,
   Ruler,
 } from "lucide-react"
-import type { Property } from "@/components/property-card"
+import type { Property } from "@/lib/properties/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { formatCurrency } from "@/lib/format"
 
 interface PropertyInfoProps {
   property: Property
-}
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
 }
 
 const typeLabels: Record<string, string> = {
@@ -72,11 +63,11 @@ export function PropertyInfo({ property }: PropertyInfoProps) {
         </div>
         
         <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2 text-balance">
-          {property.title}
+          {typeLabels[property.type]} em {property.neighborhood} com {property.bedrooms} quarto{property.bedrooms !== 1 ? 's' : ''}
         </h1>
         
         <p className="text-muted-foreground">
-          {property.address} - {property.neighborhood}, Brasília - DF
+          {property.address} - {property.neighborhood}, {property.city}
         </p>
       </div>
 

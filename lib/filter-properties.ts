@@ -1,10 +1,7 @@
-import { mockProperties } from "@/lib/mock-data"
-import type { FilterState } from "@/components/property-filters"
-import type { Property } from "@/components/property-card"
-
-export type SortOption = "recent" | "price-asc" | "price-desc" | "area-desc"
+import type { FilterState, Property, SortOption } from "@/lib/properties/types"
 
 export function filterProperties(
+  properties: Property[],
   filters: FilterState,
   sortBy: SortOption = "recent",
 ): Property[] {
@@ -12,21 +9,25 @@ export function filterProperties(
     search,
     transactionType,
     propertyType,
+    city,
     neighborhood,
+    code,
     minPrice,
     maxPrice,
     bedrooms,
     parkingSpaces,
   } = filters
 
-  let results = [...mockProperties]
+  let results = [...properties]
 
   if (search) {
     const searchLower = search.toLowerCase()
     results = results.filter(
       (p) =>
         p.title.toLowerCase().includes(searchLower) ||
+        p.code.toLowerCase().includes(searchLower) ||
         p.address.toLowerCase().includes(searchLower) ||
+        p.city.toLowerCase().includes(searchLower) ||
         p.neighborhood.toLowerCase().includes(searchLower),
     )
   }
@@ -39,8 +40,17 @@ export function filterProperties(
     results = results.filter((p) => p.type === propertyType)
   }
 
+  if (city) {
+    results = results.filter((p) => p.city === city)
+  }
+
   if (neighborhood) {
     results = results.filter((p) => p.neighborhood === neighborhood)
+  }
+
+  if (code) {
+    const codeLower = code.toLowerCase().trim()
+    results = results.filter((p) => p.code.toLowerCase().includes(codeLower))
   }
 
   if (Number.isFinite(minPrice) && Number.isFinite(maxPrice) && minPrice <= maxPrice) {
@@ -62,6 +72,18 @@ export function filterProperties(
   }
 
   switch (sortBy) {
+    case "recent":
+      results.sort((a, b) => Number(b.id) - Number(a.id))
+      break
+    case "oldest":
+      results.sort((a, b) => Number(a.id) - Number(b.id))
+      break
+    case "az":
+      results.sort((a, b) => a.title.localeCompare(b.title, "pt-BR"))
+      break
+    case "za":
+      results.sort((a, b) => b.title.localeCompare(a.title, "pt-BR"))
+      break
     case "price-asc":
       results.sort((a, b) => a.price - b.price)
       break

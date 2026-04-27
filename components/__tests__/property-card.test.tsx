@@ -1,9 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { PropertyCard, type Property } from '../property-card'
+import { PropertyCard } from '../property-card'
+import type { Property } from '@/lib/properties/types'
 
 const mockProperty: Property = {
   id: '1',
+  code: 'PU-0001',
   slug: 'apartamento-asa-sul-sqn-308',
   title: 'Apartamento Teste',
   type: 'apartamento',
@@ -11,6 +13,7 @@ const mockProperty: Property = {
   price: 1850000,
   condoFee: 1800,
   iptu: 650,
+  city: 'Brasília',
   neighborhood: 'Plano Piloto',
   address: 'SQS 308',
   privateArea: 180,

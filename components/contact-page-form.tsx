@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-
-const WHATSAPP_NUMBER = "5561999999999"
+import { buildWhatsAppUrl, siteConfig } from "@/lib/site-config"
 
 export function ContactPageForm() {
   const [formData, setFormData] = useState({
@@ -23,15 +22,14 @@ export function ContactPageForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 100))
     setIsSubmitting(false)
     setSubmitted(true)
   }
 
   const handleWhatsApp = () => {
-    const message = formData.message || "Olá! Gostaria de mais informações sobre imóveis."
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
-    window.open(url, "_blank")
+    const message = formData.message || siteConfig.whatsapp.defaultMessage
+    window.open(buildWhatsAppUrl(message), "_blank")
   }
 
   if (submitted) {
@@ -47,7 +45,7 @@ export function ContactPageForm() {
           </p>
           <Button
             onClick={handleWhatsApp}
-            className="bg-[#25D366] hover:bg-[#128C7E] text-white w-full"
+            className="bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-white w-full"
           >
             <MessageCircle className="mr-2 h-5 w-5" />
             Falar pelo WhatsApp agora
@@ -65,7 +63,7 @@ export function ContactPageForm() {
       <CardContent className="space-y-4">
         <Button
           onClick={handleWhatsApp}
-          className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white h-12"
+          className="w-full bg-[var(--whatsapp)] hover:bg-[var(--whatsapp-hover)] text-white h-12"
         >
           <MessageCircle className="mr-2 h-5 w-5" />
           Chamar no WhatsApp

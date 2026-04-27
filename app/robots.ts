@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://primeurban.com.br"
+import { siteConfig } from "@/lib/site-config"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [],
     },
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: `${siteConfig.siteUrl}/sitemap.xml`,
   }
 }

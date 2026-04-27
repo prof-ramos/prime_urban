@@ -2,12 +2,10 @@
 
 import { MessageCircle, Phone, Clock, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const WHATSAPP_NUMBER = "5561999999999"
-const WHATSAPP_MESSAGE = "Olá! Gostaria de mais informações sobre imóveis em Brasília."
+import { buildWhatsAppUrl } from "@/lib/site-config"
 
 export function WhatsAppCTA() {
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
+  const whatsappUrl = buildWhatsAppUrl()
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden bg-[var(--navy-900)]">

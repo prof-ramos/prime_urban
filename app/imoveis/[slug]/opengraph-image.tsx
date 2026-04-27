@@ -20,12 +20,12 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const imageOptions = {
     ...size,
     fonts: [
-      {
-        name: 'Libre Baskerville',
-        data: fontData,
-        style: 'normal',
-        weight: 400,
-      },
+        {
+          name: 'Libre Baskerville',
+          data: fontData,
+          style: 'normal' as const,
+          weight: 400 as const,
+        },
     ],
   }
 

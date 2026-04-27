@@ -3,29 +3,21 @@ import type { Metadata, Viewport } from 'next'
 
 import { Analytics } from '@vercel/analytics/next'
 import { WhatsAppFloat } from '@/components/whatsapp-float'
+import { siteConfig } from '@/lib/site-config'
 import './globals.css'
 
-import { Inter, Playfair_Display, Geist_Mono as V0_Font_Geist_Mono, Libre_Baskerville as V0_Font_Libre_Baskerville } from 'next/font/google'
-
-// Initialize fonts
-const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
-const _libreBaskerville = V0_Font_Libre_Baskerville({ subsets: ['latin'], weight: ["400","700"] })
+import { Inter, Playfair_Display } from 'next/font/google'
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://primeurban.com.br'
-const SITE_NAME = 'PrimeUrban'
-const DEFAULT_DESCRIPTION =
-  'Curadoria exclusiva de imóveis de alto padrão em Brasília. Apartamentos, casas e coberturas nas melhores regiões do Distrito Federal.'
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteConfig.siteUrl),
   title: {
     default: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
-    template: `%s | ${SITE_NAME}`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: DEFAULT_DESCRIPTION,
+  description: siteConfig.description,
   keywords: [
     'imóveis Brasília',
     'alto padrão DF',
@@ -36,20 +28,20 @@ export const metadata: Metadata = {
     'Lago Sul',
     'Águas Claras',
   ],
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
+  authors: [{ name: siteConfig.name, url: siteConfig.siteUrl }],
+  creator: siteConfig.name,
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: SITE_URL,
-    siteName: SITE_NAME,
+    url: siteConfig.siteUrl,
+    siteName: siteConfig.name,
     title: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
-    description: DEFAULT_DESCRIPTION,
+    description: siteConfig.description,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PrimeUrban — Imóveis de Alto Padrão em Brasília',
-    description: DEFAULT_DESCRIPTION,
+    description: siteConfig.description,
   },
   robots: {
     index: true,

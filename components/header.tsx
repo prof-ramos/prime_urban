@@ -5,6 +5,7 @@ import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { Menu, X, Phone, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { siteConfig } from "@/lib/site-config"
 
 const navLinks = [
   { href: "/imoveis", label: "Imóveis" },
@@ -25,11 +26,11 @@ export function Header() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              Brasília, DF
+              {siteConfig.defaultRegion}
             </span>
             <span className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              (61) 99999-9999
+              {siteConfig.contact.phone.display}
             </span>
           </div>
           <span className="text-secondary">Curadoria Imobiliária de Alto Padrão</span>
@@ -42,10 +43,10 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2">
             <div className="flex flex-col">
               <span className="font-serif text-xl md:text-2xl font-bold text-primary">
-                PrimeUrban
+                {siteConfig.name}
               </span>
               <span className="text-[10px] md:text-xs text-secondary tracking-widest uppercase">
-                Brasília
+                {siteConfig.defaultCity}
               </span>
             </div>
           </Link>

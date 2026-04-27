@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin } from "lucide-react"
+import { siteConfig } from "@/lib/site-config"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -12,18 +13,18 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex flex-col">
               <span className="font-serif text-2xl font-bold text-primary-foreground">
-                PrimeUrban
+                {siteConfig.name}
               </span>
               <span className="text-xs text-secondary tracking-widest uppercase">
-                Brasília
+                {siteConfig.defaultCity}
               </span>
             </div>
             <p className="text-sm text-primary-foreground/70 leading-relaxed">
-              Curadoria exclusiva de imóveis de alto padrão em Brasília. Encontre seu próximo lar com quem entende do mercado local.
+              {siteConfig.description}
             </p>
             <div className="flex gap-4">
               <a 
-                href="https://instagram.com" 
+                href={siteConfig.social.instagram}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -32,7 +33,7 @@ export function Footer() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a 
-                href="https://facebook.com" 
+                href={siteConfig.social.facebook}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -41,7 +42,7 @@ export function Footer() {
                 <Facebook className="h-5 w-5" />
               </a>
               <a 
-                href="https://linkedin.com" 
+                href={siteConfig.social.linkedin}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-primary-foreground/10 hover:bg-secondary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -98,27 +99,27 @@ export function Footer() {
             <h4 className="font-semibold text-secondary">Contato</h4>
             <div className="flex flex-col gap-3">
               <a 
-                href="https://maps.google.com" 
+                href={siteConfig.contact.mapsUrl}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
                 <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                <span>SHIS QI 9, Bloco A, Sala 101<br />Lago Sul, Brasília - DF</span>
+                <span>{siteConfig.contact.address}</span>
               </a>
               <a 
-                href="tel:+5561999999999"
+                href={siteConfig.contact.phone.href}
                 className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
                 <Phone className="h-5 w-5 flex-shrink-0" />
-                <span>(61) 99999-9999</span>
+                <span>{siteConfig.contact.phone.display}</span>
               </a>
               <a 
-                href="mailto:contato@primeurban.com.br"
+                href={`mailto:${siteConfig.contact.email}`}
                 className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
               >
                 <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>contato@primeurban.com.br</span>
+                <span>{siteConfig.contact.email}</span>
               </a>
             </div>
           </div>
@@ -127,7 +128,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/50">
-            <p>&copy; {currentYear} PrimeUrban Brasília. Todos os direitos reservados.</p>
+            <p>&copy; {currentYear} {siteConfig.legalName}. Todos os direitos reservados.</p>
             <p>CRECI-DF 00000-J</p>
           </div>
         </div>

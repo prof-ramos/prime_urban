@@ -23,9 +23,11 @@ test.describe("Página inicial", () => {
     await expect(
       page.getByRole("heading", { name: /Encontre o imóvel/i }),
     ).toBeVisible()
-    await expect(
-      page.getByPlaceholder("Endereço, bairro ou código"),
-    ).toBeVisible()
+    await expect(page.locator("label").getByText("Tipo de negócio", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Tipo de imóvel", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Cidade", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Bairro", { exact: true })).toBeVisible()
+    await expect(page.getByRole("button", { name: /Busca avançada/i })).toBeVisible()
     await expect(
       page.getByRole("button", { name: "Buscar Imóveis" }),
     ).toBeVisible()
@@ -57,7 +59,8 @@ test.describe("Página inicial", () => {
   test("busca no hero navega para /imoveis com parâmetros @desktop", async ({
     page,
   }) => {
-    await page.getByPlaceholder("Endereço, bairro ou código").fill("Asa Sul")
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await page.getByPlaceholder("Palavra-chave").fill("Asa Sul")
     await page.getByRole("button", { name: "Buscar Imóveis" }).click()
     await page.waitForURL(/\/imoveis/)
     await expect(page).toHaveURL(/q=Asa/)

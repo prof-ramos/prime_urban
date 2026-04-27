@@ -1,8 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Search, SlidersHorizontal, X } from "lucide-react"
+import { ChevronDown, Search, SlidersHorizontal, X } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -13,44 +19,25 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { Slider } from "@/components/ui/slider"
-import { mockProperties } from "@/lib/mock-data"
-
-export interface FilterState {
-  search: string
-  transactionType: string
-  propertyType: string
-  neighborhood: string
-  minPrice: number
-  maxPrice: number
-  bedrooms: string
-  parkingSpaces: string
-}
+  DEFAULT_FILTERS,
+  DEFAULT_MAX_PRICE,
+  PROPERTY_TYPES,
+  type FilterOption,
+} from "@/lib/properties/filter-options"
+import type { FilterState } from "@/lib/properties/types"
 
 interface PropertyFiltersProps {
   filters: FilterState
   onFilterChange: (filters: FilterState) => void
   onReset: () => void
+  cityOptions: FilterOption[]
+  neighborhoodOptions: FilterOption[]
 }
 
-const neighborhoods = Array.from(
-  new Set(mockProperties.map((p) => p.neighborhood))
-)
-  .sort()
-  .map((name) => ({ value: name, label: name }))
-
-const propertyTypes = [
-  { value: "apartamento", label: "Apartamento" },
-  { value: "casa", label: "Casa" },
-  { value: "cobertura", label: "Cobertura" },
-  { value: "sala_comercial", label: "Sala Comercial" },
-]
+type UpdateFilter = <K extends keyof FilterState>(
+  key: K,
+  value: FilterState[K],
+) => void
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("pt-BR", {
@@ -61,36 +48,100 @@ const formatCurrency = (value: number) => {
   }).format(value)
 }
 
-export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFiltersProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [localFilters, setLocalFilters] = useState(filters)
+const parseCurrencyInput = (value: string, fallback: number) => {
+  const digits = value.replace(/\D/g, "")
+  if (!digits) return fallback
+  const parsed = Number(digits)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
 
-  const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
-    const newFilters = { ...localFilters, [key]: value }
-    setLocalFilters(newFilters)
-    onFilterChange(newFilters)
+export function PropertyFilters({
+  filters,
+  onFilterChange,
+  onReset,
+  cityOptions,
+  neighborhoodOptions,
+}: PropertyFiltersProps) {
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+
+  const updateFilter: UpdateFilter = (key, value) => {
+    onFilterChange({ ...filters, [key]: value })
   }
 
-  const hasActiveFilters = 
-    filters.transactionType || 
-    filters.propertyType || 
-    filters.neighborhood || 
-    filters.bedrooms || 
+  const resetFilters = () => {
+    setIsAdvancedOpen(false)
+    onReset()
+  }
+
+  const hasActiveFilters =
+    filters.search ||
+    filters.transactionType ||
+    filters.propertyType ||
+    filters.city ||
+    filters.neighborhood ||
+    filters.code ||
+    filters.bedrooms ||
     filters.parkingSpaces ||
     filters.minPrice > 0 ||
-    filters.maxPrice < 10000000
+    filters.maxPrice < DEFAULT_MAX_PRICE
 
-  const FilterContent = () => (
-    <div className="space-y-6">
-      {/* Transaction Type */}
+  const activeFilterCount = [
+    filters.transactionType,
+    filters.propertyType,
+    filters.city,
+    filters.neighborhood,
+    filters.search,
+    filters.code,
+    filters.bedrooms,
+    filters.parkingSpaces,
+    filters.minPrice > 0,
+    filters.maxPrice < DEFAULT_MAX_PRICE,
+  ].filter(Boolean).length
+
+  return (
+    <div className="mb-6 rounded-xl border border-border/50 bg-card p-4 shadow-sm">
+      <PrimaryPropertyFilters
+        filters={filters}
+        onUpdate={updateFilter}
+        cityOptions={cityOptions}
+        neighborhoodOptions={neighborhoodOptions}
+      />
+
+      <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
+        <ActiveFilterSummary
+          activeFilterCount={activeFilterCount}
+          hasActiveFilters={Boolean(hasActiveFilters)}
+          isAdvancedOpen={isAdvancedOpen}
+          onReset={resetFilters}
+        />
+
+        <AdvancedPropertyFilters filters={filters} onUpdate={updateFilter} />
+      </Collapsible>
+    </div>
+  )
+}
+
+function PrimaryPropertyFilters({
+  filters,
+  onUpdate,
+  cityOptions,
+  neighborhoodOptions,
+}: {
+  filters: FilterState
+  onUpdate: UpdateFilter
+  cityOptions: FilterOption[]
+  neighborhoodOptions: FilterOption[]
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
       <div className="space-y-2">
-        <Label>Tipo de negócio</Label>
+        <Label htmlFor="transaction-type">Tipo de negócio</Label>
         <Select
-          value={localFilters.transactionType}
-          onValueChange={(value) => updateFilter("transactionType", value)}
+          value={filters.transactionType}
+          onValueChange={(value) => onUpdate("transactionType", value)}
         >
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="Comprar ou Alugar" />
+          <SelectTrigger id="transaction-type" className="h-12">
+            <SelectValue placeholder="Comprar ou alugar" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="venda">Comprar</SelectItem>
@@ -99,18 +150,17 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
         </Select>
       </div>
 
-      {/* Property Type */}
       <div className="space-y-2">
-        <Label>Tipo de imóvel</Label>
+        <Label htmlFor="property-type">Tipo de imóvel</Label>
         <Select
-          value={localFilters.propertyType}
-          onValueChange={(value) => updateFilter("propertyType", value)}
+          value={filters.propertyType}
+          onValueChange={(value) => onUpdate("propertyType", value)}
         >
-          <SelectTrigger className="h-12">
+          <SelectTrigger id="property-type" className="h-12">
             <SelectValue placeholder="Todos os tipos" />
           </SelectTrigger>
           <SelectContent>
-            {propertyTypes.map((type) => (
+            {PROPERTY_TYPES.map((type) => (
               <SelectItem key={type.value} value={type.value}>
                 {type.label}
               </SelectItem>
@@ -119,103 +169,86 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
         </Select>
       </div>
 
-      {/* Neighborhood */}
       <div className="space-y-2">
-        <Label>Bairro</Label>
-        <Select
-          value={localFilters.neighborhood}
-          onValueChange={(value) => updateFilter("neighborhood", value)}
-        >
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="Todos os bairros" />
+        <Label htmlFor="city">Cidade</Label>
+        <Select value={filters.city} onValueChange={(value) => onUpdate("city", value)}>
+          <SelectTrigger id="city" className="h-12">
+            <SelectValue placeholder="Todas as cidades" />
           </SelectTrigger>
           <SelectContent>
-            {neighborhoods.map((n) => (
-              <SelectItem key={n.value} value={n.value}>
-                {n.label}
+            {cityOptions.map((city) => (
+              <SelectItem key={city.value} value={city.value}>
+                {city.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Price Range */}
-      <div className="space-y-4">
-        <Label>Faixa de preço</Label>
-        <div className="pt-2">
-          <Slider
-            value={[localFilters.minPrice, localFilters.maxPrice]}
-            min={0}
-            max={10000000}
-            step={50000}
-            onValueChange={([min, max]) => {
-              setLocalFilters({ ...localFilters, minPrice: min, maxPrice: max })
-              onFilterChange({ ...localFilters, minPrice: min, maxPrice: max })
-            }}
-            className="[&_[role=slider]]:bg-secondary"
-          />
-        </div>
-        <div className="flex justify-between text-sm text-muted-foreground">
-          <span>{formatCurrency(localFilters.minPrice)}</span>
-          <span>{formatCurrency(localFilters.maxPrice)}</span>
-        </div>
-      </div>
-
-      {/* Bedrooms */}
       <div className="space-y-2">
-        <Label>Quartos</Label>
+        <Label htmlFor="neighborhood">Bairro</Label>
         <Select
-          value={localFilters.bedrooms}
-          onValueChange={(value) => updateFilter("bedrooms", value)}
+          value={filters.neighborhood}
+          onValueChange={(value) => onUpdate("neighborhood", value)}
         >
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="Qualquer quantidade" />
+          <SelectTrigger id="neighborhood" className="h-12">
+            <SelectValue placeholder="Todos os bairros" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1">1+ quarto</SelectItem>
-            <SelectItem value="2">2+ quartos</SelectItem>
-            <SelectItem value="3">3+ quartos</SelectItem>
-            <SelectItem value="4">4+ quartos</SelectItem>
+            {neighborhoodOptions.map((neighborhood) => (
+              <SelectItem key={neighborhood.value} value={neighborhood.value}>
+                {neighborhood.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
+    </div>
+  )
+}
 
-      {/* Parking Spaces */}
-      <div className="space-y-2">
-        <Label>Vagas de garagem</Label>
-        <Select
-          value={localFilters.parkingSpaces}
-          onValueChange={(value) => updateFilter("parkingSpaces", value)}
-        >
-          <SelectTrigger className="h-12">
-            <SelectValue placeholder="Qualquer quantidade" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">1+ vaga</SelectItem>
-            <SelectItem value="2">2+ vagas</SelectItem>
-            <SelectItem value="3">3+ vagas</SelectItem>
-          </SelectContent>
-        </Select>
+function ActiveFilterSummary({
+  activeFilterCount,
+  hasActiveFilters,
+  isAdvancedOpen,
+  onReset,
+}: {
+  activeFilterCount: number
+  hasActiveFilters: boolean
+  isAdvancedOpen: boolean
+  onReset: () => void
+}) {
+  return (
+    <div className="mt-4 flex flex-col gap-3 border-t border-border/50 pt-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-wrap items-center gap-2">
+        <CollapsibleTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-10 border-secondary text-secondary"
+          >
+            <SlidersHorizontal className="mr-2 h-4 w-4" />
+            Busca avançada
+            <ChevronDown
+              className={`ml-2 h-4 w-4 transition-transform ${
+                isAdvancedOpen ? "rotate-180" : ""
+              }`}
+            />
+          </Button>
+        </CollapsibleTrigger>
+        {activeFilterCount > 0 && (
+          <Badge variant="outline" className="h-8 border-secondary/40 text-secondary">
+            {activeFilterCount} filtros ativos
+          </Badge>
+        )}
       </div>
 
-      {/* Reset Button */}
       {hasActiveFilters && (
         <Button
-          variant="outline"
-          onClick={() => {
-            onReset()
-            setLocalFilters({
-              search: "",
-              transactionType: "",
-              propertyType: "",
-              neighborhood: "",
-              minPrice: 0,
-              maxPrice: 10000000,
-              bedrooms: "",
-              parkingSpaces: "",
-            })
-          }}
-          className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white"
+          type="button"
+          variant="ghost"
+          onClick={onReset}
+          className="justify-start text-muted-foreground hover:text-destructive sm:justify-center"
         >
           <X className="mr-2 h-4 w-4" />
           Limpar filtros
@@ -223,107 +256,110 @@ export function PropertyFilters({ filters, onFilterChange, onReset }: PropertyFi
       )}
     </div>
   )
+}
 
+function AdvancedPropertyFilters({
+  filters,
+  onUpdate,
+}: {
+  filters: FilterState
+  onUpdate: UpdateFilter
+}) {
   return (
-    <div className="bg-card border border-border/50 rounded-xl p-4 mb-6">
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Search Input */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+    <CollapsibleContent>
+      <div className="mt-4 grid grid-cols-1 gap-4 rounded-lg bg-[var(--navy-900)]/5 p-4 md:grid-cols-2 xl:grid-cols-5">
+        <div className="space-y-2">
+          <Label htmlFor="bedrooms">Min. quartos</Label>
+          <Select value={filters.bedrooms} onValueChange={(value) => onUpdate("bedrooms", value)}>
+            <SelectTrigger id="bedrooms" className="h-12 bg-background">
+              <SelectValue placeholder="Qualquer" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">1+ quarto</SelectItem>
+              <SelectItem value="2">2+ quartos</SelectItem>
+              <SelectItem value="3">3+ quartos</SelectItem>
+              <SelectItem value="4">4+ quartos</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <PriceInput
+          id="min-price"
+          label="Min. preço"
+          value={filters.minPrice}
+          placeholder="R$ 0"
+          fallback={DEFAULT_FILTERS.minPrice}
+          shouldDisplay={(value) => value > DEFAULT_FILTERS.minPrice}
+          onChange={(value) => onUpdate("minPrice", value)}
+        />
+
+        <PriceInput
+          id="max-price"
+          label="Max. preço"
+          value={filters.maxPrice}
+          placeholder="Sem limite"
+          fallback={DEFAULT_MAX_PRICE}
+          shouldDisplay={(value) => value < DEFAULT_MAX_PRICE}
+          onChange={(value) => onUpdate("maxPrice", value)}
+        />
+
+        <div className="space-y-2">
+          <Label htmlFor="property-code">Código do imóvel</Label>
           <Input
-            type="text"
-            placeholder="Buscar por endereço, bairro ou código..."
-            value={localFilters.search}
-            onChange={(e) => updateFilter("search", e.target.value)}
-            className="pl-10 h-12 text-base"
+            id="property-code"
+            value={filters.code}
+            onChange={(event) => onUpdate("code", event.target.value)}
+            placeholder="PU-0002"
+            className="h-12 bg-background uppercase"
           />
         </div>
 
-        {/* Desktop Filters */}
-        <div className="hidden lg:flex gap-3">
-          <Select
-            value={localFilters.transactionType}
-            onValueChange={(value) => updateFilter("transactionType", value)}
-          >
-            <SelectTrigger className="w-[140px] h-12">
-              <SelectValue placeholder="Comprar/Alugar" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="venda">Comprar</SelectItem>
-              <SelectItem value="aluguel">Alugar</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={localFilters.propertyType}
-            onValueChange={(value) => updateFilter("propertyType", value)}
-          >
-            <SelectTrigger className="w-[160px] h-12">
-              <SelectValue placeholder="Tipo de imóvel" />
-            </SelectTrigger>
-            <SelectContent>
-              {propertyTypes.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={localFilters.neighborhood}
-            onValueChange={(value) => updateFilter("neighborhood", value)}
-          >
-            <SelectTrigger className="w-[160px] h-12">
-              <SelectValue placeholder="Bairro" />
-            </SelectTrigger>
-            <SelectContent>
-              {neighborhoods.map((n) => (
-                <SelectItem key={n.value} value={n.value}>
-                  {n.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              onClick={onReset}
-              aria-label="Limpar filtros"
-              className="text-muted-foreground hover:text-destructive"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          )}
+        <div className="space-y-2">
+          <Label htmlFor="keyword">Palavra-chave</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              id="keyword"
+              value={filters.search}
+              onChange={(event) => onUpdate("search", event.target.value)}
+              placeholder="Endereço, bairro, código"
+              className="h-12 bg-background pl-9"
+            />
+          </div>
         </div>
-
-        {/* Mobile Filter Button */}
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button 
-              variant="outline" 
-              className="lg:hidden h-12 border-secondary text-secondary bg-transparent"
-            >
-              <SlidersHorizontal className="mr-2 h-5 w-5" />
-              Filtros
-              {hasActiveFilters && (
-                <span className="ml-2 w-5 h-5 rounded-full bg-secondary text-secondary-foreground text-xs flex items-center justify-center">
-                  !
-                </span>
-              )}
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Filtrar imóveis</SheetTitle>
-            </SheetHeader>
-            <div className="mt-6">
-              <FilterContent />
-            </div>
-          </SheetContent>
-        </Sheet>
       </div>
+    </CollapsibleContent>
+  )
+}
+
+function PriceInput({
+  id,
+  label,
+  value,
+  placeholder,
+  fallback,
+  shouldDisplay,
+  onChange,
+}: {
+  id: string
+  label: string
+  value: number
+  placeholder: string
+  fallback: number
+  shouldDisplay: (value: number) => boolean
+  onChange: (value: number) => void
+}) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      <Input
+        id={id}
+        inputMode="numeric"
+        value={shouldDisplay(value) ? formatCurrency(value) : ""}
+        onChange={(event) => onChange(parseCurrencyInput(event.target.value, fallback))}
+        placeholder={placeholder}
+        className="h-12 bg-background"
+      />
     </div>
   )
 }

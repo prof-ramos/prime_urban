@@ -1,10 +1,11 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ContactPageForm } from "@/components/contact-page-form"
+import { siteConfig } from "@/lib/site-config"
 
 export const metadata = {
-  title: "Contato | PrimeUrban",
-  description: "Entre em contato com a PrimeUrban. Estamos prontos para ajudá-lo a encontrar o imóvel ideal.",
+  title: `Contato | ${siteConfig.name}`,
+  description: `Entre em contato com a ${siteConfig.name}. Estamos prontos para ajudá-lo a encontrar o imóvel ideal.`,
 }
 
 export default function ContatoPage() {

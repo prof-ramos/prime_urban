@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, X, Expand } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 interface PropertyGalleryProps {
   images: string[]
@@ -35,7 +34,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             alt={`${title} - Foto ${currentIndex + 1}`}
             fill
             className="object-cover"
-            priority
+            priority={currentIndex === 0}
           />
           
           {/* Navigation Arrows */}

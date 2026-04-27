@@ -1,36 +1,35 @@
 import type { MetadataRoute } from "next"
 import { mockProperties, mockNeighborhoods } from "@/lib/mock-data"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://primeurban.com.br"
+import { siteConfig } from "@/lib/site-config"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: SITE_URL,
+      url: siteConfig.siteUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${SITE_URL}/imoveis`,
+      url: `${siteConfig.siteUrl}/imoveis`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/bairros`,
+      url: `${siteConfig.siteUrl}/bairros`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${SITE_URL}/sobre`,
+      url: `${siteConfig.siteUrl}/sobre`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.5,
     },
     {
-      url: `${SITE_URL}/contato`,
+      url: `${siteConfig.siteUrl}/contato`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.5,
@@ -38,14 +37,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const propertyRoutes: MetadataRoute.Sitemap = mockProperties.map((p) => ({
-    url: `${SITE_URL}/imoveis/${p.slug}`,
+    url: `${siteConfig.siteUrl}/imoveis/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }))
 
   const neighborhoodRoutes: MetadataRoute.Sitemap = mockNeighborhoods.map((n) => ({
-    url: `${SITE_URL}/bairros/${n.slug}`,
+    url: `${siteConfig.siteUrl}/bairros/${n.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.6,

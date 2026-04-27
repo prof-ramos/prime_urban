@@ -9,6 +9,17 @@ test.describe("Listagem de imóveis (/imoveis)", () => {
     await expect(page.getByText("12 imóveis encontrados")).toBeVisible()
   })
 
+  test("exibe filtros principais e busca avançada", async ({ page }) => {
+    await expect(page.locator("label").getByText("Tipo de negócio", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Tipo de imóvel", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Cidade", { exact: true })).toBeVisible()
+    await expect(page.locator("label").getByText("Bairro", { exact: true })).toBeVisible()
+
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await expect(page.getByLabel("Código do imóvel")).toBeVisible()
+    await expect(page.getByLabel("Palavra-chave")).toBeVisible()
+  })
+
   // Filtros do desktop (visíveis apenas em lg+, ou seja, Desktop Chrome)
   test("filtro por tipo — comprar filtra 8 imóveis @desktop", async ({
     page,
@@ -28,30 +39,44 @@ test.describe("Listagem de imóveis (/imoveis)", () => {
   })
 
   test("busca textual filtra resultados @desktop", async ({ page }) => {
-    await page.getByPlaceholder(/Buscar por endereço/i).fill("SQNW 111")
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await page.getByLabel("Palavra-chave").fill("SQNW 111")
     await expect(page.getByText("1 imóvel encontrado")).toBeVisible()
   })
 
+  test("busca por código filtra resultado @desktop", async ({ page }) => {
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await page.getByLabel("Código do imóvel").fill("PU-0002")
+    await expect(page.getByText("1 imóvel encontrado")).toBeVisible()
+    await expect(page.getByText("Código PU-0002")).toBeVisible()
+  })
+
   test("sem resultados exibe mensagem e botão limpar @desktop", async ({ page }) => {
-    await page
-      .getByPlaceholder(/Buscar por endereço/i)
-      .fill("imóvel inexistente xyzxyz")
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await page.getByLabel("Palavra-chave").fill("imóvel inexistente xyzxyz")
     await expect(
       page.getByRole("heading", { name: "Nenhum imóvel encontrado" }),
     ).toBeVisible()
     await expect(
-      page.getByRole("button", { name: "Limpar filtros" }),
+      page.getByRole("button", { name: "Limpar filtros" }).first(),
     ).toBeVisible()
   })
 
   test("botão limpar filtros restaura todos os resultados @desktop", async ({
     page,
   }) => {
-    await page
-      .getByPlaceholder(/Buscar por endereço/i)
-      .fill("imóvel inexistente xyzxyz")
-    await page.getByRole("button", { name: "Limpar filtros" }).click()
+    await page.getByRole("button", { name: /Busca avançada/i }).click()
+    await page.getByLabel("Palavra-chave").fill("imóvel inexistente xyzxyz")
+    await page.getByRole("button", { name: "Limpar filtros" }).first().click()
     await expect(page.getByText("12 imóveis encontrados")).toBeVisible()
+  })
+
+  test("ordenação por menor preço mostra aluguel mais barato primeiro @desktop", async ({ page }) => {
+    await page.getByRole("combobox").last().click()
+    await page.getByRole("option", { name: "Menor preço" }).click()
+    await expect(
+      page.getByRole("link", { name: /Apartamento 2 quartos no Guará II/i }),
+    ).toBeVisible()
   })
 
   test("card de imóvel navega para a página de detalhe @desktop", async ({ page }) => {
